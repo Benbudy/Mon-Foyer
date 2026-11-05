@@ -101,13 +101,23 @@ nav button{border-radius:22px;margin:0 2px}nav button.on{background:var(--ac2)}
 .c2{position:relative;display:inline-block}.c2 i{position:absolute;font-style:normal;font-size:.55em;right:-.2em;bottom:-.05em;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
 .tile.add{background:transparent;border:2px dashed var(--bd);box-shadow:none}.tile.add::before{display:none}.tile.add b{color:var(--ac)}.tile.add small{color:var(--mu)}
 .tile.add .i{filter:none;transform:none;color:var(--ac);font-weight:300;font-size:clamp(44px,13vw,64px)}
+nav{margin:0;padding:6px 0 4px;border:0;border-radius:0;background:var(--bg);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
+nav button{border-radius:0;margin:0;background:none!important;gap:3px}
+nav button i{display:block;line-height:0}nav button svg{width:25px;height:25px}
+.h2r{display:flex;align-items:center;justify-content:space-between}.h2r h2{margin:24px 0 8px}
+.btn.sm{padding:6px 12px;font-size:13px;border-radius:12px}
+.mv{position:absolute;bottom:8px;z-index:3;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center;font-size:20px;font-weight:700;color:#1f2933;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.gh{cursor:pointer;-webkit-tap-highlight-color:transparent}.gh>span{display:flex;align-items:center}
+.cv{display:inline-block;font-style:normal;margin-right:8px;font-size:20px;transition:transform .2s}.gh.open .cv{transform:rotate(90deg)}
+.grid.ord .tile{animation:none}
+.ver{text-align:center;color:var(--mu);font-size:12px;margin:22px 0 4px}
 </style>
 </head>
 <body>
 <div id="main"></div>
 <nav>
-  <button data-a="tab" data-v="home" id="t-home"><i>🏠</i>Accueil</button>
-  <button data-a="tab" data-v="settings" id="t-settings"><i>⚙️</i>Réglages</button>
+  <button data-a="tab" data-v="home" id="t-home"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></i>Accueil</button>
+  <button data-a="tab" data-v="settings" id="t-settings"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></i>Réglages</button>
 </nav>
 <div id="modal"><div class="sheet" id="sheet"></div></div>
 <script>
@@ -138,7 +148,8 @@ var CATS=[
 {id:"recettes",i:"🍲",n:"Recettes",ex:"Plats favoris",t:"nom",s:["temps","note"],f:[["nom","Plat","text"],["temps","Durée","text"],["note","Ingrédients / notes","area"]]},
 {id:"cadeaux",i:"🎁",n:"Idées cadeaux",ex:"Pour chaque proche",t:"idee",s:["pour","occ"],f:[["idee","Idée","text"],["pour","Pour","text"],["occ","Occasion","text"],["fait","Acheté","chk"]]}
 ];
-var S=load(),tab="home",cat=null,q="";
+var VER="1.1.0";
+var S=load(),tab="home",cat=null,q="",ord=false,openG={};
 ["reparer","vehicules","cave","biblio","fidelite","recettes","docs","mesures"].forEach(function(id){cof(id).f.push(["photo","Photo","photo"])});
 var GR={mesures:"piece",tailles:"membre",besoins:"piece",reparer:"piece",courses:"mag",stock:"lieu",menage:"qui",biblio:"genre",recettes:"type",docs:"type",cave:"type",contacts:"role",cadeaux:"pour",calendriers:"type",voyage:"etat",projets:"etat",emprunts:"nom"};
 cof("courses").f[2][1]="Magasin / rayon";
@@ -155,7 +166,7 @@ cof("projets").i="💡";cof("projets").h='<span class="c2">💡<i>⚙️</i></sp
 cof("tailles").i="👗";cof("emprunts").i="🫱🏼‍🫲🏽";cof("stock").i="🍓";cof("voyage").i="🏝️";cof("contacts").i="☎️";cof("recettes").i="📖";
 var BASE=CATS.slice();build();
 var RM=[["rdv","quand","",7,0],["calendriers","quand","",14,0],["anniv","date","Anniversaire · ",30,0,1],["vehicules","ct","Contrôle technique · ",45,1],["vehicules","assur","Assurance · ",45,1],["vehicules","entre","Entretien · ",30,1],["docs","valid","Validité · ",60,1],["fidelite","exp","Carte expire · ",30,1],["stock","dlc","À consommer · ",7,1],["emprunts","retour","À rendre · ",7,1],["voyage","debut","Départ · ",30,0]];
-function load(){try{var r=localStorage.getItem(K);if(r){var o=JSON.parse(r);o.members=o.members||[];o.data=o.data||{};o.hidden=o.hidden||[];o.cats=o.cats||[];return o}}catch(e){}return{members:[],data:{},hidden:[],cats:[],theme:"auto"}}
+function load(){try{var r=localStorage.getItem(K);if(r){var o=JSON.parse(r);o.members=o.members||[];o.data=o.data||{};o.hidden=o.hidden||[];o.cats=o.cats||[];o.order=o.order||[];return o}}catch(e){}return{members:[],data:{},hidden:[],cats:[],order:[],theme:"auto"}}
 function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
 function $(s){return document.querySelector(s)}
 function fd(v){var m=/^(\d{4})-(\d\d)-(\d\d)(?:T(\d\d:\d\d))?$/.exec(v);return m?m[3]+"/"+m[2]+"/"+m[1]+(m[4]?" à "+m[4]:""):v}
@@ -172,14 +183,15 @@ function render(){
 }
 function homeHTML(){
   var h='<div class="hd"><h1>Mon foyer</h1><div class="eye">'+new Date().toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"})+'</div></div><p class="sub">Tout votre quotidien, au même endroit.</p>';
-  h+=remHTML()+'<h2>Catégories</h2><div class="grid">';
+  h+=remHTML()+'<div class="h2r"><h2>Catégories</h2><button class="btn g sm" data-a="ord">'+(ord?"Terminé":"Réorganiser")+'</button></div><div class="grid'+(ord?" ord":"")+'">';
   CATS.forEach(function(c){
     var l=list(c.id),n=l.length,t=n+(n>1?" éléments":" élément");
     if(c.chk){var o=l.filter(function(x){return !x.fait}).length;t=o+" à faire"}
     if(!n)t="Vide";
-    h+='<button class="tile" style="--h:'+[6,24,42,58,90,135,160,180,195,205][CATS.indexOf(c)*3%10]+';animation-delay:'+CATS.indexOf(c)*25+'ms" data-a="open" data-v="'+c.id+'"><span class="i">'+ic(c)+'</span><b>'+c.n+'</b><small>'+t+'</small></button>';
+    var tg=ord?"div":"button",at=ord?"":' data-a="open" data-v="'+c.id+'"',mv=ord?'<span class="mv" style="left:8px" data-a="mv" data-v="'+c.id+'|-1">‹</span><span class="mv" style="left:46px" data-a="mv" data-v="'+c.id+'|1">›</span>':"";
+    h+='<'+tg+' class="tile" style="--h:'+[6,24,42,58,90,135,160,180,195,205][hix(c)*3%10]+';animation-delay:'+CATS.indexOf(c)*25+'ms"'+at+'><span class="i">'+ic(c)+'</span><b>'+c.n+'</b><small>'+t+'</small>'+mv+'</'+tg+'>';
   });
-  return h+'<button class="tile add" style="--h:210" data-a="newcat"><b>Ajouter</b><small>Nouvelle catégorie</small><span class="i">＋</span></button></div>';
+  return h+(ord?"":'<button class="tile add" style="--h:210" data-a="newcat"><b>Ajouter</b><small>Nouvelle catégorie</small><span class="i">＋</span></button>')+'</div><p class="ver">Mon foyer · version '+VER+'</p>';
 }
 function catHTML(){
   var c=cof(cat);
@@ -203,7 +215,7 @@ function itemsHTML(){
   var G={};r.forEach(function(x){var k=x[c.g]||"Autres";(G[k]=G[k]||[]).push(x)});
   var ks=Object.keys(G).sort(function(a,b){return a==="Autres"?1:b==="Autres"?-1:a.localeCompare(b,"fr")});
   if(ks.length===1&&ks[0]==="Autres")return r.map(row).join("");
-  return ks.map(function(k){return'<div class="gh"><span>'+esc(k)+'<em>'+G[k].length+'</em></span>'+(k!=="Autres"?'<button data-a="addg" data-v="'+esc(k)+'">+</button>':"")+'</div>'+G[k].map(row).join("")}).join("");
+  return ks.map(function(k){var op=s||openG[c.id+"|"+k];return'<div class="gh'+(op?" open":"")+'" data-a="tgg" data-v="'+esc(k)+'"><span><i class="cv">›</i>'+esc(k)+'<em>'+G[k].length+'</em></span>'+(k!=="Autres"?'<button data-a="addg" data-v="'+esc(k)+'">+</button>':"")+'</div>'+(op?G[k].map(row).join(""):"")}).join("");
 }
 function settingsHTML(){
   var h='<h1>Réglages</h1><p class="sub">Personnalisez votre foyer.</p><h2>Membres du foyer</h2>';
@@ -213,9 +225,10 @@ function settingsHTML(){
   h+='<h2>Apparence</h2><select id="th">'+[["auto","Automatique"],["light","Clair"],["dark","Sombre"]].map(function(o){return'<option value="'+o[0]+'"'+((S.theme||"auto")===o[0]?" selected":"")+'>'+o[1]+'</option>'}).join("")+'</select>';
   h+='<h2>Import / export</h2><p class="sub">Les données restent sur cet appareil. Exportez un fichier pour les sauvegarder ou les transférer ; l’import fusionne avec vos données.</p><div class="row" style="margin-top:0"><button class="btn" data-a="exp">Exporter (.json)</button><button class="btn g" data-a="imp">Importer (.json)</button></div><input type="file" id="imf" accept=".json,application/json" hidden>';
   h+='<h2>Tableur (CSV)</h2><select id="csc">'+CATS.map(function(c){return'<option value="'+c.id+'">'+(c.h?"":c.i+" ")+c.n+'</option>'}).join("")+'</select><div class="row"><button class="btn g" data-a="expc">Exporter CSV</button><button class="btn g" data-a="impc">Importer CSV</button></div><input type="file" id="imc" accept=".csv,text/csv" hidden>';
-  h+='<h2>Copier / coller</h2><p class="sub">Si le téléchargement est impossible, copiez ce texte ou collez-en un pour tout restaurer (remplace les données).</p><textarea id="bk">'+esc(JSON.stringify({members:S.members,data:S.data,cats:S.cats,hidden:S.hidden}))+'</textarea>';
+  h+='<h2>Copier / coller</h2><p class="sub">Si le téléchargement est impossible, copiez ce texte ou collez-en un pour tout restaurer (remplace les données).</p><textarea id="bk">'+esc(JSON.stringify({members:S.members,data:S.data,cats:S.cats,hidden:S.hidden,order:S.order}))+'</textarea>';
   h+='<div class="row"><button class="btn g" data-a="copy">Copier</button><button class="btn g" data-a="restore">Restaurer</button></div>';
   h+='<h2>Zone sensible</h2><button class="btn d" data-a="reset">Tout effacer</button>';
+  h+='<p class="ver">Mon foyer · version '+VER+'</p>';
   return h;
 }
 function rem(){var t=new Date();t.setHours(0,0,0,0);var o=[];RM.forEach(function(r){var c=cof(r[0]);list(r[0]).forEach(function(x){var v=x[r[1]];if(!v||x.fait)return;var d=new Date(v.slice(0,10)+"T00:00");if(isNaN(d))return;var y0=d.getFullYear(),age=0;if(r[5]){d.setFullYear(t.getFullYear());if(d<t)d.setFullYear(t.getFullYear()+1);age=d.getFullYear()-y0}var n=Math.round((d-t)/864e5);if(n>r[3]||n<(r[4]?-30:0))return;o.push({n:n,i:ic(c),t:r[2]+x[c.t]+(age>0?" ("+age+" ans)":"")})})});return o.sort(function(a,b){return a.n-b.n}).slice(0,10)}
@@ -223,7 +236,8 @@ function lab(n){return n<0?"En retard de "+(-n)+" j":n===0?"Aujourd’hui":n===1
 function remHTML(){var R=rem();if(!R.length)return"";return'<h2>Rappels</h2><div class="rem">'+R.map(function(r){return'<div class="rm'+(r.n<0?" late":r.n<2?" soon":"")+'"><span>'+r.i+'</span><b>'+esc(r.t)+'</b><em>'+lab(r.n)+'</em></div>'}).join("")+'</div>'}
 function ic(c){return c.h||c.i}
 function mk(c){var f=[["nom","Nom","text"]];if(c.g)f.push(["grp","Rubrique","text"]);f.push(["detail","Détail","text"],["note","Notes","area"],["photo","Photo","photo"]);if(c.chk)f.push(["fait","Fait","chk"]);return{id:c.id,i:c.i,n:c.n,ex:"Ajoutez vos éléments avec le bouton +",chk:c.chk?1:0,t:"nom",s:["detail"],g:c.g?"grp":undefined,f:f,custom:1}}
-function build(){CATS.length=0;BASE.forEach(function(c){if(S.hidden.indexOf(c.id)<0)CATS.push(c)});S.cats.forEach(function(c){CATS.push(mk(c))})}
+function build(){CATS.length=0;BASE.forEach(function(c){if(S.hidden.indexOf(c.id)<0)CATS.push(c)});S.cats.forEach(function(c){CATS.push(mk(c))});var o=S.order||[];CATS.sort(function(a,b){var i=o.indexOf(a.id),j=o.indexOf(b.id);return(i<0?999:i)-(j<0?999:j)})}
+function hix(c){var i=BASE.findIndex(function(b){return b.id===c.id});if(i<0)i=BASE.length+S.cats.findIndex(function(b){return b.id===c.id});return i}
 function openCat(){$("#sheet").innerHTML='<h1 style="font-size:22px">Nouvelle catégorie</h1><label>Icône (un emoji)</label><input id="ncI" value="📦" maxlength="8"><label>Nom</label><input id="ncN" placeholder="Ex. Jouets, Outils, Jardin…"><label>Cases à cocher</label><select id="ncC"><option value="0">Non</option><option value="1">Oui (liste à faire)</option></select><label>Rubriques</label><select id="ncG"><option value="1">Oui (regrouper les éléments)</option><option value="0">Non</option></select><div class="row"><button class="btn g" data-a="close">Annuler</button><button class="btn" data-a="savecat">Créer</button></div>';$("#modal").className="open"}
 function dl(n,t,m){var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([t],{type:m}));a.download=n;document.body.appendChild(a);a.click();a.remove()}
 function groups(c){var s={};list(c.id).forEach(function(x){if(x[c.g])s[x[c.g]]=1});return Object.keys(s).sort()}
@@ -260,9 +274,12 @@ document.addEventListener("click",function(e){
   var el=e.target.closest("[data-a]");if(!el)return;
   var a=el.dataset.a,v=el.dataset.v;
   if(a==="tog"){e.stopPropagation();var it=list(cat).filter(function(x){return x.id===v})[0];it.fait=it.fait?"":"1";save();render();return}
-  if(a==="tab"){tab=v;cat=null;q="";render()}
+  if(a==="tab"){tab=v;cat=null;q="";ord=false;render()}
   else if(a==="open"){cat=v;q="";render()}
   else if(a==="back"){cat=null;render()}
+  else if(a==="tgg"){var kk=cat+"|"+v;openG[kk]=!openG[kk];$("#list").innerHTML=itemsHTML()}
+  else if(a==="ord"){ord=!ord;render()}
+  else if(a==="mv"){var pr=v.split("|"),ids=CATS.map(function(x){return x.id}),i0=ids.indexOf(pr[0]),j0=i0+ +pr[1];if(i0>-1&&j0>=0&&j0<ids.length){var tm=ids[i0];ids[i0]=ids[j0];ids[j0]=tm;S.order=ids;save();build();var st=$("#main").scrollTop;render();$("#main").scrollTop=st}}
   else if(a==="add")openForm();
   else if(a==="addg")openForm(null,v);
   else if(a==="newcat")openCat();
@@ -276,22 +293,22 @@ document.addEventListener("click",function(e){
     document.querySelectorAll("#sheet [data-k]").forEach(function(i){o[i.dataset.k]=i.value.trim()});
     if(!o[c.t]){alert("Merci de renseigner le premier champ.");return}
     var l=list(c.id);
-    if(v)l[l.findIndex(function(x){return x.id===v})]=o;else l.unshift(o);
+    if(v)l[l.findIndex(function(x){return x.id===v})]=o;else l.unshift(o);if(c.g)openG[c.id+"|"+(o[c.g]||"Autres")]=1;
     save();closeForm();render();
   }
   else if(a==="del"){if(confirm("Supprimer cet élément ?")){S.data[cat]=list(cat).filter(function(x){return x.id!==v});save();closeForm();render()}}
   else if(a==="clear"){S.data[cat]=list(cat).filter(function(x){return !x.fait});save();render()}
   else if(a==="addm"){var n=$("#nm").value.trim();if(n){S.members.push(n);save();render()}}
   else if(a==="delm"){S.members.splice(+v,1);save();render()}
-  else if(a==="exp")dl("mon-foyer-"+new Date().toISOString().slice(0,10)+".json",JSON.stringify({app:"mon-foyer",members:S.members,data:S.data,cats:S.cats,hidden:S.hidden},null,1),"application/json");
+  else if(a==="exp")dl("mon-foyer-"+new Date().toISOString().slice(0,10)+".json",JSON.stringify({app:"mon-foyer",members:S.members,data:S.data,cats:S.cats,hidden:S.hidden,order:S.order},null,1),"application/json");
   else if(a==="imp")$("#imf").click();
   else if(a==="expc"){var cc=cof($("#csc").value);dl(cc.id+".csv",csv(cc),"text/csv;charset=utf-8")}
   else if(a==="impc")$("#imc").click();
   else if(a==="copy"){var t=$("#bk");t.select();try{navigator.clipboard.writeText(t.value)}catch(x){document.execCommand("copy")}el.textContent="Copié ✓"}
   else if(a==="restore"){
-    try{var o=JSON.parse($("#bk").value);if(!o.data)throw 0;if(confirm("Remplacer les données actuelles ?")){S.members=o.members||[];S.data=o.data;S.cats=o.cats||[];S.hidden=o.hidden||[];build();save();render();alert("Données restaurées.")}}catch(x){alert("Texte de sauvegarde invalide.")}
+    try{var o=JSON.parse($("#bk").value);if(!o.data)throw 0;if(confirm("Remplacer les données actuelles ?")){S.members=o.members||[];S.data=o.data;S.cats=o.cats||[];S.hidden=o.hidden||[];S.order=o.order||[];build();save();render();alert("Données restaurées.")}}catch(x){alert("Texte de sauvegarde invalide.")}
   }
-  else if(a==="reset"){if(confirm("Effacer toutes les données ? Cette action est définitive.")){S={members:[],data:{},hidden:[],cats:[],theme:S.theme};save();build();render()}}
+  else if(a==="reset"){if(confirm("Effacer toutes les données ? Cette action est définitive.")){S={members:[],data:{},hidden:[],cats:[],order:[],theme:S.theme};save();build();render()}}
 });
 document.addEventListener("change",function(e){var id=e.target.id;if(id!=="imf"&&id!=="imc")return;var f=e.target.files[0];if(!f)return;var fr=new FileReader(),cs=$("#csc")?$("#csc").value:"";fr.onload=function(){try{var n=0;if(id==="imf"){var o=JSON.parse(fr.result);if(!o.data)throw 0;(o.members||[]).forEach(function(m){if(S.members.indexOf(m)<0)S.members.push(m)});(o.cats||[]).forEach(function(c){if(!S.cats.some(function(x){return x.id===c.id}))S.cats.push(c)});build();Object.keys(o.data).forEach(function(k){if(!cof(k))return;var l=list(k),ids={};l.forEach(function(x){ids[x.id]=1});o.data[k].forEach(function(x){if(!ids[x.id]){l.push(x);n++}})});save();render();alert(n+" élément(s) importé(s).")}else{var c=cof(cs),R=pcsv(fr.result),H=R.shift().map(function(h){return h.trim().toLowerCase()});R.forEach(function(r,i){if(!r.join("").trim())return;var o={id:String(Date.now()+i)};c.f.forEach(function(fl){var j=H.indexOf(fl[1].toLowerCase());if(j<0)j=H.indexOf(fl[0]);if(j>-1&&fl[2]!=="photo")o[fl[0]]=(r[j]||"").trim()});if(o[c.t]){list(c.id).push(o);n++}});save();render();alert(n+" ligne(s) importée(s) dans « "+c.n+" ».")}}catch(x){alert("Fichier invalide.")}};fr.readAsText(f);e.target.value=""});
 window.addEventListener("resize",fit);if(document.fonts)document.fonts.ready.then(fit);

@@ -105,7 +105,7 @@ nav button{border-radius:22px;margin:0 2px}nav button.on{background:var(--ac2)}
 nav{margin:0;padding:6px 0 calc(env(safe-area-inset-bottom,0px)*.12);border:0;border-radius:0;background:var(--bg);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
 nav button{border-radius:0;margin:0;background:none!important;gap:3px}
 nav button i{display:block;line-height:0}nav button svg{width:25px;height:25px}
-.h2r{display:flex;align-items:center;justify-content:space-between}.h2r h2{margin:24px 0 8px}
+.h2r{display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:8px;margin:22px 0 10px}.h2r h2{margin:0;white-space:nowrap}.h2r .btn{white-space:nowrap;padding:9px 11px;font-size:13px}
 .btn.sm{padding:6px 12px;font-size:13px;border-radius:12px}
 .mv{position:absolute;bottom:8px;z-index:3;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center;font-size:20px;font-weight:700;color:#1f2933;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .gh{cursor:pointer;-webkit-tap-highlight-color:transparent}.gh>span{display:flex;align-items:center}
@@ -217,11 +217,11 @@ input[type=range]{padding:0;accent-color:var(--ac)}
 .rf{background:var(--glass);border:1px solid var(--bd);border-radius:18px;padding:12px 14px;margin:10px 0}.rf h3{margin:0 0 6px;font-size:15px}.rf p{margin:4px 0;font-size:13px;color:var(--mu)}
 .rf table{width:100%;border-collapse:collapse;font-size:13px}.rf td,.rf th{padding:5px 6px;text-align:left;border-bottom:1px solid var(--bd);vertical-align:top}.rf th{color:var(--mu);font-weight:700}.rf tr:last-child td{border-bottom:0}
 .cmv{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:4px 12px;margin-top:8px;font-size:13px}.cmv span{color:var(--mu)}.cmv b{color:var(--tx)}
-.grid.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
-.grid.c3{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.grid.c3 .tile{padding:12px 8px 8px;border-radius:18px}
-.grid.c3 .tile .i{font-size:clamp(32px,10vw,50px);right:2px;bottom:2px}
-.grid.c3 .tile small{font-size:10px;margin-top:2px}
+.grid.cols2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid.cols3{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.grid.cols3 .tile{padding:12px 8px 8px;border-radius:18px}
+.grid.cols3 .tile .i{font-size:clamp(32px,10vw,50px);right:2px;bottom:2px}
+.grid.cols3 .tile small{font-size:10px;margin-top:2px}
 #main>.top{position:sticky;top:-20px;z-index:6;margin:-20px -16px 10px;padding:30px 16px 8px;background:var(--bg);background:color-mix(in srgb,var(--bg) 94%,transparent);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
 .item{min-height:56px}
 .ck{width:30px;height:30px;font-size:17px}
@@ -335,7 +335,7 @@ function homeHTML(){
   var h='<div class="hd"><h1>Mon foyer</h1><div class="eye">'+new Date().toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"})+'</div></div><p class="sub">Tout votre quotidien, au même endroit.</p><input id="gs" type="search" placeholder="🔍 Rechercher partout…" autocomplete="off"><div id="gres"></div><div id="hbody">';
   var rc=(S.recent||[]).map(function(id){return CATS.filter(function(c){return c.id===id})[0]}).filter(Boolean);
   if(!ord&&rc.length)h+='<h2>Récents</h2><div class="pcs">'+rc.map(function(c){return'<button class="pc" style="padding:9px 14px" data-a="open" data-v="'+c.id+'"><span style="font-size:18px;display:inline-flex">'+ic(c)+'</span>'+esc(c.n)+'</button>'}).join("")+'</div>';
-  h+=remHTML()+'<div class="h2r"><h2>Catégories</h2><div style="display:flex;gap:6px"><button class="btn g sm" data-a="cols">'+(S.cols===3?"2 colonnes":"3 colonnes")+'</button><button class="btn g sm" data-a="ord">'+(ord?"Terminé":"Réorganiser")+'</button></div></div><div class="grid c'+(S.cols===3?3:2)+(ord?" ord":"")+'">';
+  h+=remHTML()+'<div class="h2r"><h2>Catégories</h2><div style="display:flex;gap:6px"><button class="btn g sm" data-a="cols">'+(S.cols===3?"2 colonnes":"3 colonnes")+'</button><button class="btn g sm" data-a="ord">'+(ord?"Terminé":"Réorganiser")+'</button></div></div><div class="grid cols'+(S.cols===3?3:2)+(ord?" ord":"")+'">';
   CATS.forEach(function(c){
     var l=list(c.id),n=l.length,t=n+(n>1?" éléments":" élément");
     if(c.chk){var o=l.filter(function(x){return !x.fait}).length;t=o+" à faire"}

@@ -334,7 +334,7 @@ function render(){
 function homeHTML(){
   var h='<div class="hd"><h1>Mon foyer</h1><div class="eye">'+new Date().toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"})+'</div></div><p class="sub">Tout votre quotidien, au même endroit.</p><input id="gs" type="search" placeholder="🔍 Rechercher partout…" autocomplete="off"><div id="gres"></div><div id="hbody">';
   var rc=(S.recent||[]).map(function(id){return CATS.filter(function(c){return c.id===id})[0]}).filter(Boolean);
-  if(!ord&&rc.length)h+='<h2>Récents</h2><div class="pcs">'+rc.map(function(c){return'<button class="pc" style="padding:9px 14px" data-a="open" data-v="'+c.id+'"><span style="font-size:18px;display:inline-flex">'+ic(c)+'</span>'+esc(c.n)+'</button>'}).join("")+'</div>';
+  if(false&&!ord&&rc.length)h+='<h2>Récents</h2><div class="pcs">'+rc.map(function(c){return'<button class="pc" style="padding:9px 14px" data-a="open" data-v="'+c.id+'"><span style="font-size:18px;display:inline-flex">'+ic(c)+'</span>'+esc(c.n)+'</button>'}).join("")+'</div>';
   h+=remHTML()+'<div class="h2r"><h2>Catégories</h2><div style="display:flex;gap:6px"><button class="btn g sm" data-a="cols">'+(S.cols===3?"2 colonnes":"3 colonnes")+'</button><button class="btn g sm" data-a="ord">'+(ord?"Terminé":"Réorganiser")+'</button></div></div><div class="grid cols'+(S.cols===3?3:2)+(ord?" ord":"")+'">';
   CATS.forEach(function(c){
     var l=list(c.id),n=l.length,t=n+(n>1?" éléments":" élément");
@@ -651,7 +651,7 @@ function cyCal(st){var rs=cyRapSet(cq),off=(new Date(cyY,cyM,1).getDay()+6)%7,di
   var h='<div class="cal cy"><div class="cm"><button class="back" data-a="cym" data-v="-1">‹</button><b>'+MONTHS[cyM]+" "+cyY+'</b><button class="back" data-a="cym" data-v="1">›</button></div><div class="cw">'+["L","M","M","J","V","S","D"].map(function(x){return"<span>"+x+"</span>"}).join("")+'</div><div class="cg">';
   for(var i=0;i<off;i++)h+="<span></span>";
   for(var d=1;d<=dim;d++){var k=ds(cyY,cyM,d),kd=cyKind(dn(k),st);h+='<button class="cd'+(k===td?" td":"")+(kd==="p"?" kp":kd==="r"?" kr":"")+'" data-a="cyd" data-v="'+k+'"><span>'+d+'</span>'+(rs[k]?'<i class="rp">♥</i>':"")+'</button>'}
-  return h+'</div><div class="cl"><span><i class="k-cyp"></i>Règles</span><span><i class="k-cyr"></i>Prévision</span><span><i class="k-cyh">♥</i>Rapport</span></div></div>'}
+  return h+'</div><div class="cl"><span><i class="k-cyp"></i>Règles</span><span><i class="k-cyr"></i>Prévision</span></div></div>'}
 function cycHTML(c){
   var back='<button class="back" data-a="back">‹</button>',P=cyPeople();
   var h='<div class="top">'+back+'<h1>'+ic(c)+' Menstrues</h1><button class="btn" data-a="cyadd">+ Ajouter</button></div>';
@@ -664,7 +664,7 @@ function cycHTML(c){
   else{var dl2=st.next-st.tn;sm='<b>Prochaines règles prévues le '+fd(dfn(st.next))+'</b><span>'+(dl2>0?"dans "+dl2+" jour"+(dl2>1?"s":""):dl2===0?"aujourd’hui":"retard de "+(-dl2)+" jour"+(-dl2>1?"s":""))+' · cycle moyen '+st.avg+' j · durée moyenne '+st.avD+' j'+(st.cd>0&&st.cd<=60?' · jour '+st.cd+' du cycle':'')+'</span>'}
   h+='<div class="pban"><div>'+sm+'</div></div>';
   var open=st.last&&isNaN(dn(st.last.fin))&&st.tn-dn(st.last.debut)<=14;
-  h+='<div class="row" style="margin-top:0"><button class="btn" data-a="cystart">Début aujourd’hui</button>'+(open?'<button class="btn g" data-a="cyend">Fin aujourd’hui</button>':"")+'<button class="btn g" data-a="cyrt" data-v="'+today()+'">♥ Rapport aujourd’hui</button></div>';
+  h+='<div class="row" style="margin-top:0"><button class="btn" data-a="cystart">Début aujourd’hui</button>'+(open?'<button class="btn g" data-a="cyend">Fin aujourd’hui</button>':"")+'<button class="btn g" data-a="cyrt" data-v="'+today()+'" title="Rapport aujourd’hui" aria-label="Rapport aujourd’hui" style="flex:none;width:56px;font-size:20px">♥</button></div>';
   h+=cyCal(st);
   if(st.L.length){h+='<h2>Historique</h2>'+st.L.slice().reverse().map(function(x,i){var idx=st.L.length-1-i,prev=st.L[idx-1],len=prev?dn(x.debut)-dn(prev.debut):0,dur=!isNaN(dn(x.fin))?dn(x.fin)-dn(x.debut)+1:0;return'<div class="item" data-a="edit" data-v="'+x.id+'"><div class="t"><b>'+fd(x.debut)+(x.fin?" → "+fd(x.fin):" · en cours")+'</b><span>'+[dur?dur+" j":"",len?"cycle de "+len+" j":"",x.note].filter(Boolean).map(esc).join(" · ")+'</span></div></div>'}).join("")}
   var RP=list("cyrap").filter(function(x){return x.qui===cq}).sort(function(a,b){return a.date<b.date?1:-1});

@@ -457,7 +457,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.11.2";
+var VER="1.11.3";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="idees",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -649,7 +649,7 @@ function donneesHTML(){var h="";h+=verCard();
   h+='<h2>Apparence</h2><select id="th">'+[["auto","Automatique"],["light","Clair"],["dark","Sombre"]].map(function(o){return'<option value="'+o[0]+'"'+((S.theme||"auto")===o[0]?" selected":"")+'>'+o[1]+'</option>'}).join("")+'</select>';
   h+='<h2>Import / export</h2><p class="sub">Les données restent sur cet appareil. Exportez un fichier pour les sauvegarder ou les transférer ; l’import fusionne avec vos données.</p><div class="row" style="margin-top:0"><button class="btn" data-a="exp">Exporter (.json)</button><button class="btn g" data-a="imp">Importer (.json)</button></div><input type="file" id="imf" accept=".json,application/json" hidden>';
   h+='<h2>Tableur (CSV)</h2><select id="csc">'+CATS.filter(function(c){return c.id!=="couture"}).concat(SUB.filter(function(c){return c.f.length})).map(function(c){return'<option value="'+c.id+'">'+(c.h?"":c.i+" ")+(c.cn||c.n)+'</option>'}).join("")+'</select><div class="row"><button class="btn g" data-a="expc">Exporter CSV</button><button class="btn g" data-a="impc">Importer CSV</button></div><input type="file" id="imc" accept=".csv,text/csv" hidden>';
-  h+='<h2>Copier / coller</h2><p class="sub">Si le téléchargement est impossible, copiez ce texte ou collez-en un pour tout restaurer (remplace les données).</p><textarea id="bk">'+esc(JSON.stringify({members:S.members,data:S.data,cats:S.cats,hidden:S.hidden,order:S.order,minfo:S.minfo,others:S.others,views:S.views,man:S.man,names:S.names||{},groups:S.groups||[],tcols:S.tcols||{}}))+'</textarea>';
+  h+='<h2>Copier / coller</h2><p class="sub">Si le téléchargement est impossible, copiez ce texte ou collez-en un pour tout restaurer (remplace les données).</p><textarea id="bk" placeholder="Touchez « Copier » pour générer la sauvegarde, ou collez ici un texte à restaurer."></textarea>';
   h+='<div class="row"><button class="btn g" data-a="copy">Copier</button><button class="btn g" data-a="restore">Restaurer</button></div>';
   h+='<h2>Zone sensible</h2><button class="btn d" data-a="reset">Tout effacer</button>';
   h+='<p class="ver">Mon foyer · version '+VER+'</p>';
@@ -1056,7 +1056,7 @@ document.addEventListener("click",function(e){
   else if(a==="imp")$("#imf").click();
   else if(a==="expc"){var cc=cof($("#csc").value);dl(cc.id+".csv",csv(cc),"text/csv;charset=utf-8")}
   else if(a==="impc")$("#imc").click();
-  else if(a==="copy"){var t=$("#bk");t.select();try{navigator.clipboard.writeText(t.value)}catch(x){document.execCommand("copy")}el.textContent="Copié ✓"}
+  else if(a==="copy"){var t=$("#bk");t.value=JSON.stringify({members:S.members,data:S.data,cats:S.cats,hidden:S.hidden,order:S.order,minfo:S.minfo,others:S.others,views:S.views,man:S.man,names:S.names||{},groups:S.groups||[],tcols:S.tcols||{}});t.select();try{navigator.clipboard.writeText(t.value)}catch(x){document.execCommand("copy")}el.textContent="Copié ✓"}
   else if(a==="restore"){
     try{var o=JSON.parse($("#bk").value);if(!o.data)throw 0;if(confirm("Remplacer les données actuelles ?")){S.members=o.members||[];S.data=o.data;S.cats=o.cats||[];S.hidden=o.hidden||[];S.order=o.order||[];S.minfo=o.minfo||{};S.others=o.others||[];S.views=o.views||{};S.man=o.man||{};S.names=o.names||{};S.groups=o.groups||[];S.tcols=o.tcols||{};build();save();render();alert("Données restaurées.")}}catch(x){alert("Texte de sauvegarde invalide.")}
   }

@@ -394,6 +394,14 @@ body[data-tc="4"] .ig .item{padding:8px;min-height:70px}body[data-tc="4"] .ig .i
 .pgal{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:4px 0 12px;padding-bottom:4px;touch-action:pan-x pan-y}.pgal img{flex:none;width:82%;max-height:260px;object-fit:cover;border-radius:20px;scroll-snap-align:center}
 .dcard{background:var(--card);border:1px solid var(--bd);border-radius:20px;margin:8px 0}.dr{display:flex;gap:12px;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--bd)}.dr:last-child{border:0}
 .dr span{color:var(--mu);font-size:14px;flex:none}.dr b{text-align:right;font-size:16px;min-width:0;overflow-wrap:anywhere}.dr b.pre{white-space:pre-wrap;text-align:left}
+/* fenêtres stables : aucun mouvement latéral */
+html,body{width:100%;max-width:100%;overflow-x:hidden}
+body.mo{overflow:hidden;overscroll-behavior:none}body.mo #main{overflow:hidden}
+#modal{overflow:hidden;overscroll-behavior:none;touch-action:none;max-width:100vw}
+.sheet{overflow-x:hidden;touch-action:pan-y;box-sizing:border-box;max-width:min(560px,100vw)}
+.sheet *{max-width:100%;box-sizing:border-box}
+.sheet input,.sheet select,.sheet textarea{min-width:0}
+.sheet input[type=date],.sheet input[type=time]{-webkit-appearance:none;appearance:none;min-height:46px}
 </style>
 </head>
 <body>
@@ -446,7 +454,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.10.0";
+var VER="1.11.0";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="idees",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -904,6 +912,7 @@ function openForm(id,g0,pre){
   var h='<h1 style="font-size:22px">'+(id?"Modifier":"Ajouter")+'</h1>';
   c.f.forEach(function(f){
     var k=f[0],v=it[k]||"",ty=f[2];
+    if(k==="fait"&&c.chk){h+='<input type="hidden" data-k="fait" value="'+esc(it.fait||"")+'">';return}
     if(ty==="ap"||ty==="apd"){h+='<div class="ap" style="display:'+(it.rub==="Appareils électriques"?"block":"none")+'"><label>'+f[1]+'</label><input data-k="'+k+'" type="'+(ty==="apd"?"date":"text")+'" value="'+esc(v)+'"></div>';return}
     if(c.id==="tailles"&&ty==="member"&&tmem&&tmem!=="__other"){h+='<input type="hidden" data-k="membre" value="'+esc(it.membre||tmem)+'">';return}
     h+=ty==="ms"?'<div class="ms" style="display:'+(it.article==="Mensurations"?"block":"none")+'"><label>'+f[1]+'</label>':'<label>'+f[1]+'</label>';
@@ -923,8 +932,8 @@ function openForm(id,g0,pre){
   });
   h+='<div class="row">'+(id?'<button class="btn d" data-a="del" data-v="'+id+'">Supprimer</button>':"")+'<button class="btn g" data-a="close">Annuler</button><button class="btn" data-a="save" data-v="'+(id||"")+'">Enregistrer</button></div>';
   $("#sheet").innerHTML=h;$("#modal").className="open";
-  if(!id){var f1=document.querySelector("#sheet [data-k]");if(f1&&f1.tagName==="INPUT"&&/^(text|number|tel|)$/.test(f1.type)&&!f1.value)f1.focus()}
 }
+(function(){var m=$("#modal");if(!m||!window.MutationObserver)return;new MutationObserver(function(){document.body.classList.toggle("mo",m.className==="open")}).observe(m,{attributes:true,attributeFilter:["class"]})})();
 function closeForm(){$("#modal").className=""}
 document.addEventListener("click",function(e){
   if(e.target.id==="modal"){closeForm();return}
@@ -958,7 +967,7 @@ document.addEventListener("click",function(e){
   else if(a==="remop"){var rr2=REM[+v];if(rr2&&rr2.c&&cof(rr2.c)){closeForm();tab="home";cat=rr2.c;q="";tmem=null;mtab="tailles";gp=null;jg=null;jp=null;ordc=false;var rx2=list(rr2.c).filter(function(x){return x.id===rr2.x})[0];if(cat==="tailles"&&rx2)tmem=S.members.indexOf(rx2.membre)>-1?rx2.membre:"__other";render();if(rx2)openForm(rx2.id)}}
   else if(a==="addch"){$("#sheet").innerHTML='<h1 style="font-size:22px">Ajouter</h1><div class="row" style="flex-direction:column"><button class="btn" data-a="addrdv" data-v="'+(calSel||"")+'">📅 Un rendez-vous</button><button class="btn g" data-a="addcal" data-v="'+(calSel||"")+'">🗓️ Un événement (vacances, fête…)</button><button class="btn g" data-a="close">Annuler</button></div>';$("#modal").className="open"}
   else if(a==="addrdv"){cat="rdv";openForm();var qr=document.querySelector('#sheet [data-k=quand]');if(qr&&v)qr.value=v+"T09:00"}
-  else if(a==="rncat"){var rc0=CATS.filter(function(x){return x.id===v})[0];if(!rc0)return;rnId=v;$("#sheet").innerHTML='<h1 style="font-size:22px">Renommer la tuile</h1><label>Nouveau nom</label><input id="rnN" maxlength="30" value="'+esc(rc0.n)+'"><div class="row" style="flex-direction:column"><button class="btn" data-a="rnsave">Enregistrer</button>'+(S.names&&S.names[v]?'<button class="btn g" data-a="rnreset">Rétablir « '+esc(rc0.n0)+' »</button>':'')+'<button class="btn g" data-a="close">Annuler</button></div>';$("#modal").className="open";var ri=$("#rnN");ri.focus();ri.select()}
+  else if(a==="rncat"){var rc0=CATS.filter(function(x){return x.id===v})[0];if(!rc0)return;rnId=v;$("#sheet").innerHTML='<h1 style="font-size:22px">Renommer la tuile</h1><label>Nouveau nom</label><input id="rnN" maxlength="30" value="'+esc(rc0.n)+'"><div class="row" style="flex-direction:column"><button class="btn" data-a="rnsave">Enregistrer</button>'+(S.names&&S.names[v]?'<button class="btn g" data-a="rnreset">Rétablir « '+esc(rc0.n0)+' »</button>':'')+'<button class="btn g" data-a="close">Annuler</button></div>';$("#modal").className="open";}
   else if(a==="rnsave"||a==="rnreset"){var rc1=CATS.filter(function(x){return x.id===rnId})[0];if(rc1){S.names=S.names||{};var nv=a==="rnsave"?$("#rnN").value.trim():"";if(!nv||nv===rc1.n0)delete S.names[rnId];else S.names[rnId]=nv;save();build()}closeForm();rr()}
   else if(a==="colsset"){S.cols=+v===3?3:2;save();rr()}
   else if(a==="cols"){S.cols=S.cols===3?2:3;save();rr()}
@@ -1060,7 +1069,7 @@ document.addEventListener("change",function(e){var t=e.target;if(t.classList&&t.
 document.addEventListener("input",function(e){if(e.target.dataset&&e.target.dataset.cn){var L=list("cou_ref"),x=L[0]||(L[0]={id:"notes"});x.txt=e.target.value;save()}});
 document.addEventListener("change",function(e){if(e.target.id==="th"){S.theme=e.target.value;save();theme()}});
 document.addEventListener("change",function(e){var t=e.target;if(t.dataset&&t.dataset.k==="rub"&&t.closest&&t.closest("#sheet"))document.querySelectorAll("#sheet .ap").forEach(function(el){el.style.display=t.value==="Appareils électriques"?"block":"none"})});
-document.addEventListener("focusin",function(e){var t=e.target;if(t.closest&&t.closest("#sheet")&&/INPUT|TEXTAREA|SELECT/.test(t.tagName))setTimeout(function(){try{t.scrollIntoView({block:"center",behavior:"smooth"})}catch(x){}},320)});
+document.addEventListener("focusin",function(e){var t=e.target;if(t.closest&&t.closest("#sheet")&&/INPUT|TEXTAREA|SELECT/.test(t.tagName))setTimeout(function(){try{var sh=$("#sheet"),r=t.getBoundingClientRect(),sr=sh.getBoundingClientRect();sh.scrollTop+=(r.top+r.height/2)-(sr.top+Math.min(sr.height,innerHeight*.45)/2);window.scrollTo(0,0)}catch(x){}},320)});
 document.addEventListener("change",function(e){var t=e.target;if(t.classList&&t.classList.contains("gsel")){var mn=t.dataset.n;S.minfo[mn]=S.minfo[mn]||{};if(t.value)S.minfo[mn].grp=t.value;else delete S.minfo[mn].grp;save();return}});
 document.addEventListener("change",function(e){var t=e.target;if(t.classList&&t.classList.contains("nw")&&t.value==="__new"){var p=prompt(t.dataset.p);p=p&&p.trim();if(p){var o=document.createElement("option");o.textContent=p;t.insertBefore(o,t.lastElementChild);t.value=p;if(t.dataset.who&&people().indexOf(p)<0){S.others.push(p);save()}}else t.value=""}else if(t.dataset&&t.dataset.k==="membre"&&$("#art")){var a=$("#art"),v=a.value;if(v==="__new")v="";a.innerHTML=opts(artList(gen(t.value)),v,"➕ Autre article…");a.value=v;tms(v)}else if(t.id==="art")tms(t.value)});
 function tms(v){document.querySelectorAll("#sheet .ms").forEach(function(d){d.style.display=v==="Mensurations"?"block":"none"})}

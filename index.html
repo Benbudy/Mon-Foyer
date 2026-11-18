@@ -401,6 +401,10 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 .sheet *{max-width:100%;box-sizing:border-box}
 .sheet input,.sheet select,.sheet textarea{min-width:0}
 .sheet input[type=date],.sheet input[type=time]{-webkit-appearance:none;appearance:none;min-height:46px}
+/* fluidité : pas d'animation d'entrée en cascade ni de flou coûteux */
+.tile,.item,.gc,.mt{animation:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+#modal{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.sheet{animation-duration:.18s}
 </style>
 </head>
 <body>
@@ -453,7 +457,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.11.1";
+var VER="1.11.2";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="idees",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -617,7 +621,7 @@ function itemsHTML(){
   var gr=!only&&!s&&vw(c.id,dv(c.id))==="grid",wr=function(a){var t=a.map(row).join("");return gr?'<div class="ig">'+t+'</div>':t};
   var row=function(x){
     var sub=c.sf?esc(c.sf(x)):c.s.map(function(k){return x[k]}).filter(Boolean).map(fd).map(esc).join(" · ");
-    return'<div class="item'+(x.fait?" done":"")+(ordc?" ro":"")+'"'+(gr?' style="--h:'+hue(x[c.g]||x[c.t])+'"':"")+(ordc?"":' data-a="edit" data-v="'+x.id+'"')+'>'+(c.chk&&!x.nock?'<button class="ck" data-a="tog" data-v="'+x.id+'">'+(x.fait?"✓":"")+'</button>':"")+(phs(x)[0]?'<img class="th" src="'+phs(x)[0]+'">':"")+'<div class="t"><b>'+esc(x[c.t]||"Sans titre")+'</b>'+(sub?'<span>'+sub+'</span>':"")+'</div>'+(c.id==="maison"&&!ordc?'<button class="hq" data-a="hquick" data-v="'+x.id+'" title="Noter aujourd’hui dans l’historique">↻ Fait</button>':"")+memAv(c,x)+(ordc?'<span class="mvi"><button data-a="imv" data-v="'+x.id+'|-1">'+(gr?"‹":"▲")+'</button><button data-a="imv" data-v="'+x.id+'|1">'+(gr?"›":"▼")+'</button></span>':"")+'</div>';
+    return'<div class="item'+(x.fait?" done":"")+(ordc?" ro":"")+'"'+(gr?' style="--h:'+hue(x[c.g]||x[c.t])+'"':"")+(ordc?"":' data-a="edit" data-v="'+x.id+'"')+'>'+(c.chk&&!x.nock?'<button class="ck" data-a="tog" data-v="'+x.id+'">'+(x.fait?"✓":"")+'</button>':"")+(phs(x)[0]?'<img class="th" src="'+phs(x)[0]+'">':"")+'<div class="t"><b>'+esc(x[c.t]||"Sans titre")+'</b>'+(sub?'<span>'+sub+'</span>':"")+'</div>'+(c.id==="maison"&&!ordc&&!x.nock?'<button class="hq" data-a="hquick" data-v="'+x.id+'" title="Noter aujourd’hui dans l’historique">↻ Fait</button>':"")+memAv(c,x)+(ordc?'<span class="mvi"><button data-a="imv" data-v="'+x.id+'|-1">'+(gr?"‹":"▲")+'</button><button data-a="imv" data-v="'+x.id+'|1">'+(gr?"›":"▼")+'</button></span>':"")+'</div>';
 };
   if(only)return wr(r);
   if(!c.g)return wr(r);
@@ -664,7 +668,11 @@ function dl(n,t,m){var a=document.createElement("a");a.href=URL.createObjectURL(
 function groups(c){var s={};list(c.id).forEach(function(x){if(x[c.g])s[x[c.g]]=1});return Object.keys(s).sort()}
 function csv(c){var F=c.f.filter(function(f){return f[2]!=="photo"&&f[2]!=="hist"}),q=function(v){return'"'+String(v||"").replace(/"/g,'""')+'"'};return"\ufeff"+[F.map(function(f){return q(f[1])})].concat(list(c.id).map(function(x){return F.map(function(f){return q(x[f[0]])})})).map(function(r){return r.join(";")}).join("\r\n")}
 function pcsv(t){t=t.replace(/^\ufeff/,"");var l=t.split("\n")[0],sep=(l.match(/;/g)||[]).length>=(l.match(/,/g)||[]).length?";":",",R=[],r=[],v="",qt=false;for(var i=0;i<t.length;i++){var ch=t[i];if(qt){if(ch=='"'){if(t[i+1]=='"'){v+='"';i++}else qt=false}else v+=ch}else if(ch=='"')qt=true;else if(ch===sep){r.push(v);v=""}else if(ch=="\n"||ch=="\r"){if(ch=="\r"&&t[i+1]=="\n")i++;r.push(v);R.push(r);r=[];v=""}else v+=ch}if(v||r.length){r.push(v);R.push(r)}return R}
-function fit(){var bs=document.querySelectorAll(".tile b"),z=999;bs.forEach(function(b){var w=b.clientWidth;if(!w)return;var s=document.createElement("span"),m=0,tx=b.textContent;s.style.cssText="position:absolute;visibility:hidden;white-space:nowrap;font-weight:800;font-size:100px;letter-spacing:-.035em;font-family:"+getComputedStyle(b).fontFamily;s.textContent=tx;b.appendChild(s);m=s.offsetWidth;b.removeChild(s);if(m)z=Math.min(z,w/m*100)});if(z<999)bs.forEach(function(b){b.style.fontSize=Math.max(10,Math.min(z,24))+"px"})}
+var FM={},FS=null;
+function fit(){var bs=document.querySelectorAll(".tile b");if(!bs.length)return;var z=999,ws=[],i;for(i=0;i<bs.length;i++)ws.push(bs[i].clientWidth);
+  if(!FS){FS=document.createElement("span");FS.style.cssText="position:absolute;left:-9999px;top:0;visibility:hidden;white-space:nowrap;font-weight:800;font-size:100px;letter-spacing:-.035em;font-family:"+getComputedStyle(bs[0]).fontFamily;document.body.appendChild(FS)}
+  for(i=0;i<bs.length;i++){var w=ws[i];if(!w)continue;var tx=bs[i].textContent,m=FM[tx];if(m===undefined){FS.textContent=tx;m=FM[tx]=FS.offsetWidth}if(m)z=Math.min(z,w/m*100)}
+  if(z<999){var f=Math.max(10,Math.min(z,24))+"px";for(i=0;i<bs.length;i++)bs[i].style.fontSize=f}}
 var ROOMS=["Salon","Cuisine","Chambre","Chambre enfant","Salle de bain","WC","Entrée","Bureau","Buanderie","Garage","Cave","Jardin"];
 var ART={"Fille":["Chaussures","Haut","Bas","Pantalon","Robe / Jupe","Pull","Sous-vêtements","Soutien-gorge","Doigts (bague)","Manteau","Chaussettes / Collants","Pyjama","Bonnet / Casquette","Gants"],"Garçon":["Pantalon","Pull","Chemise","T-shirt","Chaussures","Boxer","Chaussettes","Manteau / Veste","Pyjama","Ceinture","Bonnet / Casquette","Gants"]};
 function gen(n){var m=S.minfo[n];return m&&m.g==="F"?"Fille":m&&m.g==="M"?"Garçon":""}
@@ -946,7 +954,7 @@ document.addEventListener("click",function(e){
   else if(a==="ord"){ord=!ord;render()}
   else if(a==="stab"){stab=v;render()}
   else if(a==="sacc"){sacc[v]=!sacc[v];rr()}
-  else if(a==="upd"){var um=$("#updmsg");um.textContent="Recherche d’une nouvelle version…";fetch(location.pathname+"?v="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(t){var m=/var VER="([^"]+)"/.exec(t);um.textContent=m&&m[1]!==VER?"Version "+m[1]+" trouvée, mise à jour…":"Vous avez la dernière version. Rechargement…";return clearSW()}).then(function(){setTimeout(function(){location.href=location.pathname+"?u="+Date.now()},800)}).catch(function(){um.textContent="Impossible de vérifier la mise à jour (hors connexion ?)."})}
+  else if(a==="upd"){var um=$("#updmsg");um.textContent="Recherche d’une nouvelle version…";fetch(location.pathname+"?v="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(t){var m=/var VER="([^"]+)"/.exec(t);um.textContent=m&&m[1]!==VER?"Version "+m[1]+" trouvée, mise à jour…":"Vous avez la dernière version. Rechargement…";return clearSW()}).then(function(){setTimeout(function(){location.href=location.pathname+"?u="+Date.now()},250)}).catch(function(){um.textContent="Impossible de vérifier la mise à jour (hors connexion ?)."})}
   else if(a==="expr")dl("recettes-"+today()+".json",JSON.stringify({app:"mon-foyer-recettes",recettes:list("recettes")},null,1),"application/json");
   else if(a==="impr")$("#imr").click();
   else if(a==="cyp"){cq=v;render()}

@@ -385,6 +385,7 @@ body[data-tc="3"] .mt{padding:14px 6px}body[data-tc="3"] .mt b{font-size:14px}bo
 body[data-tc="4"] .mt{padding:10px 3px;border-radius:16px}body[data-tc="4"] .mt b{font-size:12px;word-break:break-word}body[data-tc="4"] .mt small{font-size:10px}body[data-tc="4"] .mt .av{transform:scale(.7);margin:-6px 0 -2px}
 body[data-tc="4"] .ig .item{padding:8px;min-height:70px}body[data-tc="4"] .ig .item b{font-size:12px}body[data-tc="3"] .ig .item b{font-size:14px}
 /* photos multiples & fiches */
+.gocc{margin:10px 0 0}.gocc summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;font-weight:700;font-size:14px;color:var(--tx);padding:4px 2px;margin-bottom:6px}.gocc summary::-webkit-details-marker{display:none}.gocc summary::before{content:"▸";color:var(--mu);transition:transform .15s}.gocc[open] summary::before{transform:rotate(90deg)}.gocc summary em{font-style:normal;font-weight:600;font-size:12px;color:var(--mu);background:var(--ac2);border-radius:10px;padding:1px 8px}
 .phadd small{font-weight:500;opacity:.75;font-size:12px}.phadd.drag{background:var(--ac2)}
 .phs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}.pht{position:relative;width:92px;height:92px}.pht img{width:100%;height:100%;object-fit:cover;border-radius:14px;margin:0}
 .pht .mx{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;border:0;font-size:16px;line-height:1;padding:0}
@@ -455,7 +456,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.15.3";
+var VER="1.15.4";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="idees",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -785,7 +786,8 @@ function groupsHTML(){var h='<p class="sub">Créez un groupe (filleuls, amis, fa
 function othersHTML(){var h='<p class="sub">Filleuls, amis, famille… pour les cadeaux, les anniversaires et les jeux.</p>';
   h+=S.others.map(function(n,i){var mi=S.minfo[n]||{};return'<div class="mrow"><button class="avb" data-a="mph3" data-v="'+esc(n)+'" title="Changer la photo">'+avp(n,46)+'</button><b>'+esc(n)+'</b><button class="mx" data-a="delo" data-v="'+i+'" title="Supprimer">×</button>'+((S.groups||[]).length?'<div class="mr2"><select class="gsel" data-n="'+esc(n)+'"><option value="">Sans groupe</option>'+S.groups.map(function(g){return'<option value="'+g.id+'"'+(mi.grp===g.id?" selected":"")+'>'+esc(g.n)+'</option>'}).join("")+'</select></div>':"")+'<div class="mr2"><input class="mo" data-n="'+esc(n)+'" placeholder="Lien (filleul, ami…)" value="'+esc(mi.rel||"")+'"><input type="date" class="mb" data-n="'+esc(n)+'" value="'+esc(mi.b||"")+'" title="Anniversaire"></div></div>'}).join("");
   return h+'<div class="mnew"><div class="mf"><input id="on" placeholder="Prénom"><input id="orl" placeholder="Lien (filleul, ami, cousin…)"><input id="ob" type="date" title="Date d’anniversaire">'+((S.groups||[]).length?'<select id="og"><option value="">Sans groupe</option>'+S.groups.map(function(g){return'<option value="'+g.id+'">'+esc(g.n)+'</option>'}).join("")+'</select>':"")+'<small class="sub" style="margin:0">Date d’anniversaire (facultatif)</small></div><button class="btn" style="flex:none" data-a="addo">Ajouter</button></div>'}
-function giftRow(x,idea){var sub=[x.statut==="Acheté"?"Acheté":"",x.occ,x.quand?fd(x.quand):x.annee||"",x.prix].filter(Boolean).join(" · ");return'<div class="item" data-a="edit" data-v="'+x.id+'">'+(phs(x)[0]?'<img class="gimg" src="'+phs(x)[0]+'" alt="">':"")+'<div class="t"><b>'+esc(x.idee||"Sans titre")+'</b>'+(sub?'<span>'+esc(sub)+'</span>':"")+'</div>'+(idea?'<button class="btn g sm" data-a="gift" data-v="'+x.id+'">Offert</button>':"")+'</div>'}
+function giftRow(x,idea){var sub=[x.statut==="Acheté"?"Acheté":"",x.quand?fd(x.quand):x.annee||"",x.prix].filter(Boolean).join(" · ");return'<div class="item" data-a="edit" data-v="'+x.id+'">'+(phs(x)[0]?'<img class="gimg" src="'+phs(x)[0]+'" alt="">':"")+'<div class="t"><b>'+esc(x.idee||"Sans titre")+'</b>'+(sub?'<span>'+esc(sub)+'</span>':"")+'</div>'+(idea?'<button class="btn g sm" data-a="gift" data-v="'+x.id+'">Offert</button>':"")+'</div>'}
+function gGroups(arr,idea){var K=[],M={};arr.forEach(function(x){var o=x.occ||"Sans occasion";if(!M[o]){M[o]=[];K.push(o)}M[o].push(x)});return K.map(function(o){return'<details class="gocc" open><summary>'+esc(o)+' <em>'+M[o].length+'</em></summary>'+M[o].map(function(x){return giftRow(x,idea)}).join("")+'</details>'}).join("")}
 function cadHTML(c){
   var back='<button class="back" data-a="back">‹</button>',L=list("cadeaux"),h;
   if(!gp){
@@ -806,9 +808,9 @@ function cadHTML(c){
   h+='<div class="tabs"><button class="tb'+(gtab==="idees"?" on":"")+'" data-a="gtab" data-v="idees">Idées ('+ide.length+')</button><button class="tb'+(gtab==="offerts"?" on":"")+'" data-a="gtab" data-v="offerts">Déjà offerts ('+off.length+')</button></div>';
   if(gtab==="offerts"){
     var srt=off.slice().sort(function(a,b){var p1=a.quand||String(a.annee||""),p2=b.quand||String(b.annee||"");return p1<p2?1:p1>p2?-1:0}),yr=null;
-    srt.forEach(function(x){var y=x.quand?x.quand.slice(0,4):(x.annee?String(x.annee):"Sans date");if(y!==yr){yr=y;h+='<div class="gh" style="cursor:default"><span>'+y+'</span></div>'}h+=giftRow(x,false)});
+    var YR=[],YM={};srt.forEach(function(x){var y=x.quand?x.quand.slice(0,4):(x.annee?String(x.annee):"Sans date");if(!YM[y]){YM[y]=[];YR.push(y)}YM[y].push(x)});YR.forEach(function(y){h+='<div class="gh" style="cursor:default"><span>'+y+'</span></div>'+gGroups(YM[y],false)});
     if(!srt.length)h+='<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Aucun cadeau offert pour l’instant.<br>Touchez + pour en ajouter.</p></div>'}
-  else{h+=ide.map(function(x){return giftRow(x,true)}).join("");if(!ide.length)h+='<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Aucune idée pour l’instant.</p></div>'}
+  else{h+=gGroups(ide,true);if(!ide.length)h+='<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Aucune idée pour l’instant.</p></div>'}
   return h}
 var TR='<svg class="tr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>';
 var JSUG=[["Belote","Le plus de points gagne",""],["Tarot","Le plus de points gagne",""],["Scrabble","Le plus de points gagne",""],["Yams","Le plus de points gagne",""],["Mölkky","Le plus de points gagne",50],["Pétanque","Le plus de points gagne",13],["Skyjo","Le moins de points gagne",100],["6 qui prend","Le moins de points gagne",66],["Uno","Le moins de points gagne",""],["Rami","Le moins de points gagne",""]];
@@ -938,7 +940,7 @@ function openForm(id,g0,pre){
       h+='<select data-k="'+k+'"><option value=""></option>'+o.map(function(x){return'<option'+(x===v?" selected":"")+'>'+esc(x)+'</option>'}).join("")+'</select>';
     }else h+='<input data-k="'+k+'" type="'+ty+'" value="'+esc(v)+'"'+(ty==="number"?' step="any" inputmode="decimal"':"")+(k===c.g?' list="gl" placeholder="Choisir ou créer…"':"")+'>'+(c.id==="cadeaux"&&k==="quand"?'<button type="button" class="btn g sm" style="margin-top:6px" data-a="clrd">Effacer la date</button>':"")+(k===c.g?'<datalist id="gl">'+groups(c).map(function(g){return'<option value="'+esc(g)+'">'}).join("")+'</datalist>':"");
   });
-  h+='<div class="row">'+(id?'<button class="btn d" data-a="del" data-v="'+id+'">Supprimer</button>':"")+'<button class="btn g" data-a="close">Annuler</button><button class="btn" data-a="save" data-v="'+(id||"")+'">Enregistrer</button></div>'+(!id&&c.id==="cadeaux"?'<div class="row"><button class="btn g" style="width:100%" data-a="saveadd">Enregistrer et ajouter un autre cadeau</button></div>':"");
+  h+='<div class="row">'+(id?'<button class="btn d" data-a="del" data-v="'+id+'">Supprimer</button>':"")+'<button class="btn g" data-a="close">Annuler</button><button class="btn" data-a="save" data-v="'+(id||"")+'">Enregistrer</button></div>'+(c.id==="cadeaux"?'<div class="row"><button class="btn g" style="width:100%" data-a="saveadd">Enregistrer et ajouter un autre cadeau</button></div>':"");
   $("#sheet").innerHTML=h;$("#modal").className="open";
 }
 (function(){var m=$("#modal");if(!m||!window.MutationObserver)return;new MutationObserver(function(){document.body.classList.toggle("mo",m.className==="open")}).observe(m,{attributes:true,attributeFilter:["class"]})})();

@@ -137,7 +137,7 @@ i.k-rdv{background:#e5873b!important}i.k-an{background:#d9487a!important}i.k-vo{
 .mt:active{transform:scale(.97)}.mt .av{margin:0 0 6px}.mt b{font-size:16px}.mt small{color:var(--mu);font-size:12px}
 .top .av{margin:0}
 .tabs{display:flex;gap:6px;overflow-x:auto;margin:6px -16px 12px;padding:0 16px 4px}
-.shd{position:sticky;top:0;z-index:5;margin:-20px -16px 12px;padding:20px 16px 8px;background:var(--bg);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}.shd h1{margin-top:0}.shd .tabs{margin:6px -16px 0;padding-bottom:0}
+.shd{position:sticky;top:-20px;z-index:5;margin:-20px -16px 12px;padding:20px 16px 8px;background:var(--bg);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}.shd h1{margin-top:0}.shd .tabs{margin:6px -16px 0;padding-bottom:0}
 .tb{flex:none;border:1px solid var(--bd);border-radius:20px;padding:8px 14px;background:var(--glass);color:var(--mu);font-weight:700;font-size:14px;font-family:inherit;cursor:pointer}.tb.on{background:var(--ac);color:#fff;border-color:var(--ac)}
 textarea.big{min-height:300px;font-family:inherit;font-size:16px;line-height:1.45;border-radius:16px}
 .sil{position:relative;width:100%;max-width:440px;margin:6px auto;aspect-ratio:300/480}
@@ -454,7 +454,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.14.0";
+var VER="1.14.1";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="idees",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}

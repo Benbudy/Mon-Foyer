@@ -137,7 +137,7 @@ i.k-rdv{background:#e5873b!important}i.k-an{background:#d9487a!important}i.k-vo{
 .mt:active{transform:scale(.97)}.mt .av{margin:0 0 6px}.mt b{font-size:16px}.mt small{color:var(--mu);font-size:12px}
 .top .av{margin:0}
 .tabs{display:flex;gap:6px;overflow-x:auto;margin:6px -16px 12px;padding:0 16px 4px}
-.shd{position:sticky;top:-20px;z-index:5;margin:-20px -16px 12px;padding:20px 16px 8px;background:var(--bg);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}.shd h1{margin-top:0}.shd>.sub{margin-bottom:0}.shd:has(>.hd){padding-bottom:6px;margin-bottom:6px}.shd .tabs{margin:6px -16px 0;padding-bottom:0}
+.shd{position:sticky;top:-20px;z-index:5;margin:-20px -16px 12px;padding:20px 16px 8px;background:var(--bg);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}.shd h1{margin-top:0}.shs{display:flex;align-items:center;justify-content:space-between;gap:10px}.shs h1{margin:0;font-size:24px}.shd.shs .tabs{margin:0;padding:0;overflow:visible;flex:none}.shs .tb{padding:8px 12px;font-size:14px}.shd>.sub{margin-bottom:0}.shd:has(>.hd){padding-bottom:6px;margin-bottom:6px}.shd .tabs{margin:6px -16px 0;padding-bottom:0}
 .tb{flex:none;border:1px solid var(--bd);border-radius:20px;padding:8px 14px;background:var(--glass);color:var(--mu);font-weight:700;font-size:14px;font-family:inherit;cursor:pointer}.tb.on{background:var(--ac);color:#fff;border-color:var(--ac)}
 textarea.big{min-height:300px;font-family:inherit;font-size:16px;line-height:1.45;border-radius:16px}
 .sil{position:relative;width:100%;max-width:440px;margin:6px auto;aspect-ratio:300/480}
@@ -387,6 +387,15 @@ body[data-tc="4"] .ig .item{padding:8px;min-height:70px}body[data-tc="4"] .ig .i
 /* photos multiples & fiches */
 .gocc{margin:10px 0 0}.gocc summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;font-weight:700;font-size:14px;color:var(--tx);padding:4px 2px;margin-bottom:6px}.gocc summary::-webkit-details-marker{display:none}.gocc summary::before{content:"▸";color:var(--mu);transition:transform .15s}.gocc[open] summary::before{transform:rotate(90deg)}.gocc summary em{font-style:normal;font-weight:600;font-size:12px;color:var(--mu);background:var(--ac2);border-radius:10px;padding:1px 8px}
 .gdet .pgal img{width:100%;max-height:68vh}.gdet .rph{width:100%;max-height:68vh;object-fit:cover}
+.addc{display:flex;flex-direction:column;gap:10px;background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:14px;margin-top:14px;box-shadow:var(--sh)}
+.addc h3{margin:0;font-size:15px;font-weight:800;color:var(--ac)}.addc small.sub{margin:0}
+.addc .ar{display:flex;align-items:center;gap:10px}.addc .ar input{flex:1;min-width:0}
+.addc .ar2{display:flex;gap:8px;align-items:flex-start}.addc .ar2 input,.addc .ar2 select{height:46px}.addc .fl{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}.addc .fl span{font-size:12px;color:var(--mu);font-weight:600}
+.addc .btn{width:100%;flex:none;padding:12px}
+.top .btn[aria-label="Ajouter"]{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 16px}
+.gh button{display:flex;align-items:center;justify-content:center;padding:0}.gh button svg{width:18px;height:18px}
+.av.ph0{display:flex;align-items:center;justify-content:center}
+.agy{font-style:normal;font-size:13px;font-weight:700;color:var(--mu);background:var(--ac2);border-radius:10px;padding:2px 10px}
 .phadd small{font-weight:500;opacity:.75;font-size:12px}.phadd.drag{background:var(--ac2)}
 .phs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}.pht{position:relative;width:92px;height:92px}.pht img{width:100%;height:100%;object-fit:cover;border-radius:14px;margin:0}
 .pht .mx{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;border:0;font-size:16px;line-height:1;padding:0}
@@ -457,7 +466,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.16.0";
+var VER="1.17.0";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="idees",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -517,7 +526,7 @@ function render(){document.body.setAttribute("data-tc",(S.tcols&&S.tcols[cat])||
 var LOGO='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="44" height="44" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2E7565"/><stop offset="1" stop-color="#143F36"/></linearGradient><radialGradient id="s" cx=".25" cy=".1" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient><linearGradient id="d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0C878"/><stop offset="1" stop-color="#D9A24A"/></linearGradient></defs><rect width="512" height="512" rx="118" fill="url(#g)"/><rect width="512" height="512" rx="118" fill="url(#s)"/><rect x="324" y="150" width="30" height="62" rx="4" fill="#FBF6EC"/><path d="M144 244 L256 150 L368 244 V376 Q368 392 352 392 H160 Q144 392 144 376 Z" fill="#FBF6EC"/><path d="M112 262 L256 138 L400 262" fill="none" stroke="#FBF6EC" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/><path d="M226 392 V326 a30 30 0 0 1 60 0 V392 Z" fill="url(#d)"/><circle cx="256" cy="232" r="17" fill="url(#d)"/></svg>';
 var REM=[],rnId=null,rcv=null,gsel=null;
 function homeHTML(){
-  var h='<div class="shd"><div class="hd"><div class="brand">'+LOGO+'<h1>Mon foyer</h1></div><div class="eye">'+new Date().toLocaleDateString("fr-FR",{weekday:"short",day:"numeric",month:"short"})+'</div></div><p class="sub" style="margin-top:8px">La Lammerais, à portée de main</p></div><input id="gs" type="search" placeholder="🔍 Rechercher partout…" autocomplete="off"><div id="gres"></div><div id="hbody">';
+  var h='<div class="shd"><div class="hd"><div class="brand">'+LOGO+'<h1>Mon foyer</h1></div><div class="eye">'+new Date().toLocaleDateString("fr-FR",{weekday:"short",day:"numeric",month:"short"})+'</div></div><p class="sub" style="margin-top:8px">'+esc((S.tagline||"").trim()||"La Lammerais, à portée de main")+'</p></div><input id="gs" type="search" placeholder="🔍 Rechercher partout…" autocomplete="off"><div id="gres"></div><div id="hbody">';
   h+=remHTML()+'<div class="grid cols'+(S.cols===3?3:2)+(ord?" ord":"")+'">';
   CATS.forEach(function(c){
     var l=list(c.id),n=l.length,t=n+(n>1?" éléments":" élément");
@@ -539,7 +548,7 @@ function tabsHTML(c){var par=c.par||c.id,T=par==="calendriers"?[{id:"calendriers
   return'<div class="tabs cts">'+T.map(function(t){var n=t.f&&t.f.length?list(t.id).length:0;return'<button class="tb'+(t.id===c.id?" on":"")+'" data-a="ctab" data-v="'+t.id+'">'+t.n+(n?" · "+n:"")+'</button>'}).join("")+'</div>'}
 function couHTML(c){
   var pc=cof(c.par);
-  var h='<div class="top"><button class="back" data-a="back">‹</button><h1>'+ic(pc)+' '+pc.n+'</h1>'+(c.f.length?mb()+'<button class="btn" data-a="'+(c.par==="calendriers"?"addch":"add")+'" aria-label="Ajouter">+</button>':"")+'</div>'+tabsHTML(c);
+  var h='<div class="top"><button class="back" data-a="back">‹</button><h1>'+ic(pc)+' '+pc.n+'</h1>'+(c.f.length?mb()+'<button class="btn" data-a="'+(c.par==="calendriers"?"addch":"add")+'" aria-label="Ajouter">'+PLUS+'</button>':"")+'</div>'+tabsHTML(c);
   if(c.id==="cou_ref")return h+refHTML();
   if(c.id==="cou_mes")return h+mesCouHTML();
   if(c.id==="cou_mer"){var rb=list("cou_mer").filter(function(x){return x.racheter==="Oui"});if(rb.length)h+='<div class="pban"><div><b>À racheter ('+rb.length+')</b><span>'+rb.map(function(x){return esc(x.nom)}).join(" · ")+'</span></div></div>'}
@@ -573,6 +582,7 @@ function cyDayHTML(k){
   if(pl&&pl.fin!==k&&dn(k)-dn(pl.debut)<=14)h+='<button class="btn g" data-a="cyde" data-v="'+k+'">Fin des règles ce jour</button>';
   return h+'<button class="btn g" data-a="close">Fermer</button></div>'}
 function phs(x){var v=x&&x.photo;if(!v)return[];if(v.charAt(0)==="["){try{return JSON.parse(v)}catch(e){return[]}}return[v]}
+var PLUS='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
 function phpack(a){return a.length>1?JSON.stringify(a):(a[0]||"")}
 function phthumbs(a){return a.map(function(d,i){return'<div class="pht"><img src="'+d+'" alt=""><button class="mx" data-a="phdel" data-v="'+i+'" aria-label="Retirer la photo">×</button></div>'}).join("")}
 function phgal(a){if(!a.length)return"";if(a.length===1)return'<img class="rph" src="'+a[0]+'" alt="">';return'<div class="pgal">'+a.map(function(d){return'<img src="'+d+'" alt="">'}).join("")+'</div>'}
@@ -600,7 +610,7 @@ function detHTML(c,x){var UN=["longueur","largeur","hauteur","epaisseur","profon
   return h+(c.id==="cadeaux"?'<button class="btn" data-a="redit" style="width:100%;margin-top:16px">Modifier</button>':"")+'</article>'}
 function catHTML(){
   var c=cof(cat);if(rcv&&hasDet(c.id))return recHTML(c);if(c.par)return couHTML(c);if(c.id==="tailles")return tailHTML(c);if(c.id==="cadeaux")return cadHTML(c);if(c.id==="jeux")return jeuxHTML(c);if(c.id==="cycle")return cycHTML(c);
-  var h=gpage(c)?'<div class="top"><button class="back" data-a="back">‹</button><h1>'+esc(gsel)+'</h1>'+mb()+'<button class="btn" data-a="addg" data-v="'+esc(gsel)+'" aria-label="Ajouter">+</button></div><p class="sub" style="margin:-6px 0 8px">'+ic(c)+' '+esc(c.n)+'</p>':'<div class="top"><button class="back" data-a="back">‹</button><h1>'+ic(c)+' '+c.n+'</h1>'+mb()+'<button class="btn" data-a="'+(c.id==="calendriers"?"addch":"add")+'" aria-label="Ajouter">+</button></div>';
+  var h=gpage(c)?'<div class="top"><button class="back" data-a="back">‹</button><h1>'+esc(gsel)+'</h1>'+mb()+'<button class="btn" data-a="addg" data-v="'+esc(gsel)+'" aria-label="Ajouter">'+PLUS+'</button></div><p class="sub" style="margin:-6px 0 8px">'+ic(c)+' '+esc(c.n)+'</p>':'<div class="top"><button class="back" data-a="back">‹</button><h1>'+ic(c)+' '+c.n+'</h1>'+mb()+'<button class="btn" data-a="'+(c.id==="calendriers"?"addch":"add")+'" aria-label="Ajouter">'+PLUS+'</button></div>';
   if(c.id==="calendriers")h+=tabsHTML(c);
   if(c.id==="calendriers")h+='<div id="cal">'+calHTML()+'</div><h2>Événements enregistrés</h2>';
   if(c.id==="piscine")h+=pisHTML();
@@ -627,15 +637,15 @@ function itemsHTML(){
   var ks=Object.keys(G).sort(function(a,b){return a==="Autres"?1:b==="Autres"?-1:c.fixg&&c.fixg.indexOf(a)>-1&&c.fixg.indexOf(b)>-1?c.fixg.indexOf(a)-c.fixg.indexOf(b):a.localeCompare(b,"fr")});
   if(ks.length===1&&ks[0]==="Autres")return wr(r);
   if(gr&&c.id!=="calendriers")return'<div class="mgrid">'+ks.map(function(k){return'<button class="mt gt" style="--h:'+hue(k)+'" data-a="tgg" data-v="'+esc(k)+'">'+(av(k,48)||avi(k,48))+'<b>'+esc(k)+'</b><small>'+G[k].length+(G[k].length>1?" éléments":" élément")+'</small></button>'}).join("")+'</div>';
-  if(gr){var op2=function(k){return s||openG[c.id+"|"+k]};return'<div class="mgrid">'+ks.map(function(k){return'<button class="mt gt'+(op2(k)?" on":"")+'" style="--h:'+hue(k)+'" data-a="tgg" data-v="'+esc(k)+'">'+(av(k,48)||avi(k,48))+'<b>'+esc(k)+'</b><small>'+G[k].length+(G[k].length>1?" éléments":" élément")+'</small></button>'}).join("")+'</div>'+ks.filter(op2).map(function(k){return'<div class="gh open" style="cursor:default"><span>'+esc(k)+'<em>'+G[k].length+'</em></span>'+(k!=="Autres"?'<button data-a="addg" data-v="'+esc(k)+'">+</button>':"")+'</div>'+(G[k].length?wr(G[k]):'<div class="eg">Aucun élément — touchez + pour en ajouter.</div>')}).join("")}
-  return ks.map(function(k){var op=s||(openG[c.id+"|"+k]===undefined?!!c.fixg:openG[c.id+"|"+k]);return'<div class="gh'+(op?" open":"")+'" data-a="tgg" data-v="'+esc(k)+'"><span><i class="cv">›</i>'+av(k,30)+esc(k)+'<em>'+G[k].length+'</em></span>'+(k!=="Autres"?'<button data-a="addg" data-v="'+esc(k)+'">+</button>':"")+'</div>'+(op?(G[k].length?wr(G[k]):'<div class="eg">Aucun élément — touchez + pour en ajouter.</div>'):"")}).join("");
+  if(gr){var op2=function(k){return s||openG[c.id+"|"+k]};return'<div class="mgrid">'+ks.map(function(k){return'<button class="mt gt'+(op2(k)?" on":"")+'" style="--h:'+hue(k)+'" data-a="tgg" data-v="'+esc(k)+'">'+(av(k,48)||avi(k,48))+'<b>'+esc(k)+'</b><small>'+G[k].length+(G[k].length>1?" éléments":" élément")+'</small></button>'}).join("")+'</div>'+ks.filter(op2).map(function(k){return'<div class="gh open" style="cursor:default"><span>'+esc(k)+'<em>'+G[k].length+'</em></span>'+(k!=="Autres"?'<button data-a="addg" data-v="'+esc(k)+'" aria-label="Ajouter">'+PLUS+'</button>':"")+'</div>'+(G[k].length?wr(G[k]):'<div class="eg">Aucun élément — touchez + pour en ajouter.</div>')}).join("")}
+  return ks.map(function(k){var op=s||(openG[c.id+"|"+k]===undefined?!!c.fixg:openG[c.id+"|"+k]);return'<div class="gh'+(op?" open":"")+'" data-a="tgg" data-v="'+esc(k)+'"><span><i class="cv">›</i>'+av(k,30)+esc(k)+'<em>'+G[k].length+'</em></span>'+(k!=="Autres"?'<button data-a="addg" data-v="'+esc(k)+'" aria-label="Ajouter">'+PLUS+'</button>':"")+'</div>'+(op?(G[k].length?wr(G[k]):'<div class="eg">Aucun élément — touchez + pour en ajouter.</div>'):"")}).join("");
 }
 function settingsHTML(){
-  return'<div class="shd"><h1>Réglages</h1>'+stabsHTML()+'</div>'+(stab==="donnees"?donneesHTML():catsHTML()+accHTML("m","Membres du foyer",S.members.length,membersHTML())+accHTML("g","Groupes de personnes",(S.groups||[]).length,groupsHTML())+accHTML("o","Autres personnes",S.others.length,othersHTML()))+'<input type="file" id="mpf" accept="image/*" hidden>';
+  return'<div class="shd shs"><h1>Réglages</h1>'+stabsHTML()+'</div>'+(stab==="donnees"?donneesHTML():catsHTML()+accHTML("m","Membres du foyer",S.members.length,membersHTML())+accHTML("g","Groupes de personnes",(S.groups||[]).length,groupsHTML())+accHTML("o","Autres personnes",S.others.length,othersHTML()))+'<input type="file" id="mpf" accept="image/*" hidden>';
 }
 function membersHTML(){var h="";
   h+=S.members.map(function(m,i){var mi=S.minfo[m]||{},g=mi.g||"";return'<div class="mrow"><button class="avb" data-a="mph2" data-v="'+i+'" title="Changer la photo">'+av(m,46)+'</button><b>'+esc(m)+'</b><button class="mx" data-a="delm" data-v="'+i+'" title="Supprimer">×</button><div class="mr2"><select class="gsel" data-n="'+esc(m)+'"><option value="">Genre ?</option><option value="F"'+(g==="F"?" selected":"")+'>Fille / Femme</option><option value="M"'+(g==="M"?" selected":"")+'>Garçon / Homme</option></select><input type="date" class="mb" data-n="'+esc(m)+'" value="'+esc(mi.b||"")+'" title="Anniversaire">'+(mi.p?'<button class="mx" data-a="mcr" data-v="'+i+'" title="Recadrer la photo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v14a2 2 0 0 0 2 2h14M2 6h14a2 2 0 0 1 2 2v14"/></svg></button>':"")+'</div>'+(g==="F"?'<label class="mcy"><input type="checkbox" class="mcyc" data-n="'+esc(m)+'"'+(mi.nc?"":" checked")+'> Suivi des règles (Menstrues)</label>':"")+'</div>'}).join("")||'<p class="sub">Aucun membre pour le moment.</p>';
-  h+='<div class="mnew"><button class="avb" data-a="mph" title="Ajouter une photo">'+(newPh?'<img class="av" style="width:48px;height:48px" src="'+newPh+'">':'<span class="av ph0" style="width:48px;height:48px"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span>')+'</button><div class="mf"><input id="nm" placeholder="Prénom"><select id="ng"><option value="">Genre ?</option><option value="F">Fille / Femme</option><option value="M">Garçon / Homme</option></select><input id="nb" type="date" title="Date d’anniversaire"><small class="sub" style="margin:0">Date d’anniversaire (facultatif)</small></div><button class="btn" style="flex:none" data-a="addm">Ajouter</button></div>';
+  h+='<div class="addc"><h3>Ajouter un membre du foyer</h3><div class="ar"><button class="avb" data-a="mph" title="Ajouter une photo">'+(newPh?'<img class="av" style="width:48px;height:48px" src="'+newPh+'">':'<span class="av ph0" style="width:48px;height:48px"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span>')+'</button><input id="nm" placeholder="Prénom"></div><div class="ar2"><label class="fl"><span>Genre</span><select id="ng"><option value="">Choisir…</option><option value="F">Fille / Femme</option><option value="M">Garçon / Homme</option></select></label><label class="fl"><span>Anniversaire (facultatif)</span><input id="nb" type="date"></label></div><button class="btn" data-a="addm">Ajouter ce membre</button></div>';
   return h;
 }
 function catsHTML(){
@@ -644,6 +654,7 @@ function catsHTML(){
   if(S.hidden.length){h+='<h2>Catégories retirées</h2>';S.hidden.forEach(function(id){var b=BASE.filter(function(c){return c.id===id})[0];if(b)h+='<div class="mrow cr"><span class="ci">'+ic(b)+'</span><b>'+esc(b.n)+'</b><button class="btn g sm" data-a="restcat" data-v="'+id+'">↺ Restaurer</button></div>'})}
   return h+'<div class="row" style="margin-top:14px"><button class="btn" data-a="newcat">+ Nouvelle catégorie</button></div>'}
 function donneesHTML(){var h="";h+=verCard();
+  h+='<h2>Phrase d’accueil</h2><input id="tgl" maxlength="80" placeholder="La Lammerais, à portée de main" value="'+esc(S.tagline||"")+'"><p class="sub">Affichée sous « Mon foyer » sur l’accueil. Laissez vide pour la phrase par défaut.</p>';
   h+='<h2>Apparence</h2><select id="th">'+[["auto","Automatique"],["light","Clair"],["dark","Sombre"]].map(function(o){return'<option value="'+o[0]+'"'+((S.theme||"auto")===o[0]?" selected":"")+'>'+o[1]+'</option>'}).join("")+'</select>';
   h+='<h2>Import / export</h2><p class="sub">Les données restent sur cet appareil. Exportez un fichier pour les sauvegarder ou les transférer ; l’import fusionne avec vos données.</p><div class="row" style="margin-top:0"><button class="btn" data-a="exp">Exporter (.json)</button><button class="btn g" data-a="imp">Importer (.json)</button></div><input type="file" id="imf" accept=".json,application/json" hidden>';
   h+='<h2>Tableur (CSV)</h2><select id="csc">'+CATS.filter(function(c){return c.id!=="couture"}).concat(SUB.filter(function(c){return c.f.length})).map(function(c){return'<option value="'+c.id+'">'+(c.h?"":c.i+" ")+(c.cn||c.n)+'</option>'}).join("")+'</select><div class="row"><button class="btn g" data-a="expc">Exporter CSV</button><button class="btn g" data-a="impc">Importer CSV</button></div><input type="file" id="imc" accept=".csv,text/csv" hidden>';
@@ -712,7 +723,7 @@ function mensHTML(m){var ms=(S.minfo[m]||{}).ms||{},gd="",fl="";
 function tailHTML(c){
   var back='<button class="back" data-a="back">‹</button>',l=list("tailles"),h;
   if(!tmem){
-    h='<div class="top">'+back+'<h1>'+ic(c)+' '+esc(c.n)+'</h1>'+mb()+'<button class="btn" data-a="addt" aria-label="Ajouter">+</button></div>';
+    h='<div class="top">'+back+'<h1>'+ic(c)+' '+esc(c.n)+'</h1>'+mb()+'<button class="btn" data-a="addt" aria-label="Ajouter">'+PLUS+'</button></div>';
     if(!S.members.length)return h+'<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Ajoutez d’abord les membres du foyer dans Réglages.</p></div>';
     h+=toolsHTML("tailles");
     var P=S.members.map(function(m){var n=l.filter(function(x){return x.membre===m}).length;return{v:m,n:m,g:(S.minfo[m]||{}).g,img:function(z){return av(m,z)},s:n?n+(n>1?" articles":" article"):"Aucun article",mv:true}});
@@ -775,7 +786,7 @@ function pgrid(cid,P,act,noadd){
     var at=ordc?"":' data-a="'+act+'" data-v="'+esc(p.v)+'"';
     if(gr){var tg=ordc?"div":"button";h+='<'+tg+' class="mt'+pc+'"'+(pc?"":' style="--h:'+hue(p.v)+'"')+at+'>'+p.img(84)+'<b>'+esc(p.n)+'</b><small>'+esc(p.s)+'</small>'+arr+'</'+tg+'>'}
     else h+='<div class="item'+pc+'"'+at+'>'+p.img(44)+'<div class="t"><b>'+esc(p.n)+'</b><span>'+esc(p.s)+'</span></div>'+arr+'</div>'});
-  if(!ordc&&cid!=="tailles"&&!noadd)h+=gr?'<button class="mt" data-a="gomembers" style="border-style:dashed;box-shadow:none"><span class="av ph0" style="width:84px;height:84px;font-size:36px">＋</span><b>Personne</b><small>Ajouter</small></button>':'<div class="item" data-a="gomembers" style="border-style:dashed"><span class="av ph0" style="width:44px;height:44px;font-size:22px;margin:0">＋</span><div class="t"><b>Ajouter une personne</b></div></div>';
+  if(!ordc&&cid!=="tailles"&&!noadd)h+=gr?'<button class="mt" data-a="gomembers" style="border-style:dashed;box-shadow:none"><span class="av ph0" style="width:84px;height:84px;font-size:36px"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><b>Personne</b><small>Ajouter</small></button>':'<div class="item" data-a="gomembers" style="border-style:dashed"><span class="av ph0" style="width:44px;height:44px;font-size:22px;margin:0">＋</span><div class="t"><b>Ajouter une personne</b></div></div>';
   return gr?'<div class="mgrid">'+h+'</div>':'<div class="plist">'+h+'</div>'}
 function stabsHTML(){return'<div class="tabs">'+[["donnees","Général"],["cats","Catégories"]].map(function(t){return'<button class="tb'+(stab===t[0]?" on":"")+'" data-a="stab" data-v="'+t[0]+'">'+t[1]+'</button>'}).join("")+'</div>'}
 var GT=["cadeaux","anniv","jeux"],gnew=GT.slice();
@@ -783,17 +794,17 @@ function gchips(sel,act,pre){return'<div class="gch">'+GT.map(function(t){var c=
 function groupsHTML(){var h='<p class="sub">Créez un groupe (filleuls, amis, famille…) et choisissez dans quelles tuiles ses membres apparaissent.</p>';
   (S.groups||[]).forEach(function(g){var n=S.others.filter(function(o){return(S.minfo[o]||{}).grp===g.id}).length;
     h+='<div class="mrow gbox"><b>'+esc(g.n)+'<small class="sub" style="display:block;margin:0;font-weight:400">'+n+(n>1?" personnes":" personne")+' · visible dans :</small></b><button class="mx" data-a="delg" data-v="'+g.id+'" title="Supprimer le groupe">×</button>'+gchips(g.tiles,"gtog",g.id+"|")+'</div>'});
-  return h+'<div class="mnew" style="flex-direction:column;align-items:stretch"><input id="gn" placeholder="Nom du groupe (ex. Filleuls)"><small class="sub" style="margin:4px 0 0">Tuiles où afficher ce groupe :</small>'+gchips(gnew,"gtn","")+'<button class="btn" data-a="addgrp">Créer le groupe</button></div>'}
+  return h+'<div class="addc"><h3>Créer un groupe</h3><input id="gn" placeholder="Nom du groupe (ex. Filleuls)"><small class="sub">Tuiles où afficher ce groupe :</small>'+gchips(gnew,"gtn","")+'<button class="btn" data-a="addgrp">Créer le groupe</button></div>'}
 function othersHTML(){var h='<p class="sub">Filleuls, amis, famille… pour les cadeaux, les anniversaires et les jeux.</p>';
   h+=S.others.map(function(n,i){var mi=S.minfo[n]||{};return'<div class="mrow"><button class="avb" data-a="mph3" data-v="'+esc(n)+'" title="Changer la photo">'+avp(n,46)+'</button><b>'+esc(n)+'</b><button class="mx" data-a="delo" data-v="'+i+'" title="Supprimer">×</button>'+((S.groups||[]).length?'<div class="mr2"><select class="gsel" data-n="'+esc(n)+'"><option value="">Sans groupe</option>'+S.groups.map(function(g){return'<option value="'+g.id+'"'+(mi.grp===g.id?" selected":"")+'>'+esc(g.n)+'</option>'}).join("")+'</select></div>':"")+'<div class="mr2"><input class="mo" data-n="'+esc(n)+'" placeholder="Lien (filleul, ami…)" value="'+esc(mi.rel||"")+'"><input type="date" class="mb" data-n="'+esc(n)+'" value="'+esc(mi.b||"")+'" title="Anniversaire"></div></div>'}).join("");
-  return h+'<div class="mnew"><div class="mf"><input id="on" placeholder="Prénom"><input id="orl" placeholder="Lien (filleul, ami, cousin…)"><input id="ob" type="date" title="Date d’anniversaire">'+((S.groups||[]).length?'<select id="og"><option value="">Sans groupe</option>'+S.groups.map(function(g){return'<option value="'+g.id+'">'+esc(g.n)+'</option>'}).join("")+'</select>':"")+'<small class="sub" style="margin:0">Date d’anniversaire (facultatif)</small></div><button class="btn" style="flex:none" data-a="addo">Ajouter</button></div>'}
+  return h+'<div class="addc"><h3>Ajouter une personne</h3><input id="on" placeholder="Prénom"><input id="orl" placeholder="Lien (filleul, ami, cousin…)"><div class="ar2"><label class="fl"><span>Anniversaire (facultatif)</span><input id="ob" type="date"></label>'+((S.groups||[]).length?'<label class="fl"><span>Groupe</span><select id="og"><option value="">Sans groupe</option>'+S.groups.map(function(g){return'<option value="'+g.id+'">'+esc(g.n)+'</option>'}).join("")+'</select></label>':"")+'</div><button class="btn" data-a="addo">Ajouter cette personne</button></div>'}
 function giftRow(x,idea){var sub=[x.statut==="Acheté"?"Acheté":"",x.quand?fd(x.quand):x.annee||"",x.prix].filter(Boolean).join(" · ");return'<div class="item" data-a="edit" data-v="'+x.id+'">'+(phs(x)[0]?'<img class="gimg" src="'+phs(x)[0]+'" alt="">':"")+'<div class="t"><b>'+esc(x.idee||"Sans titre")+'</b>'+(sub?'<span>'+esc(sub)+'</span>':"")+'</div>'+(idea?'<button class="btn g sm" data-a="gift" data-v="'+x.id+'">Offert</button>':"")+'</div>'}
 function gGroups(arr,idea){var K=[],M={};arr.forEach(function(x){var o=x.occ||"Sans occasion";if(!M[o]){M[o]=[];K.push(o)}M[o].push(x)});return K.map(function(o){return'<details class="gocc" open><summary>'+esc(o)+' <em>'+M[o].length+'</em></summary>'+M[o].map(function(x){return giftRow(x,idea)}).join("")+'</details>'}).join("")}
 function cadHTML(c){
   var back='<button class="back" data-a="back">‹</button>',L=list("cadeaux"),h;
   if(!gp){
     var names=people("cadeaux").slice();L.forEach(function(x){if(x.pour&&names.indexOf(x.pour)<0)names.push(x.pour)});
-    h='<div class="top">'+back+'<h1>'+ic(c)+' '+esc(c.n)+'</h1>'+mb()+'<button class="btn" data-a="add" aria-label="Ajouter">+</button></div>'+toolsHTML("cadeaux");
+    h='<div class="top">'+back+'<h1>'+ic(c)+' '+esc(c.n)+'</h1>'+mb()+'<button class="btn" data-a="add" aria-label="Ajouter">'+PLUS+'</button></div>'+toolsHTML("cadeaux");
     var P=names.map(function(n){var o=L.filter(function(x){return x.pour===n&&x.statut==="Offert"}).length,i=L.filter(function(x){return x.pour===n&&x.statut!=="Offert"}).length;return{v:n,n:n,g:(S.minfo[n]||{}).g,img:function(z){return avp(n,z)},s:i+" idée"+(i>1?"s":"")+" · "+o+" offert"+(o>1?"s":""),mv:S.members.indexOf(n)>-1||S.others.indexOf(n)>-1}});
     if(!(S.groups||[]).length)return h+pgrid("cadeaux",P,"gp");
     var BK=[],used={};
@@ -805,11 +816,11 @@ function cadHTML(c){
     return h+BK.map(function(b,i){return'<h2>'+esc(b[0])+'</h2>'+pgrid("cadeaux",b[1],"gp",i<BK.length-1)}).join("")}
   var mi=S.minfo[gp]||{},sub=[mi.rel,mi.b?"Anniversaire le "+fd(mi.b).slice(0,5)+(age(mi.b)!==""?" ("+age(mi.b)+" ans)":""):""].filter(Boolean).join(" · ");
   var mine=L.filter(function(x){return x.pour===gp}),off=mine.filter(function(x){return x.statut==="Offert"}),ide=mine.filter(function(x){return x.statut!=="Offert"});
-  h='<div class="top">'+back+'<div class="mh2">'+avp(gp,52)+'<div><h1>'+esc(gp)+'</h1><div class="sub" style="margin:0">'+esc(sub||"Cadeaux")+'</div></div></div><button class="btn" data-a="addgf" aria-label="Ajouter">+</button></div>';
+  h='<div class="top">'+back+'<div class="mh2">'+avp(gp,52)+'<div><h1>'+esc(gp)+'</h1><div class="sub" style="margin:0">'+esc(sub||"Cadeaux")+'</div></div></div><button class="btn" data-a="addgf" aria-label="Ajouter">'+PLUS+'</button></div>';
   h+='<div class="tabs"><button class="tb'+(gtab==="idees"?" on":"")+'" data-a="gtab" data-v="idees">Idées ('+ide.length+')</button><button class="tb'+(gtab==="offerts"?" on":"")+'" data-a="gtab" data-v="offerts">Déjà offerts ('+off.length+')</button></div>';
   if(gtab==="offerts"){
     var srt=off.slice().sort(function(a,b){var p1=a.quand||String(a.annee||""),p2=b.quand||String(b.annee||"");return p1<p2?1:p1>p2?-1:0}),yr=null;
-    var YR=[],YM={};srt.forEach(function(x){var y=x.quand?x.quand.slice(0,4):(x.annee?String(x.annee):"Sans date");if(!YM[y]){YM[y]=[];YR.push(y)}YM[y].push(x)});YR.forEach(function(y){h+='<div class="gh" style="cursor:default"><span>'+y+'</span></div>'+gGroups(YM[y],false)});
+    var YR=[],YM={};srt.forEach(function(x){var y=x.quand?x.quand.slice(0,4):(x.annee?String(x.annee):"Sans date");if(!YM[y]){YM[y]=[];YR.push(y)}YM[y].push(x)});var bd=((S.minfo[gp]||{}).b||"").slice(0,4);YR.forEach(function(y){var ag=(bd&&/^\d{4}$/.test(y))?(+y)-(+bd):"";h+='<div class="gh" style="cursor:default"><span>'+y+'</span>'+(ag!==""&&ag>=0?'<em class="agy">'+(ag===0?"< 1 an":ag+(ag>1?" ans":" an"))+'</em>':"")+'</div>'+gGroups(YM[y],false)});
     if(!srt.length)h+='<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Aucun cadeau offert pour l’instant.<br>Touchez + pour en ajouter.</p></div>'}
   else{h+=gGroups(ide,true);if(!ide.length)h+='<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Aucune idée pour l’instant.</p></div>'}
   return h}
@@ -892,7 +903,7 @@ function cyCal(st){var rs=cyRapSet(cq),off=(new Date(cyY,cyM,1).getDay()+6)%7,di
   return h+'</div><div class="cl"><span><i class="k-cyp"></i>Règles</span><span><i class="k-cyr"></i>Prévision</span></div></div>'}
 function cycHTML(c){
   var back='<button class="back" data-a="back">‹</button>',P=cyPeople();
-  var h='<div class="top">'+back+'<h1>'+ic(c)+' '+esc(c.n)+'</h1><button class="btn" data-a="cyadd" aria-label="Ajouter">+</button></div>';
+  var h='<div class="top">'+back+'<h1>'+ic(c)+' '+esc(c.n)+'</h1><button class="btn" data-a="cyadd" aria-label="Ajouter">'+PLUS+'</button></div>';
   if(!P.length)return h+'<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Aucune personne suivie.<br>Ajoutez une fille / femme dans Réglages, ou cochez « Suivi des règles ».</p></div>';
   if(!cq||P.indexOf(cq)<0)cq=P[0];
   h+='<div class="pcs" style="margin-bottom:10px">'+P.map(function(n){return'<button class="pc'+(n===cq?" on":"")+'" data-a="cyp" data-v="'+esc(n)+'">'+avp(n,22)+esc(n)+'</button>'}).join("")+'</div>';
@@ -1075,6 +1086,7 @@ document.addEventListener("input",function(e){if(e.target.id!=="gs")return;var v
 document.addEventListener("touchend",function(e){if(!t0)return;var t=e.changedTouches[0],dx=t.clientX-t0.x,dy=Math.abs(t.clientY-t0.y);t0=null;if(dx<70||dy>70)return;
 if($("#modal").className==="open"){closeForm();return}var b=document.querySelector("#main [data-a=back]");if(b)b.click();else if(tab==="settings")$("#t-home").click()},{passive:true})})();
 document.addEventListener("input",function(e){if(e.target.id==="q"){q=e.target.value;$("#list").innerHTML=itemsHTML()}});
+document.addEventListener("input",function(e){if(e.target.id==="tgl"){S.tagline=e.target.value;save()}});
 function addPhotos(fl){fl=fl.filter(function(f){return /^image\//.test(f.type)});if(!fl.length||!$("#phv"))return;
   function rd(f,cb){var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,520/Math.max(im.width,im.height)),cv=document.createElement("canvas");cv.width=Math.round(im.width*s);cv.height=Math.round(im.height*s);cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);cb(cv.toDataURL("image/jpeg",.62))};im.onerror=function(){cb(null)};im.src=fr.result};fr.readAsDataURL(f)}
   (function nx(i){if(i>=fl.length)return;rd(fl[i],function(d){if(d){var a=phs({photo:$("#phv").value});a.push(d);$("#phv").value=phpack(a);$("#phb").innerHTML=phthumbs(a)}nx(i+1)})})(0)}

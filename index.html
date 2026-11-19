@@ -455,7 +455,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.15.1";
+var VER="1.15.2";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="idees",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -936,7 +936,7 @@ function openForm(id,g0,pre){
     else if(ty==="member"||ty.indexOf("sel:")===0){
       var o=ty==="member"?["Tous"].concat(S.members):ty.slice(4).split(",");
       h+='<select data-k="'+k+'"><option value=""></option>'+o.map(function(x){return'<option'+(x===v?" selected":"")+'>'+esc(x)+'</option>'}).join("")+'</select>';
-    }else h+='<input data-k="'+k+'" type="'+ty+'" value="'+esc(v)+'"'+(ty==="number"?' step="any" inputmode="decimal"':"")+(k===c.g?' list="gl" placeholder="Choisir ou créer…"':"")+'>'+(k===c.g?'<datalist id="gl">'+groups(c).map(function(g){return'<option value="'+esc(g)+'">'}).join("")+'</datalist>':"");
+    }else h+='<input data-k="'+k+'" type="'+ty+'" value="'+esc(v)+'"'+(ty==="number"?' step="any" inputmode="decimal"':"")+(k===c.g?' list="gl" placeholder="Choisir ou créer…"':"")+'>'+(c.id==="cadeaux"&&k==="quand"?'<button type="button" class="btn g sm" style="margin-top:6px" data-a="clrd">Effacer la date</button>':"")+(k===c.g?'<datalist id="gl">'+groups(c).map(function(g){return'<option value="'+esc(g)+'">'}).join("")+'</datalist>':"");
   });
   h+='<div class="row">'+(id?'<button class="btn d" data-a="del" data-v="'+id+'">Supprimer</button>':"")+'<button class="btn g" data-a="close">Annuler</button><button class="btn" data-a="save" data-v="'+(id||"")+'">Enregistrer</button></div>';
   $("#sheet").innerHTML=h;$("#modal").className="open";
@@ -998,7 +998,7 @@ document.addEventListener("click",function(e){
   else if(a==="delo"){var dn2=S.others.splice(+v,1)[0];if(S.members.indexOf(dn2)<0)delete S.minfo[dn2];save();render()}
   else if(a==="gp"){gp=v;gtab="idees";render()}
   else if(a==="gtab"){gtab=v;render()}
-  else if(a==="addgf")openForm(null,null,{pour:gp,statut:gtab==="offerts"?"Offert":"Idée",quand:gtab==="offerts"?today():""});
+  else if(a==="addgf")openForm(null,null,{pour:gp,statut:gtab==="offerts"?"Offert":"Idée"});
   else if(a==="gift"){var gi=list("cadeaux").filter(function(x){return x.id===v})[0];if(gi){gi.statut="Offert";if(!gi.quand)gi.quand=today();save();rr()}}
   else if(a==="jg"){jg=v;render()}
   else if(a==="jp"){jp=v;render()}
@@ -1024,6 +1024,7 @@ document.addEventListener("click",function(e){
   else if(a==="crx")closeForm();
   else if(a==="cro"){var dd=crOut(),cb0=CR.cb;closeForm();cb0(dd)}
   else if(a==="mcr"){var nm0=S.members[+v];openCrop(S.minfo[nm0].p,function(d){S.minfo[nm0].p=d;save();var st0=$("#main").scrollTop;render();$("#main").scrollTop=st0})}
+  else if(a==="clrd"){var di=e.target.closest("button").previousElementSibling;if(di){di.value=""}}
   else if(a==="cm"){calM+=+v;if(calM<0){calM=11;calY--}if(calM>11){calM=0;calY++}$("#cal").innerHTML=calHTML()}
   else if(a==="cn"){var n1=new Date();calY=n1.getFullYear();calM=n1.getMonth();calSel=ds(calY,calM,n1.getDate());$("#cal").innerHTML=calHTML()}
   else if(a==="cd"){calSel=calSel===v?"":v;$("#cal").innerHTML=calHTML()}

@@ -386,6 +386,7 @@ body[data-tc="4"] .mt{padding:10px 3px;border-radius:16px}body[data-tc="4"] .mt 
 body[data-tc="4"] .ig .item{padding:8px;min-height:70px}body[data-tc="4"] .ig .item b{font-size:12px}body[data-tc="3"] .ig .item b{font-size:14px}
 /* photos multiples & fiches */
 .gocc{margin:10px 0 0}.gocc summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;font-weight:700;font-size:14px;color:var(--tx);padding:4px 2px;margin-bottom:6px}.gocc summary::-webkit-details-marker{display:none}.gocc summary::before{content:"▸";color:var(--mu);transition:transform .15s}.gocc[open] summary::before{transform:rotate(90deg)}.gocc summary em{font-style:normal;font-weight:600;font-size:12px;color:var(--mu);background:var(--ac2);border-radius:10px;padding:1px 8px}
+.gdet .pgal img{width:100%;max-height:68vh}.gdet .rph{width:100%;max-height:68vh;object-fit:cover}
 .phadd small{font-weight:500;opacity:.75;font-size:12px}.phadd.drag{background:var(--ac2)}
 .phs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}.pht{position:relative;width:92px;height:92px}.pht img{width:100%;height:100%;object-fit:cover;border-radius:14px;margin:0}
 .pht .mx{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;border:0;font-size:16px;line-height:1;padding:0}
@@ -456,7 +457,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.15.5";
+var VER="1.16.0";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="idees",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -575,7 +576,7 @@ function phs(x){var v=x&&x.photo;if(!v)return[];if(v.charAt(0)==="["){try{return
 function phpack(a){return a.length>1?JSON.stringify(a):(a[0]||"")}
 function phthumbs(a){return a.map(function(d,i){return'<div class="pht"><img src="'+d+'" alt=""><button class="mx" data-a="phdel" data-v="'+i+'" aria-label="Retirer la photo">×</button></div>'}).join("")}
 function phgal(a){if(!a.length)return"";if(a.length===1)return'<img class="rph" src="'+a[0]+'" alt="">';return'<div class="pgal">'+a.map(function(d){return'<img src="'+d+'" alt="">'}).join("")+'</div>'}
-var NODET=["courses","besoins","pele","menage","stock","calendriers","piscine","tailles","cadeaux","jeux","cycle"];
+var NODET=["courses","besoins","pele","menage","stock","calendriers","piscine","tailles","jeux","cycle"];
 function hasDet(id){var c=cof(id);return !!c&&!c.par&&NODET.indexOf(id)<0}
 function recHTML(c){var x=list(c.id).filter(function(y){return y.id===rcv})[0];if(!x){rcv=null;return catHTML()}
   if(c.id!=="recettes")return detHTML(c,x);
@@ -588,15 +589,15 @@ function recHTML(c){var x=list(c.id).filter(function(y){return y.id===rcv})[0];i
   h+='<h2>Préparation</h2>'+(P.length?'<ol class="rstep">'+P.map(function(l){return"<li>"+esc(l)+"</li>"}).join("")+"</ol>":'<p class="sub">Aucune étape notée.</p>');
   return h+"</article>"}
 function detHTML(c,x){var UN=["longueur","largeur","hauteur","epaisseur","profondeur","diametre"];
-  var h='<div class="top"><button class="back" data-a="back">‹</button><h1>'+esc(x[c.t]||c.n)+'</h1><button class="btn" data-a="redit">Modifier</button></div><article class="rcp">'+phgal(phs(x));
+  var h='<div class="top"><button class="back" data-a="back">‹</button><h1>'+esc(x[c.t]||c.n)+'</h1>'+(c.id==="cadeaux"?"":'<button class="btn" data-a="redit">Modifier</button>')+'</div><article class="rcp'+(c.id==="cadeaux"?" gdet":"")+'">'+phgal(phs(x));
   var sub=[x[c.g]].filter(Boolean);if(sub.length)h+='<div class="rmeta">'+sub.map(function(t){return"<span>"+esc(t)+"</span>"}).join("")+"</div>";
-  var rows="";c.f.forEach(function(f){var k=f[0],ty=f[2],v=x[k];if(k===c.t||k===c.g||ty==="photo"||ty==="hist"||k==="unite"||!v)return;
+  var rows="";c.f.forEach(function(f){var k=f[0],ty=f[2],v=x[k];if(k===c.t||k===c.g||ty==="photo"||ty==="hist"||k==="unite"||!v||(k==="annee"&&x.quand))return;
     var t=ty==="date"?fd(v):ty==="apd"?fd(v):ty==="chk"?"Oui":UN.indexOf(k)>-1?v+(x.unite?" "+x.unite:""):v;
-    rows+='<div class="dr"><span>'+esc(f[1])+'</span><b'+(ty==="area"?' class="pre"':"")+'>'+esc(t)+'</b></div>'});
+    rows+='<div class="dr"><span>'+esc(k==="annee"?"Année":f[1])+'</span><b'+(ty==="area"?' class="pre"':"")+'>'+esc(t)+'</b></div>'});
   h+=rows?'<div class="dcard">'+rows+'</div>':'<p class="sub">Aucun détail renseigné. Touchez « Modifier » pour compléter.</p>';
   if(c.id==="maison"){var hh=(x.hist||[]).slice().sort(function(a,b){return a.d<b.d?1:-1}),nx=hnext(x);
     h+='<h2>Historique</h2>'+(nx?'<p class="sub" style="margin:0 0 8px">Prochain rappel : '+fd(nx)+'</p>':"")+'<button class="btn g" data-a="hquick" data-v="'+x.id+'" style="margin-bottom:8px">↻ Fait aujourd’hui</button>'+(hh.length?hh.map(function(e){return'<div class="hrow"><span>'+fd(e.d)+'</span><div><b>'+esc(e.v||"")+'</b><i>'+esc(e.n||"")+'</i></div></div>'}).join(""):'<p class="sub">Aucune entrée pour l’instant.</p>')}
-  return h+'</article>'}
+  return h+(c.id==="cadeaux"?'<button class="btn" data-a="redit" style="width:100%;margin-top:16px">Modifier</button>':"")+'</article>'}
 function catHTML(){
   var c=cof(cat);if(rcv&&hasDet(c.id))return recHTML(c);if(c.par)return couHTML(c);if(c.id==="tailles")return tailHTML(c);if(c.id==="cadeaux")return cadHTML(c);if(c.id==="jeux")return jeuxHTML(c);if(c.id==="cycle")return cycHTML(c);
   var h=gpage(c)?'<div class="top"><button class="back" data-a="back">‹</button><h1>'+esc(gsel)+'</h1>'+mb()+'<button class="btn" data-a="addg" data-v="'+esc(gsel)+'" aria-label="Ajouter">+</button></div><p class="sub" style="margin:-6px 0 8px">'+ic(c)+' '+esc(c.n)+'</p>':'<div class="top"><button class="back" data-a="back">‹</button><h1>'+ic(c)+' '+c.n+'</h1>'+mb()+'<button class="btn" data-a="'+(c.id==="calendriers"?"addch":"add")+'" aria-label="Ajouter">+</button></div>';

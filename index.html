@@ -424,7 +424,7 @@ var CATS=[
 {id:"biblio",i:"📚",n:"Bibliothèque",ex:"Livres, BD, prêts",t:"titre",s:["auteur","statut"],f:[["titre","Titre","text"],["auteur","Auteur","text"],["statut","Statut","sel:Dans la bibliothèque,Prêté,À lire,Lu"],["pret","Prêté à","text"]]},
 {id:"stock",i:"🥫",n:"Garde-manger",ex:"Stocks, péremptions",t:"objet",s:["qte","dlc"],f:[["objet","Produit","text"],["qte","Quantité","text"],["dlc","À consommer avant","date"],["lieu","Rangement","text"]]},
 {id:"menage",i:"🧹",n:"Entretien",ex:"Tâches récurrentes, chaudière, filtres…",t:"objet",s:["freq","dernier"],f:[["objet","Tâche","text"],["freq","Fréquence","text"],["dernier","Dernière fois","date"],["qui","Responsable","member"]]},
-{id:"vehicules",i:"🚗",n:"Véhicules",ex:"Voiture, vélo, moto…",t:"nom",s:["immat","ct","assur"],f:[["nom","Véhicule","text"],["immat","Immatriculation","text"],["km","Kilométrage","text"],["ct","Prochain contrôle technique","date"],["assur","Échéance assurance","date"],["entre","Prochain entretien","date"],["note","Notes","area"]]},
+{id:"vehicules",i:"🚗",n:"Véhicules",ex:"Voiture, vélo, moto…",t:"nom",s:["immat","ct","travaux"],f:[["nom","Véhicule","text"],["immat","Immatriculation","text"],["mec","Date de 1ère immatriculation","date"],["achat","Date d’achat","date"],["kmachat","Kilométrage à l’achat","number"],["km","Kilométrage actuel","text"],["ct","Prochain contrôle technique","date"],["entre","Prochain entretien","date"],["travaux","Prochains travaux à prévoir","text"],["note","Notes","area"]]},
 {id:"voyage",i:"✈️",n:"Voyages",ex:"Destinations et préparatifs",d:"debut",t:"dest",s:["etat","debut","fin"],f:[["dest","Destination","text"],["etat","État","sel:Idée,Planifié,Réservé,Terminé"],["debut","Départ","date"],["fin","Retour","date"],["budget","Budget","text"],["note","À prévoir","area"]]},
 {id:"ordures",i:"🗑️",n:"Ordures",ex:"Jours de collecte, déchetterie",t:"type",s:["jour","note"],f:[["type","Type","sel:Ordures ménagères,Recyclage,Verre,Encombrants,Déchetterie,Compost"],["jour","Jour de collecte","text"],["note","Consignes","area"]]},
 {id:"fidelite",i:"💳",n:"Cartes fidélité",ex:"Enseigne, numéro, avantages",t:"enseigne",s:["num","exp"],f:[["enseigne","Enseigne","text"],["num","Numéro","text"],["avantage","Avantage","text"],["exp","Expiration","date"]]},
@@ -484,7 +484,7 @@ cof("projets").i="💡";cof("projets").h='<span class="c2">💡<i>⚙️</i></sp
 cof("tailles").i="👗";cof("emprunts").i="🫱🏼‍🫲🏽";cof("stock").i="🍓";cof("voyage").i="🏝️";cof("contacts").i="☎️";cof("recettes").i="📖";
 cof("vehicules").i="🚘";cof("tailles").h='<span class="blk">'+cof("tailles").i+'</span>';cof("vehicules").h='<span class="blk blk2">🚘</span>';
 var BASE=CATS.slice();BASE.forEach(function(c){c.f.forEach(function(f){if(f[2]==="photo")f[1]="Photos"})});build();
-var RM=[["rdv","quand","",7,0],["calendriers","quand","",14,0],["anniv","date","Anniversaire · ",30,0,1],["vehicules","ct","Contrôle technique · ",45,1],["vehicules","assur","Assurance · ",45,1],["vehicules","entre","Entretien · ",30,1],["docs","valid","Validité · ",60,1],["fidelite","exp","Carte expire · ",30,1],["stock","dlc","À consommer · ",7,1],["emprunts","retour","À rendre · ",7,1],["voyage","debut","Départ · ",30,0],["maison","quand","Maison · ",30,1],["maison","garantie","Fin de garantie · ",60,0],["piscine","proch","Piscine · ",30,1],["cou_pro","quand","Couture · ",14,0],["cou_ret","quand","Retouche · ",14,0]];
+var RM=[["rdv","quand","",7,0],["calendriers","quand","",14,0],["anniv","date","Anniversaire · ",30,0,1],["vehicules","ct","Contrôle technique · ",45,1],["vehicules","entre","Entretien · ",30,1],["docs","valid","Validité · ",60,1],["fidelite","exp","Carte expire · ",30,1],["stock","dlc","À consommer · ",7,1],["emprunts","retour","À rendre · ",7,1],["voyage","debut","Départ · ",30,0],["maison","quand","Maison · ",30,1],["maison","garantie","Fin de garantie · ",60,0],["piscine","proch","Piscine · ",30,1],["cou_pro","quand","Couture · ",14,0],["cou_ret","quand","Retouche · ",14,0]];
 function load(){try{var r=localStorage.getItem(K);if(r){var o=JSON.parse(r);o.members=o.members||[];o.data=o.data||{};o.hidden=o.hidden||[];o.cats=o.cats||[];o.order=o.order||[];o.minfo=o.minfo||{};o.others=o.others||[];o.views=o.views||{};o.man=o.man||{};o.groups=o.groups||[];return o}}catch(e){try{localStorage.setItem(K+"-corrompu",localStorage.getItem(K))}catch(e2){}}return{members:[],data:{},hidden:[],cats:[],order:[],minfo:{},others:[],views:{},man:{},theme:"auto"}}
 var QW=0;function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){if(!QW){QW=1;setTimeout(function(){QW=0},8000);alert("⚠ Enregistrement impossible : le stockage est plein. Vos dernières modifications ne sont PAS sauvegardées. Exportez une sauvegarde et supprimez des photos.")}}}
 function $(s){return document.querySelector(s)}
@@ -545,7 +545,7 @@ function couHTML(c){
 function mesCouHTML(){
   var L=S.members.filter(function(m){var mi=S.minfo[m]||{};return mi.g==="F"||(mi.ms&&MS.some(function(f){return mi.ms[f[0]]}))});
   var h='<p class="sub">Les mensurations se saisissent dans Tailles, onglet « Mensurations » de chaque personne. Touchez une personne pour les modifier.</p>';
-  if(!L.length)return h+'<div class="empty"><div class="i">📏</div><p>Aucune personne avec des mensurations.<br>Ajoutez-les dans Tailles.</p></div>';
+  if(!L.length)return h+'<div class="empty"><div class="i">'+ic(cof("couture"))+'</div><p>Aucune personne avec des mensurations.<br>Ajoutez-les dans Tailles.</p></div>';
   return h+L.map(function(m){var ms=(S.minfo[m]||{}).ms||{},fl=MS.filter(function(f){return ms[f[0]]});
     return'<div class="rf" data-a="cmes" data-v="'+esc(m)+'" style="cursor:pointer"><h3 style="display:flex;align-items:center;gap:8px">'+avp(m,28)+esc(m)+(ms.date?'<small style="margin-left:auto;font-weight:500;color:var(--mu)">prises le '+fd(ms.date)+'</small>':"")+'</h3>'+(fl.length?'<div class="cmv">'+fl.map(function(f){return'<div><span>'+f[1]+'</span><br><b>'+esc(ms[f[0]])+' cm</b></div>'}).join("")+'</div>':'<p>Aucune mesure enregistrée. Touchez pour en saisir.</p>')+'</div>'}).join("")}
 function refHTML(){
@@ -609,7 +609,7 @@ function itemsHTML(){
   var r=l.filter(function(x){return !s||JSON.stringify(x,function(k,v){return k==="photo"?undefined:v}).toLowerCase().indexOf(s)>-1});
   if(only)r=r.filter(function(x){return(x[c.g]||"Autres")===only});
   if(c.d&&!S.man[c.id])r.sort(function(a,b){var k=function(x){var v=x[c.d]||"";return v?(c.md?v.slice(5):v):"~"};return k(a)<k(b)?-1:k(a)>k(b)?1:0});
-  if(only&&!r.length)return'<div class="eg">Aucun élément — touchez « + » pour en créer.</div>';var tm=c.id==="tailles";if(!r.length&&!(tm&&!s&&S.members.length)&&!(c.fixg&&!s))return'<div class="empty"><div class="i">'+c.i+'</div><p>'+(l.length?"Aucun résultat.":tm?"Ajoutez d’abord les membres du foyer dans Réglages.":"Rien ici pour l’instant.<br>"+esc(c.ex))+'</p></div>';
+  if(only&&!r.length)return'<div class="eg">Aucun élément — touchez « + » pour en créer.</div>';var tm=c.id==="tailles";if(!r.length&&!(tm&&!s&&S.members.length)&&!(c.fixg&&!s))return'<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>'+(l.length?"Aucun résultat.":tm?"Ajoutez d’abord les membres du foyer dans Réglages.":"Rien ici pour l’instant.<br>"+esc(c.ex))+'</p></div>';
   var gr=!only&&!s&&vw(c.id,dv(c.id))==="grid",wr=function(a){var t=a.map(row).join("");return gr?'<div class="ig">'+t+'</div>':t};
   var row=function(x){
     var sub=c.sf?esc(c.sf(x)):c.s.map(function(k){return x[k]}).filter(Boolean).map(fd).map(esc).join(" · ");
@@ -707,7 +707,7 @@ function tailHTML(c){
   var back='<button class="back" data-a="back">‹</button>',l=list("tailles"),h;
   if(!tmem){
     h='<div class="top">'+back+'<h1>'+ic(c)+' '+esc(c.n)+'</h1>'+mb()+'<button class="btn" data-a="addt" aria-label="Ajouter">+</button></div>';
-    if(!S.members.length)return h+'<div class="empty"><div class="i">'+c.i+'</div><p>Ajoutez d’abord les membres du foyer dans Réglages.</p></div>';
+    if(!S.members.length)return h+'<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Ajoutez d’abord les membres du foyer dans Réglages.</p></div>';
     h+=toolsHTML("tailles");
     var P=S.members.map(function(m){var n=l.filter(function(x){return x.membre===m}).length;return{v:m,n:m,g:(S.minfo[m]||{}).g,img:function(z){return av(m,z)},s:n?n+(n>1?" articles":" article"):"Aucun article",mv:true}});
     var o=l.filter(function(x){return S.members.indexOf(x.membre)<0}).length;
@@ -721,7 +721,7 @@ function tailHTML(c){
   h+='<div class="tabs">'+T.map(function(t){return'<button class="tb'+(t[0]===mtab?" on":"")+'" data-a="mtab" data-v="'+t[0]+'">'+t[1]+"</button>"}).join("")+"</div>";
   if(mtab==="tailles"){
     var r=l.filter(function(x){return oth?S.members.indexOf(x.membre)<0:x.membre===tmem});
-    h+=r.length?r.map(function(x){var sub=[oth?x.membre:"",c.sf(x)].filter(Boolean).join(" · ");return'<div class="item" data-a="edit" data-v="'+x.id+'"><div class="t"><b>'+esc(x.article||"Sans titre")+"</b>"+(sub?"<span>"+esc(sub)+"</span>":"")+"</div></div>"}).join(""):'<div class="empty"><div class="i">'+c.i+'</div><p>Aucun article pour l’instant.</p></div>';
+    h+=r.length?r.map(function(x){var sub=[oth?x.membre:"",c.sf(x)].filter(Boolean).join(" · ");return'<div class="item" data-a="edit" data-v="'+x.id+'"><div class="t"><b>'+esc(x.article||"Sans titre")+"</b>"+(sub?"<span>"+esc(sub)+"</span>":"")+"</div></div>"}).join(""):'<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Aucun article pour l’instant.</p></div>';
     h+='<div class="row"><button class="btn" data-a="addt">+ Ajouter un article</button></div>'}
   else if(mtab==="mens")h+=mensHTML(tmem);
   else if(mtab==="notes")h+='<textarea class="big" data-mk="notes" placeholder="Notes : allergies vestimentaires, coupes préférées, rappels…">'+esc(mi.notes||"")+"</textarea>";
@@ -796,8 +796,8 @@ function cadHTML(c){
   if(gtab==="offerts"){
     var srt=off.slice().sort(function(a,b){var p1=a.quand||"",p2=b.quand||"";return p1<p2?1:p1>p2?-1:0}),yr=null;
     srt.forEach(function(x){var y=x.quand?x.quand.slice(0,4):"Sans date";if(y!==yr){yr=y;h+='<div class="gh" style="cursor:default"><span>'+y+'</span></div>'}h+=giftRow(x,false)});
-    if(!srt.length)h+='<div class="empty"><div class="i">'+c.i+'</div><p>Aucun cadeau offert pour l’instant.<br>Touchez + pour en ajouter.</p></div>'}
-  else{h+=ide.map(function(x){return giftRow(x,true)}).join("");if(!ide.length)h+='<div class="empty"><div class="i">'+c.i+'</div><p>Aucune idée pour l’instant.</p></div>'}
+    if(!srt.length)h+='<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Aucun cadeau offert pour l’instant.<br>Touchez + pour en ajouter.</p></div>'}
+  else{h+=ide.map(function(x){return giftRow(x,true)}).join("");if(!ide.length)h+='<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Aucune idée pour l’instant.</p></div>'}
   return h}
 var TR='<svg class="tr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>';
 var JSUG=[["Belote","Le plus de points gagne",""],["Tarot","Le plus de points gagne",""],["Scrabble","Le plus de points gagne",""],["Yams","Le plus de points gagne",""],["Mölkky","Le plus de points gagne",50],["Pétanque","Le plus de points gagne",13],["Skyjo","Le moins de points gagne",100],["6 qui prend","Le moins de points gagne",66],["Uno","Le moins de points gagne",""],["Rami","Le moins de points gagne",""]];
@@ -839,7 +839,7 @@ function jeuxHTML(c){
   if(jg)return gameHTML(jgame(jg),P.filter(function(x){return x.jeu===jg}),back);
   var G=list("jeux").slice().sort(function(a,b){return(a.titre||"").localeCompare(b.titre||"","fr")}),fin=P.filter(function(x){return x.fin}),enc=P.filter(function(x){return!x.fin});
   var h='<div class="top">'+back+'<h1>'+ic(c)+' '+esc(c.n)+'</h1><button class="btn" data-a="newp">+ Partie</button></div>';
-  if(!G.length&&!P.length)h+='<div class="empty"><div class="i">'+c.i+'</div><p>Ajoutez un jeu, lancez une partie : les scores sont additionnés manche après manche et le gagnant est désigné.</p></div>';
+  if(!G.length&&!P.length)h+='<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Ajoutez un jeu, lancez une partie : les scores sont additionnés manche après manche et le gagnant est désigné.</p></div>';
   var st=jstats(fin);if(st.length)h+='<h2>Classement général</h2>'+lbHTML(st);
   if(enc.length)h+='<h2>Parties en cours</h2>'+enc.map(partyRow).join("");
   h+='<div class="h2r"><h2>Mes jeux</h2><button class="btn g sm" data-a="addg2">+ Jeu</button></div>';
@@ -879,7 +879,7 @@ function cyCal(st){var rs=cyRapSet(cq),off=(new Date(cyY,cyM,1).getDay()+6)%7,di
 function cycHTML(c){
   var back='<button class="back" data-a="back">‹</button>',P=cyPeople();
   var h='<div class="top">'+back+'<h1>'+ic(c)+' '+esc(c.n)+'</h1><button class="btn" data-a="cyadd" aria-label="Ajouter">+</button></div>';
-  if(!P.length)return h+'<div class="empty"><div class="i">'+c.i+'</div><p>Aucune personne suivie.<br>Ajoutez une fille / femme dans Réglages, ou cochez « Suivi des règles ».</p></div>';
+  if(!P.length)return h+'<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Aucune personne suivie.<br>Ajoutez une fille / femme dans Réglages, ou cochez « Suivi des règles ».</p></div>';
   if(!cq||P.indexOf(cq)<0)cq=P[0];
   h+='<div class="pcs" style="margin-bottom:10px">'+P.map(function(n){return'<button class="pc'+(n===cq?" on":"")+'" data-a="cyp" data-v="'+esc(n)+'">'+avp(n,22)+esc(n)+'</button>'}).join("")+'</div>';
   var st=cyStats(cq),sm;

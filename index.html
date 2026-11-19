@@ -438,7 +438,7 @@ var CATS=[
 {id:"contacts",i:"📞",n:"Contacts utiles",ex:"Plombier, médecin, école…",t:"nom",s:["role","tel"],f:[["nom","Nom","text"],["role","Rôle","text"],["tel","Téléphone","tel"],["note","Notes","area"]]},
 
 {id:"recettes",i:"🍲",n:"Recettes",ex:"Plats favoris",t:"nom",s:["temps","note"],f:[["nom","Plat","text"],["temps","Durée","text"],["note","Ingrédients","area"],["prep","Préparation","area"]]},
-{id:"cadeaux",i:"🎁",n:"Cadeaux",ex:"Idées et cadeaux déjà offerts, par personne",t:"idee",s:["occ","quand"],f:[["idee","Cadeau","text"],["pour","Pour","who"],["statut","Statut","sel:Idée,Acheté,Offert"],["occ","Occasion","pick:Anniversaire,Noël,Naissance,Baptême,Mariage,Fête,Remerciement,Autre"],["quand","Date offerte","date"],["prix","Budget / prix","text"],["note","Notes","area"]]},
+{id:"cadeaux",i:"🎁",n:"Cadeaux",ex:"Idées et cadeaux déjà offerts, par personne",t:"idee",s:["occ","quand"],f:[["idee","Cadeau","text"],["pour","Pour","who"],["statut","Statut","sel:Idée,Acheté,Offert"],["occ","Occasion","pick:Anniversaire,Noël,Naissance,Baptême,Mariage,Fête,Remerciement,Autre"],["quand","Date offerte","date"],["annee","Ou année seule (si date inconnue)","number"],["prix","Budget / prix","text"],["note","Notes","area"]]},
 {id:"jeux",i:"🎲",n:"Jeux",ex:"Scores, parties et classement",t:"titre",s:["mode"],f:[["titre","Jeu","text"],["mode","Qui gagne ?","sel:Le plus de points gagne,Le moins de points gagne"],["cible","Score à atteindre (facultatif)","number"],["note","Notes / règles","area"]]},
 {id:"piscine",i:"🏊",n:"Piscine",ex:"Entretien, analyses de l’eau, filtration, produits…",chk:1,t:"titre",s:["quand","proch"],f:[["titre","Élément / tâche","text"],["rub","Rubrique","pick:Analyse de l’eau,Filtration,Nettoyage,Produits,Équipement,Hivernage & saison,Administratif"],["quand","Dernière fois","date"],["proch","Prochaine échéance","date"],["freq","Fréquence","text"],["ph","pH","number"],["cl","Chlore (mg/L)","number"],["tac","TAC","number"],["temp","Température de l’eau (°C)","number"],["vol","Volume du bassin (m³)","number"],["produit","Produit / quantité","text"],["note","Notes","area"],["fait","Fait","chk"],["photo","Photo","photo"]]},
 {id:"couture",i:"🧵",n:"Couture",ex:"Projets, tissus, mercerie, retouches…",t:"nom",s:[],f:[]},
@@ -455,7 +455,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.15.0";
+var VER="1.15.1";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="idees",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -785,7 +785,7 @@ function groupsHTML(){var h='<p class="sub">Créez un groupe (filleuls, amis, fa
 function othersHTML(){var h='<p class="sub">Filleuls, amis, famille… pour les cadeaux, les anniversaires et les jeux.</p>';
   h+=S.others.map(function(n,i){var mi=S.minfo[n]||{};return'<div class="mrow"><button class="avb" data-a="mph3" data-v="'+esc(n)+'" title="Changer la photo">'+avp(n,46)+'</button><b>'+esc(n)+'</b><button class="mx" data-a="delo" data-v="'+i+'" title="Supprimer">×</button>'+((S.groups||[]).length?'<div class="mr2"><select class="gsel" data-n="'+esc(n)+'"><option value="">Sans groupe</option>'+S.groups.map(function(g){return'<option value="'+g.id+'"'+(mi.grp===g.id?" selected":"")+'>'+esc(g.n)+'</option>'}).join("")+'</select></div>':"")+'<div class="mr2"><input class="mo" data-n="'+esc(n)+'" placeholder="Lien (filleul, ami…)" value="'+esc(mi.rel||"")+'"><input type="date" class="mb" data-n="'+esc(n)+'" value="'+esc(mi.b||"")+'" title="Anniversaire"></div></div>'}).join("");
   return h+'<div class="mnew"><div class="mf"><input id="on" placeholder="Prénom"><input id="orl" placeholder="Lien (filleul, ami, cousin…)"><input id="ob" type="date" title="Date d’anniversaire">'+((S.groups||[]).length?'<select id="og"><option value="">Sans groupe</option>'+S.groups.map(function(g){return'<option value="'+g.id+'">'+esc(g.n)+'</option>'}).join("")+'</select>':"")+'<small class="sub" style="margin:0">Date d’anniversaire (facultatif)</small></div><button class="btn" style="flex:none" data-a="addo">Ajouter</button></div>'}
-function giftRow(x,idea){var sub=[x.statut==="Acheté"?"Acheté":"",x.occ,x.quand?fd(x.quand):"",x.prix].filter(Boolean).join(" · ");return'<div class="item" data-a="edit" data-v="'+x.id+'">'+(phs(x)[0]?'<img class="gimg" src="'+phs(x)[0]+'" alt="">':"")+'<div class="t"><b>'+esc(x.idee||"Sans titre")+'</b>'+(sub?'<span>'+esc(sub)+'</span>':"")+'</div>'+(idea?'<button class="btn g sm" data-a="gift" data-v="'+x.id+'">Offert</button>':"")+'</div>'}
+function giftRow(x,idea){var sub=[x.statut==="Acheté"?"Acheté":"",x.occ,x.quand?fd(x.quand):x.annee||"",x.prix].filter(Boolean).join(" · ");return'<div class="item" data-a="edit" data-v="'+x.id+'">'+(phs(x)[0]?'<img class="gimg" src="'+phs(x)[0]+'" alt="">':"")+'<div class="t"><b>'+esc(x.idee||"Sans titre")+'</b>'+(sub?'<span>'+esc(sub)+'</span>':"")+'</div>'+(idea?'<button class="btn g sm" data-a="gift" data-v="'+x.id+'">Offert</button>':"")+'</div>'}
 function cadHTML(c){
   var back='<button class="back" data-a="back">‹</button>',L=list("cadeaux"),h;
   if(!gp){
@@ -805,8 +805,8 @@ function cadHTML(c){
   h='<div class="top">'+back+'<div class="mh2">'+avp(gp,52)+'<div><h1>'+esc(gp)+'</h1><div class="sub" style="margin:0">'+esc(sub||"Cadeaux")+'</div></div></div><button class="btn" data-a="addgf" aria-label="Ajouter">+</button></div>';
   h+='<div class="tabs"><button class="tb'+(gtab==="idees"?" on":"")+'" data-a="gtab" data-v="idees">Idées ('+ide.length+')</button><button class="tb'+(gtab==="offerts"?" on":"")+'" data-a="gtab" data-v="offerts">Déjà offerts ('+off.length+')</button></div>';
   if(gtab==="offerts"){
-    var srt=off.slice().sort(function(a,b){var p1=a.quand||"",p2=b.quand||"";return p1<p2?1:p1>p2?-1:0}),yr=null;
-    srt.forEach(function(x){var y=x.quand?x.quand.slice(0,4):"Sans date";if(y!==yr){yr=y;h+='<div class="gh" style="cursor:default"><span>'+y+'</span></div>'}h+=giftRow(x,false)});
+    var srt=off.slice().sort(function(a,b){var p1=a.quand||String(a.annee||""),p2=b.quand||String(b.annee||"");return p1<p2?1:p1>p2?-1:0}),yr=null;
+    srt.forEach(function(x){var y=x.quand?x.quand.slice(0,4):(x.annee?String(x.annee):"Sans date");if(y!==yr){yr=y;h+='<div class="gh" style="cursor:default"><span>'+y+'</span></div>'}h+=giftRow(x,false)});
     if(!srt.length)h+='<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Aucun cadeau offert pour l’instant.<br>Touchez + pour en ajouter.</p></div>'}
   else{h+=ide.map(function(x){return giftRow(x,true)}).join("");if(!ide.length)h+='<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Aucune idée pour l’instant.</p></div>'}
   return h}

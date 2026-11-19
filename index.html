@@ -456,7 +456,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.15.4";
+var VER="1.15.5";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="idees",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -941,7 +941,7 @@ function openForm(id,g0,pre){
     }else h+='<input data-k="'+k+'" type="'+ty+'" value="'+esc(v)+'"'+(ty==="number"?' step="any" inputmode="decimal"':"")+(k===c.g?' list="gl" placeholder="Choisir ou créer…"':"")+'>'+(c.id==="cadeaux"&&k==="quand"?'<button type="button" class="btn g sm" style="margin-top:6px" data-a="clrd">Effacer la date</button>':"")+(k===c.g?'<datalist id="gl">'+groups(c).map(function(g){return'<option value="'+esc(g)+'">'}).join("")+'</datalist>':"");
   });
   h+='<div class="row">'+(id?'<button class="btn d" data-a="del" data-v="'+id+'">Supprimer</button>':"")+'<button class="btn g" data-a="close">Annuler</button><button class="btn" data-a="save" data-v="'+(id||"")+'">Enregistrer</button></div>'+(c.id==="cadeaux"?'<div class="row"><button class="btn g" style="width:100%" data-a="saveadd">Enregistrer et ajouter un autre cadeau</button></div>':"");
-  $("#sheet").innerHTML=h;$("#modal").className="open";
+  $("#sheet").innerHTML=h;$("#modal").className="open";$("#sheet").scrollTop=0;
 }
 (function(){var m=$("#modal");if(!m||!window.MutationObserver)return;new MutationObserver(function(){document.body.classList.toggle("mo",m.className==="open")}).observe(m,{attributes:true,attributeFilter:["class"]})})();
 function closeForm(){$("#modal").className=""}
@@ -1048,7 +1048,7 @@ document.addEventListener("click",function(e){
     if(!o[c.t]){alert("Merci de renseigner le premier champ.");return}
     var l=list(c.id);
     if(v)l[l.findIndex(function(x){return x.id===v})]=o;else l.unshift(o);if(c.g)openG[c.id+"|"+(o[c.g]||"Autres")]=1;
-    save();closeForm();render();
+    save();closeForm();rr();
     if(a==="saveadd")openForm(null,null,{pour:o.pour,statut:o.statut,occ:o.occ,quand:o.quand,annee:o.annee});
   }
   else if(a==="del"){if(confirm("Supprimer cet élément ?")){S.data[cat]=list(cat).filter(function(x){return x.id!==v});save();closeForm();render()}}

@@ -101,7 +101,7 @@ nav button{border-radius:22px;margin:0 2px}nav button.on{background:var(--ac2)}
 .tile.add .i{filter:none;transform:none;color:var(--ac);font-weight:300;font-size:clamp(44px,13vw,64px)}
 nav{margin:0;padding:6px 0 calc(env(safe-area-inset-bottom,0px)*.12);border:0;border-radius:0;background:var(--bg);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
 nav button{border-radius:0;margin:0;background:none!important;gap:3px}
-nav button i{display:block;line-height:0}nav button svg{width:25px;height:25px}
+nav button i{display:block;line-height:0}nav button svg{width:32px;height:32px}
 .h2r{display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:8px;margin:22px 0 10px}.h2r h2{margin:0;white-space:nowrap}.h2r .btn{white-space:nowrap;padding:9px 11px;font-size:13px}
 .btn.sm{padding:6px 12px;font-size:13px;border-radius:12px}
 .mv{position:absolute;bottom:8px;z-index:3;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center;font-size:20px;font-weight:700;color:#1f2933;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25)}
@@ -218,6 +218,7 @@ input[type=range]{padding:0;accent-color:var(--ac)}
 .grid.cols3 .tile{padding:12px 8px 8px;border-radius:18px}
 .grid.cols3 .tile .i{font-size:clamp(32px,10vw,50px);right:2px;bottom:2px}
 .grid.cols3 .tile small{font-size:10px;margin-top:2px}
+.grid.cols4{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.grid.cols4 .tile{padding:9px 4px 5px;border-radius:14px}.grid.cols4 .tile b{font-size:10.5px;overflow-wrap:anywhere;hyphens:auto;line-height:1.15}.grid.cols4 .tile .i{font-size:clamp(24px,7.5vw,34px);right:1px;bottom:1px}.grid.cols4 .tile small{font-size:9px;margin-top:1px}
 #main>.top{position:sticky;top:-20px;z-index:6;margin:-20px -16px 10px;padding:30px 16px 8px;background:linear-gradient(to bottom,var(--bg) 78%,rgba(0,0,0,0));-webkit-backdrop-filter:none;backdrop-filter:none;padding-bottom:18px;margin-bottom:0}
 .item{min-height:56px}
 .ck{width:30px;height:30px;font-size:17px}
@@ -329,7 +330,7 @@ nav button.on::after{content:"";width:4px;height:4px;border-radius:50%;backgroun
 /* barre du bas compacte */
 nav{padding:3px 0 calc(env(safe-area-inset-bottom,0px)*.12)}
 nav button{flex-direction:row;justify-content:center;gap:7px;padding:14px 0;font-size:13px;position:relative}
-nav button svg{width:21px;height:21px}
+nav button svg{width:32px;height:32px}
 nav button.on::after{position:absolute;bottom:2px;left:50%;margin:0 0 0 -2px}
 /* pas de zoom auto iOS */
 input,select,textarea,.sf input,.mr2 input{font-size:16px!important}
@@ -392,7 +393,9 @@ body[data-tc="4"] .ig .item{padding:8px;min-height:70px}body[data-tc="4"] .ig .i
 .addc .ar{display:flex;align-items:center;gap:10px}.addc .ar input{flex:1;min-width:0}
 .addc .ar2{display:flex;gap:8px;align-items:flex-start}.addc .ar2 input,.addc .ar2 select{height:46px}.addc .fl{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}.addc .fl span{font-size:12px;color:var(--mu);font-weight:600}
 .addc .btn{width:100%;flex:none;padding:12px}
-.top .btn[aria-label="Ajouter"],.top .kb{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;padding:0;flex:none;border-radius:16px}
+.top .btn[aria-label="Ajouter"],.top .kb{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;min-width:0;padding:0;flex:none;border-radius:10px;position:relative;margin-left:6px}
+.top .btn[aria-label="Ajouter"]::after,.top .kb::after{content:"";position:absolute;inset:-9px}
+.top .btn[aria-label="Ajouter"] svg,.top .kb svg{width:20px;height:20px}
 .gh button{display:flex;align-items:center;justify-content:center;padding:0}.gh button svg{width:22px;height:22px}
 .av.ph0{display:flex;align-items:center;justify-content:center}
 .agy{font-style:normal;font-size:13px;font-weight:700;color:var(--mu);background:var(--ac2);border-radius:10px;padding:2px 10px}
@@ -424,8 +427,8 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 <body>
 <div id="main"></div>
 <nav>
-  <button data-a="tab" data-v="home" id="t-home"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></i>Accueil</button>
-  <button data-a="tab" data-v="settings" id="t-settings"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></i>Réglages</button>
+  <button data-a="tab" data-v="home" id="t-home" aria-label="Accueil"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></i></button>
+  <button data-a="tab" data-v="settings" id="t-settings" aria-label="Réglages"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></i></button>
 </nav>
 <div id="modal"><div class="sheet" id="sheet"></div></div>
 <script>
@@ -471,7 +474,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.18.0";
+var VER="1.19.1";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="idees",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -532,7 +535,7 @@ var LOGO='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="4
 var REM=[],rnId=null,rcv=null,gsel=null;
 function homeHTML(){
   var h='<div class="shd"><div class="hd"><div class="brand">'+LOGO+'<h1>Mon foyer</h1></div><div class="eye">'+new Date().toLocaleDateString("fr-FR",{weekday:"short",day:"numeric",month:"short"})+'</div></div><p class="sub" style="margin-top:8px">'+esc((S.tagline||"").trim()||"La Lammerais, à portée de main")+'</p></div><input id="gs" type="search" placeholder="🔍 Rechercher partout…" autocomplete="off"><div id="gres"></div><div id="hbody">';
-  h+=remHTML()+'<div class="grid cols'+(S.cols===3?3:2)+(ord?" ord":"")+'">';
+  h+=remHTML()+'<div class="grid cols'+(S.cols===3||S.cols===4?S.cols:2)+(ord?" ord":"")+'">';
   CATS.forEach(function(c){
     var l=list(c.id),n=l.length,t=n+(n>1?" éléments":" élément");
     if(c.chk){var o=l.filter(function(x){return !x.fait}).length;t=o+" à faire"}
@@ -655,7 +658,7 @@ function membersHTML(){var h="";
   return h;
 }
 function catsHTML(){
-  var h='<h2>Affichage de l’accueil</h2><div class="tabs" style="margin:0 0 4px;padding:0">'+[2,3].map(function(k){return'<button class="tb'+((S.cols===3?3:2)===k?" on":"")+'" data-a="colsset" data-v="'+k+'">'+k+' colonnes</button>'}).join("")+'</div><h2>Ordre et choix des tuiles</h2><p class="sub">Touchez un nom pour le renommer. Changez l’ordre avec ▲ ▼. Retirez une catégorie de l’accueil (ses données sont conservées) ou supprimez celles que vous avez créées.</p>';
+  var h='<h2>Affichage de l’accueil</h2><div class="tabs" style="margin:0 0 4px;padding:0">'+[2,3,4].map(function(k){return'<button class="tb'+((S.cols===3||S.cols===4?S.cols:2)===k?" on":"")+'" data-a="colsset" data-v="'+k+'">'+k+' colonnes</button>'}).join("")+'</div><h2>Ordre et choix des tuiles</h2><p class="sub">Touchez un nom pour le renommer. Changez l’ordre avec ▲ ▼. Retirez une catégorie de l’accueil (ses données sont conservées) ou supprimez celles que vous avez créées.</p>';
   CATS.forEach(function(c){var n=cnt(c);h+='<div class="mrow cr"><span class="ci">'+ic(c)+'</span><b data-a="rncat" data-v="'+c.id+'" style="cursor:pointer">'+esc(c.n)+' <span style="color:var(--mu);font-size:13px">✎</span><small class="sub" style="display:block;margin:0;font-weight:400">'+n+(n>1?" éléments":" élément")+'</small></b><span class="mvi"><button data-a="mv" data-v="'+c.id+'|-1" aria-label="Monter">▲</button><button data-a="mv" data-v="'+c.id+'|1" aria-label="Descendre">▼</button></span><button class="btn d sm" data-a="delc" data-v="'+c.id+'">'+(c.custom?"Supprimer":"Retirer")+'</button></div>'});
   if(S.hidden.length){h+='<h2>Catégories retirées</h2>';S.hidden.forEach(function(id){var b=BASE.filter(function(c){return c.id===id})[0];if(b)h+='<div class="mrow cr"><span class="ci">'+ic(b)+'</span><b>'+esc(b.n)+'</b><button class="btn g sm" data-a="restcat" data-v="'+id+'">↺ Restaurer</button></div>'})}
   return h+'<div class="row" style="margin-top:14px"><button class="btn" data-a="newcat">+ Nouvelle catégorie</button></div>'}
@@ -998,8 +1001,8 @@ document.addEventListener("click",function(e){
   else if(a==="addrdv"){cat="rdv";openForm();var qr=document.querySelector('#sheet [data-k=quand]');if(qr&&v)qr.value=v+"T09:00"}
   else if(a==="rncat"){var rc0=CATS.filter(function(x){return x.id===v})[0];if(!rc0)return;rnId=v;$("#sheet").innerHTML='<h1 style="font-size:22px">Renommer la tuile</h1><label>Nouveau nom</label><input id="rnN" maxlength="30" value="'+esc(rc0.n)+'"><div class="row" style="flex-direction:column"><button class="btn" data-a="rnsave">Enregistrer</button>'+(S.names&&S.names[v]?'<button class="btn g" data-a="rnreset">Rétablir « '+esc(rc0.n0)+' »</button>':'')+'<button class="btn g" data-a="close">Annuler</button></div>';$("#modal").className="open";}
   else if(a==="rnsave"||a==="rnreset"){var rc1=CATS.filter(function(x){return x.id===rnId})[0];if(rc1){S.names=S.names||{};var nv=a==="rnsave"?$("#rnN").value.trim():"";if(!nv||nv===rc1.n0)delete S.names[rnId];else S.names[rnId]=nv;save();build()}closeForm();rr()}
-  else if(a==="colsset"){S.cols=+v===3?3:2;save();rr()}
-  else if(a==="cols"){S.cols=S.cols===3?2:3;save();rr()}
+  else if(a==="colsset"){S.cols=+v===3||+v===4?+v:2;save();rr()}
+  else if(a==="cols"){S.cols=S.cols===3?4:S.cols===4?2:3;save();rr()}
   else if(a==="ctab"){cat=v;q="";ordc=false;render()}
   else if(a==="cmes"){cat="tailles";tmem=v;mtab="mens";ordc=false;render()}
   else if(a==="gomembers"){tab="settings";stab="cats";sacc.m=1;sacc.o=1;cat=null;tmem=null;gp=null;render()}

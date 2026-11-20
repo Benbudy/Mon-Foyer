@@ -101,7 +101,7 @@ nav button{border-radius:22px;margin:0 2px}nav button.on{background:var(--ac2)}
 .tile.add .i{filter:none;transform:none;color:var(--ac);font-weight:300;font-size:clamp(44px,13vw,64px)}
 nav{margin:0;padding:6px 0 calc(env(safe-area-inset-bottom,0px)*.12);border:0;border-radius:0;background:var(--bg);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
 nav button{border-radius:0;margin:0;background:none!important;gap:3px}
-nav button i{display:block;line-height:0}nav button svg{width:32px;height:32px}
+nav button i{display:block;line-height:0}nav button svg{width:27px;height:27px}
 .h2r{display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:8px;margin:22px 0 10px}.h2r h2{margin:0;white-space:nowrap}.h2r .btn{white-space:nowrap;padding:9px 11px;font-size:13px}
 .btn.sm{padding:6px 12px;font-size:13px;border-radius:12px}
 .mv{position:absolute;bottom:8px;z-index:3;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center;font-size:20px;font-weight:700;color:#1f2933;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25)}
@@ -330,8 +330,10 @@ nav button.on::after{content:"";width:4px;height:4px;border-radius:50%;backgroun
 /* barre du bas compacte */
 nav{padding:3px 0 calc(env(safe-area-inset-bottom,0px)*.12)}
 nav button{flex-direction:row;justify-content:center;gap:7px;padding:14px 0;font-size:13px;position:relative}
-nav button svg{width:32px;height:32px}
+nav button svg{width:27px;height:27px}
 nav button.on::after{position:absolute;bottom:2px;left:50%;margin:0 0 0 -2px}
+nav{background:#1F5A4D!important;-webkit-backdrop-filter:none;backdrop-filter:none;border-top:0}
+nav button{color:rgba(255,255,255,.62)}nav button.on{color:#fff}nav button.on::after{background:#E0B565}
 /* pas de zoom auto iOS */
 input,select,textarea,.sf input,.mr2 input{font-size:16px!important}
 .sf input{padding:6px 4px}
@@ -474,7 +476,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.19.1";
+var VER="1.19.2";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="idees",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}

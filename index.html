@@ -406,8 +406,8 @@ body[data-tc="4"] .ig .item{padding:8px;min-height:70px}body[data-tc="4"] .ig .i
 #lbx .lbc{position:absolute;top:max(14px,env(safe-area-inset-top));right:14px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:20px;cursor:pointer;z-index:2}
 #lbx .lbn{position:absolute;bottom:max(18px,env(safe-area-inset-bottom));left:0;right:0;text-align:center;color:#fff;font-size:14px;opacity:.85}
 .rph,.pgal img{cursor:zoom-in}
-.avw{position:relative;display:inline-block;line-height:0}.avw .avc{position:absolute;right:-8px;bottom:-4px;width:22px;height:22px;border-radius:50%;background:var(--card);border:1px solid var(--bd);box-shadow:0 2px 6px rgba(0,0,0,.18);font-size:11px;line-height:22px;text-align:center;cursor:pointer}
-.mt .avw{margin:0 0 6px}.mt .avw .av{margin:0}
+.gimg{display:block;width:56px;height:56px;border-radius:14px;object-fit:cover;margin:0 0 6px}
+.mt.gt{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .cimg{display:inline-block;width:1em;height:1em;object-fit:cover;border-radius:24%;vertical-align:-.12em}
 .lgz{display:flex;flex-direction:column;align-items:center;text-align:center;padding:18px 12px;margin:10px 0;border:2px dashed var(--bd);border-radius:20px;background:var(--glass)}
 .lgz.drag{background:var(--ac2);border-color:var(--ac)}
@@ -482,7 +482,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.22.0";
+var VER="1.22.1";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="idees",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -778,7 +778,7 @@ function crop(f,cb){var fr=new FileReader();fr.onload=function(){openCrop(fr.res
 function mkInput(e){var k=e.target.dataset&&e.target.dataset.mk;if(!k||!tmem)return;var m=S.minfo[tmem]=S.minfo[tmem]||{};if(k.indexOf("ms.")===0){m.ms=m.ms||{};m.ms[k.slice(3)]=e.target.value}else m[k]=e.target.value;save()}
 document.addEventListener("input",mkInput);document.addEventListener("change",mkInput);
 function people(t){var G={};(S.groups||[]).forEach(function(g){G[g.id]=g});return S.members.concat(S.others.filter(function(o){if(S.members.indexOf(o)>=0)return false;var g=G[(S.minfo[o]||{}).grp];return !t||!g||g.tiles.indexOf(t)>=0}))}
-function gav(cid,k){var p=av(k,48);if(p)return p;var u=S.grpimg&&S.grpimg[cid+"|"+k];return'<span class="avw">'+(u?'<img class="av" style="width:48px;height:48px;object-fit:cover" src="'+u+'" alt="">':avi(k,48))+'<span class="avc" data-a="grplogo" data-v="'+esc(cid+"|"+k)+'" title="Photo">📷</span></span>'}
+function gav(cid,k){var p=av(k,48);if(p)return p;var u=S.grpimg&&S.grpimg[cid+"|"+k];return u?'<img class="gimg" src="'+u+'" alt="">':avi(k,48)}
 function avi(n,z){z=z||28;var hh=0;for(var i=0;i<n.length;i++)hh=(hh*31+n.charCodeAt(i))%360;return'<span class="av" style="width:'+z+'px;height:'+z+'px;font-size:'+Math.round(z*.45)+'px;background:hsl('+hh+' 55% 58%)">'+esc(n.charAt(0).toUpperCase())+'</span>'}
 function avp(n,z){return av(n,z)||avi(n,z)}
 function vals(c,k){var o={};list(c.id).forEach(function(x){if(x[k])o[x[k]]=1});return Object.keys(o).sort()}
@@ -1128,6 +1128,13 @@ function lbUp(e){var p=LB.P[e.pointerId];delete LB.P[e.pointerId];if(!p||Object.
 document.addEventListener("keydown",function(e){var o=$("#lbx");if(!o)return;if(e.key==="Escape")lbClose();else if(e.key==="ArrowRight"&&LB.a.length>1){LB.i=(LB.i+1)%LB.a.length;lbShow()}else if(e.key==="ArrowLeft"&&LB.a.length>1){LB.i=(LB.i+LB.a.length-1)%LB.a.length;lbShow()}});
 document.addEventListener("click",function(e){var im=e.target.closest&&e.target.closest("img.rph,.pgal img");if(!im||$("#lbx"))return;var g=im.closest(".pgal"),a=g?[].slice.call(g.querySelectorAll("img")):[im];lbOpen(a.map(function(x){return x.src}),Math.max(0,a.indexOf(im)))});
 function phRead(f,cb){var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,520/Math.max(im.width,im.height)),cv=document.createElement("canvas");cv.width=Math.round(im.width*s);cv.height=Math.round(im.height*s);cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);cb(cv.toDataURL("image/jpeg",.62))};im.onerror=function(){cb(null)};im.src=fr.result};fr.readAsDataURL(f)}
+var LP={t:null,x:0,y:0,fired:0};
+function lpCancel(){if(LP.t){clearTimeout(LP.t);LP.t=null}}
+document.addEventListener("pointerdown",function(e){var g=e.target.closest&&e.target.closest(".mt.gt");lpCancel();if(!g||g.closest("#sheet"))return;LP.x=e.clientX;LP.y=e.clientY;var k=g.getAttribute("data-v");LP.t=setTimeout(function(){LP.t=null;LP.fired=Date.now();if(navigator.vibrate)try{navigator.vibrate(15)}catch(x){}lgK="grp";lgId=cat+"|"+k;lgSheet()},520)});
+document.addEventListener("pointermove",function(e){if(LP.t&&(Math.abs(e.clientX-LP.x)>10||Math.abs(e.clientY-LP.y)>10))lpCancel()});
+["pointerup","pointercancel","scroll"].forEach(function(n){document.addEventListener(n,lpCancel,true)});
+document.addEventListener("contextmenu",function(e){if(e.target.closest&&e.target.closest(".mt.gt"))e.preventDefault()});
+document.addEventListener("click",function(e){if(LP.fired&&Date.now()-LP.fired<700&&e.target.closest&&e.target.closest(".mt.gt")){e.stopPropagation();e.preventDefault();LP.fired=0}},true);
 function phSquare(f,cb){var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){var m=Math.min(im.width,im.height),cv=document.createElement("canvas");cv.width=cv.height=192;var x=cv.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,192,192);x.drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,192,192);cb(cv.toDataURL("image/jpeg",.82))};im.onerror=function(){cb(null)};im.src=fr.result};fr.readAsDataURL(f)}
 var lgK="cat",lgId=null,lgf=document.createElement("input");lgf.type="file";lgf.accept="image/*";lgf.style.display="none";document.body.appendChild(lgf);
 function lgMap(){return lgK==="grp"?(S.grpimg=S.grpimg||{}):(S.catimg=S.catimg||{})}

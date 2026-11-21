@@ -332,8 +332,8 @@ nav{padding:3px 0 calc(env(safe-area-inset-bottom,0px)*.12)}
 nav button{flex-direction:row;justify-content:center;gap:7px;padding:14px 0;font-size:13px;position:relative}
 nav button svg{width:27px;height:27px}
 nav button.on::after{position:absolute;bottom:2px;left:50%;margin:0 0 0 -2px}
-nav{background:#1F5A4D!important;-webkit-backdrop-filter:none;backdrop-filter:none;border-top:0}
-nav button{color:rgba(255,255,255,.62)}nav button.on{color:#fff}nav button.on::after{background:#E0B565}
+nav{background:var(--glass)!important;-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);border-top:1px solid var(--bd)}
+nav button{color:var(--mu)}nav button.on{color:var(--ac)}nav button.on::after{background:var(--gold)}
 /* pas de zoom auto iOS */
 input,select,textarea,.sf input,.mr2 input{font-size:16px!important}
 .sf input{padding:6px 4px}
@@ -476,7 +476,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.19.2";
+var VER="1.19.3";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="idees",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}

@@ -482,7 +482,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.22.1";
+var VER="1.23.0";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="idees",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -516,8 +516,17 @@ cof("tailles").i="👗";cof("emprunts").i="🤝🏻";cof("maison").i="🏠";cof(
 cof("vehicules").i="🚘";cof("tailles").h='<span class="blk">'+cof("tailles").i+'</span>';cof("vehicules").h='<span class="blk blk2">🚘</span>';
 var BASE=CATS.slice();BASE.forEach(function(c){c.f.forEach(function(f){if(f[2]==="photo")f[1]="Photos"})});build();
 var RM=[["rdv","quand","",7,0],["calendriers","quand","",14,0],["anniv","date","Anniversaire · ",30,0,1],["vehicules","ct","Contrôle technique · ",45,1],["vehicules","entre","Entretien · ",30,1],["docs","valid","Validité · ",60,1],["fidelite","exp","Carte expire · ",30,1],["stock","dlc","À consommer · ",7,1],["emprunts","retour","À rendre · ",7,1],["voyage","debut","Départ · ",30,0],["maison","quand","Maison · ",30,1],["maison","garantie","Fin de garantie · ",60,0],["piscine","proch","Piscine · ",30,1],["cou_pro","quand","Couture · ",14,0],["cou_ret","quand","Retouche · ",14,0]];
-function load(){try{var r=localStorage.getItem(K);if(r){var o=JSON.parse(r);o.members=o.members||[];o.data=o.data||{};o.hidden=o.hidden||[];o.cats=o.cats||[];o.order=o.order||[];o.minfo=o.minfo||{};o.others=o.others||[];o.views=o.views||{};o.man=o.man||{};o.groups=o.groups||[];return o}}catch(e){try{localStorage.setItem(K+"-corrompu",localStorage.getItem(K))}catch(e2){}}return{members:[],data:{},hidden:[],cats:[],order:[],minfo:{},others:[],views:{},man:{},theme:"auto"}}
-var QW=0;function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){if(!QW){QW=1;setTimeout(function(){QW=0},8000);alert("⚠ Enregistrement impossible : le stockage est plein. Vos dernières modifications ne sont PAS sauvegardées. Exportez une sauvegarde et supprimez des photos.")}}}
+function norm(o){o.members=o.members||[];o.data=o.data||{};o.hidden=o.hidden||[];o.cats=o.cats||[];o.order=o.order||[];o.minfo=o.minfo||{};o.others=o.others||[];o.views=o.views||{};o.man=o.man||{};o.groups=o.groups||[];return o}
+function load(){try{var r=localStorage.getItem(K);if(r)return norm(JSON.parse(r))}catch(e){try{localStorage.setItem(K+"-corrompu",localStorage.getItem(K))}catch(e2){}}return{members:[],data:{},hidden:[],cats:[],order:[],minfo:{},others:[],views:{},man:{},theme:"auto"}}
+var DBH=null,QW=0,PEND=null,idbTimer=null;
+function idbOpen(cb){if(DBH)return cb(DBH);try{var r=indexedDB.open("monfoyer",1);r.onupgradeneeded=function(){r.result.createObjectStore("kv")};r.onsuccess=function(){DBH=r.result;DBH.onclose=function(){DBH=null};cb(DBH)};r.onerror=function(){cb(null)};r.onblocked=function(){cb(null)}}catch(e){cb(null)}}
+function idbGet(cb){idbOpen(function(db){if(!db)return cb(null);try{var q=db.transaction("kv").objectStore("kv").get(K);q.onsuccess=function(){cb(q.result||null)};q.onerror=function(){cb(null)}}catch(e){cb(null)}})}
+function idbPut(s,cb){idbOpen(function(db){if(!db)return cb(false);try{var tx=db.transaction("kv","readwrite");tx.objectStore("kv").put(s,K);tx.oncomplete=function(){cb(true)};tx.onerror=tx.onabort=function(){cb(false)}}catch(e){cb(false)}})}
+function warnFull(){if(!QW){QW=1;setTimeout(function(){QW=0},8000);alert("⚠ Enregistrement impossible : l’espace de stockage de l’appareil est plein. Vos dernières modifications ne sont PAS sauvegardées. Exportez une sauvegarde et supprimez des photos.")}}
+function flushDB(){if(PEND===null)return;var s=PEND,ls=PENDLS;PEND=null;idbPut(s,function(ok){if(!ok&&!ls)warnFull()})}
+var PENDLS=true;
+function save(){S._t=Date.now();var s;try{s=JSON.stringify(S)}catch(e){return}var ls=true;try{localStorage.setItem(K,s)}catch(e){ls=false}PEND=s;PENDLS=ls;clearTimeout(idbTimer);idbTimer=setTimeout(flushDB,120)}
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden"){clearTimeout(idbTimer);flushDB()}});window.addEventListener("pagehide",function(){clearTimeout(idbTimer);flushDB()});
 function $(s){return document.querySelector(s)}
 function fd(v){var m=/^(\d{4})-(\d\d)-(\d\d)(?:T(\d\d:\d\d))?$/.exec(v);return m?m[3]+"/"+m[2]+"/"+m[1]+(m[4]?" à "+m[4]:""):v}
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
@@ -1166,7 +1175,11 @@ function tms(v){document.querySelectorAll("#sheet .ms").forEach(function(d){d.st
 document.addEventListener("change",function(e){var t=e.target;if(t.classList&&t.classList.contains("mo")){var n=t.dataset.n;S.minfo[n]=S.minfo[n]||{};S.minfo[n].rel=t.value.trim();save()}});
 document.addEventListener("input",function(e){var d=e.target.dataset;if(d&&d.ps&&jp){var pr=d.ps.split("|"),pt=jpart();if(pt){pt.manches[+pr[0]][+pr[1]]=e.target.value;save();jupd(pt)}}});
 document.addEventListener("change",function(e){if(e.target.id!=="imr")return;var f=e.target.files[0];if(!f)return;var fr=new FileReader();fr.onload=function(){try{var o=JSON.parse(fr.result),arr=Array.isArray(o)?o:o.recettes;if(!Array.isArray(arr))throw 0;var L=list("recettes"),n=0,names={};L.forEach(function(x){names[(x.nom||"").toLowerCase()]=1});arr.forEach(function(x,i){if(!x||!x.nom||names[String(x.nom).toLowerCase()])return;var y={};Object.keys(x).forEach(function(k){y[k]=x[k]});y.id=String(Date.now()+i);L.push(y);names[String(x.nom).toLowerCase()]=1;n++});save();render();alert(n+" recette(s) importée(s)."+(arr.length-n?" "+(arr.length-n)+" déjà présente(s) ou invalide(s) ignorée(s).":""))}catch(x){alert("Fichier de recettes invalide.")}};fr.readAsText(f);e.target.value=""});
-navLoad();render();
+navLoad();
+var booted=false;function boot(){if(booted)return;booted=true;theme();render()}
+idbGet(function(r){try{if(r){var o=JSON.parse(r);if((o._t||0)>(S._t||0)){S=norm(o)}}else{idbPut(JSON.stringify(S),function(){})}}catch(e){}boot()});
+setTimeout(boot,1500);
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
 </script>
 </body>
 </html>

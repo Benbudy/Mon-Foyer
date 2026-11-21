@@ -482,8 +482,8 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.23.0";
-var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="idees",jg=null,jp=null,stab="donnees",sacc={};
+var VER="1.23.1";
+var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="offerts",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
 if(!S.rdvdone){S.rdvdone=1;if(S.hidden.indexOf("calendriers")>-1&&S.hidden.indexOf("rdv")<0)S.hidden=S.hidden.filter(function(x){return x!=="calendriers"});S.hidden=S.hidden.filter(function(x){return x!=="rdv"});var ir0=S.order.indexOf("rdv");if(ir0>-1){S.order=S.order.filter(function(x){return x!=="calendriers"});ir0=S.order.indexOf("rdv");S.order[ir0]="calendriers"}save()}
@@ -833,7 +833,7 @@ function cadHTML(c){
   if(!gp){
     var names=people("cadeaux").slice();L.forEach(function(x){if(x.pour&&names.indexOf(x.pour)<0)names.push(x.pour)});
     h='<div class="top">'+back+'<h1>'+ic(c)+' '+esc(c.n)+'</h1>'+mb()+'<button class="btn" data-a="add" aria-label="Ajouter">'+PLUS+'</button></div>'+toolsHTML("cadeaux");
-    var P=names.map(function(n){var o=L.filter(function(x){return x.pour===n&&x.statut==="Offert"}).length,i=L.filter(function(x){return x.pour===n&&x.statut!=="Offert"}).length;return{v:n,n:n,g:(S.minfo[n]||{}).g,img:function(z){return avp(n,z)},s:i+" idée"+(i>1?"s":"")+" · "+o+" offert"+(o>1?"s":""),mv:S.members.indexOf(n)>-1||S.others.indexOf(n)>-1}});
+    var P=names.map(function(n){var o=L.filter(function(x){return x.pour===n&&x.statut==="Offert"}).length,i=L.filter(function(x){return x.pour===n&&x.statut!=="Offert"}).length;return{v:n,n:n,g:(S.minfo[n]||{}).g,img:function(z){return avp(n,z)},s:o+" offert"+(o>1?"s":"")+" · "+i+" idée"+(i>1?"s":""),mv:S.members.indexOf(n)>-1||S.others.indexOf(n)>-1}});
     if(!(S.groups||[]).length)return h+pgrid("cadeaux",P,"gp");
     var BK=[],used={};
     function addB(tt,ar){ar=ar.filter(function(p){return !used[p.v]});ar.forEach(function(p){used[p.v]=1});if(ar.length)BK.push([tt,ar])}
@@ -845,7 +845,7 @@ function cadHTML(c){
   var mi=S.minfo[gp]||{},sub=[mi.rel,mi.b?"Anniversaire le "+fd(mi.b).slice(0,5)+(age(mi.b)!==""?" ("+age(mi.b)+" ans)":""):""].filter(Boolean).join(" · ");
   var mine=L.filter(function(x){return x.pour===gp}),off=mine.filter(function(x){return x.statut==="Offert"}),ide=mine.filter(function(x){return x.statut!=="Offert"});
   h='<div class="top">'+back+'<div class="mh2">'+avp(gp,52)+'<div><h1>'+esc(gp)+'</h1><div class="sub" style="margin:0">'+esc(sub||"Cadeaux")+'</div></div></div><button class="btn" data-a="addgf" aria-label="Ajouter">'+PLUS+'</button></div>';
-  h+='<div class="tabs"><button class="tb'+(gtab==="idees"?" on":"")+'" data-a="gtab" data-v="idees">Idées ('+ide.length+')</button><button class="tb'+(gtab==="offerts"?" on":"")+'" data-a="gtab" data-v="offerts">Déjà offerts ('+off.length+')</button></div>';
+  h+='<div class="tabs"><button class="tb'+(gtab==="offerts"?" on":"")+'" data-a="gtab" data-v="offerts">Déjà offerts ('+off.length+')</button><button class="tb'+(gtab==="idees"?" on":"")+'" data-a="gtab" data-v="idees">Idées ('+ide.length+')</button></div>';
   if(gtab==="offerts"){
     var srt=off.slice().sort(function(a,b){var p1=a.quand||String(a.annee||""),p2=b.quand||String(b.annee||"");return p1<p2?1:p1>p2?-1:0}),yr=null;
     var YR=[],YM={};srt.forEach(function(x){var y=x.quand?x.quand.slice(0,4):(x.annee?String(x.annee):"Sans date");if(!YM[y]){YM[y]=[];YR.push(y)}YM[y].push(x)});var bd=((S.minfo[gp]||{}).b||"").slice(0,4);YR.forEach(function(y){var ag=(bd&&/^\d{4}$/.test(y))?(+y)-(+bd):"";h+='<div class="gh" style="cursor:default"><span>'+y+'</span>'+(ag!==""&&ag>=0?'<em class="agy">'+(ag===0?"< 1 an":ag+(ag>1?" ans":" an"))+'</em>':"")+'</div>'+gGroups(YM[y],false)});
@@ -991,7 +991,7 @@ document.addEventListener("click",function(e){
   var a=el.dataset.a,v=el.dataset.v;if(el.dataset.m)closeForm();
   if(a==="tog"){e.stopPropagation();var it=list(cat).filter(function(x){return x.id===v})[0];it.fait=it.fait?"":"1";save();render();return}
   if(a==="tab"){RESTORE=true;gsel=null;tab=v;cat=null;q="";ord=false;tmem=null;ordc=false;gp=null;jg=null;jp=null;render()}
-  else if(a==="open"){rcv=null;gsel=null;cat=v==="couture"?"cou_pro":v;q="";tmem=null;mtab="tailles";ordc=false;gp=null;gtab="idees";jg=null;jp=null;if(v==="calendriers"){var n0=new Date();calY=n0.getFullYear();calM=n0.getMonth();calSel=ds(calY,calM,n0.getDate())}render()}
+  else if(a==="open"){rcv=null;gsel=null;cat=v==="couture"?"cou_pro":v;q="";tmem=null;mtab="tailles";ordc=false;gp=null;gtab="offerts";jg=null;jp=null;if(v==="calendriers"){var n0=new Date();calY=n0.getFullYear();calM=n0.getMonth();calSel=ds(calY,calM,n0.getDate())}render()}
   else if(a==="back"){RESTORE=true;ordc=false;if(rcv&&hasDet(cat))rcv=null;else if(gpage(cof(cat)||{}))gsel=null;else if(cat==="tailles"&&tmem)tmem=null;else if(cat==="cadeaux"&&gp)gp=null;else if(cat==="jeux"&&(jp||jg)){if(jp)jp=null;else jg=null}else cat=null;render()}
   else if(a==="tgg"){var kk=cat+"|"+v,c9=cof(cat);if(c9.g&&c9.id!=="calendriers"&&vw(cat,dv(cat))==="grid"){gsel=v;q="";render();return}var ef=openG[kk]===undefined?(!!c9.fixg&&vw(cat,dv(cat))!=="grid"):openG[kk];openG[kk]=!ef;$("#list").innerHTML=itemsHTML()}
   else if(a==="ord"){ord=!ord;render()}
@@ -1038,7 +1038,7 @@ document.addEventListener("click",function(e){
   else if(a==="addo"){var on=$("#on").value.trim();if(!on)return;if(people().indexOf(on)<0)S.others.push(on);var mo=S.minfo[on]=S.minfo[on]||{};mo.rel=$("#orl").value.trim();mo.b=$("#ob").value;if($("#og")&&$("#og").value)mo.grp=$("#og").value;save();render()}
   else if(a==="mph3"){$("#mpf").dataset.t=v;$("#mpf").click()}
   else if(a==="delo"){var dn2=S.others.splice(+v,1)[0];if(S.members.indexOf(dn2)<0)delete S.minfo[dn2];save();render()}
-  else if(a==="gp"){gp=v;gtab="idees";render()}
+  else if(a==="gp"){gp=v;gtab="offerts";render()}
   else if(a==="gtab"){gtab=v;render()}
   else if(a==="addgf")openForm(null,null,{pour:gp,statut:gtab==="offerts"?"Offert":"Idée"});
   else if(a==="gift"){var gi=list("cadeaux").filter(function(x){return x.id===v})[0];if(gi){gi.statut="Offert";if(!gi.quand)gi.quand=today();save();rr()}}

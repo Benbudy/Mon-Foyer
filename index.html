@@ -435,6 +435,9 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 .sum .qt{font-style:italic;text-align:center;margin:12px 6px;color:var(--tx)}.sum .qt.l{color:var(--mu);font-size:14px}.sum .lr em{font-size:12px;color:var(--mu);font-style:normal}.sum .bdg{font-size:14px}
 .mr{display:flex;gap:10px;align-items:center;padding:6px 0}.mr i{font-style:normal;font-size:24px;width:32px;text-align:center}.mr div{display:flex;flex-direction:column}.mr span{font-size:12px;color:var(--mu)}
 .kst{display:flex;gap:8px;margin:12px 0}.kst div{flex:1;background:var(--glass);border:1px solid var(--bd);border-radius:14px;padding:8px;text-align:center;display:flex;flex-direction:column}.kst b{font-size:20px}.kst span{font-size:11px;color:var(--mu)}
+.rcs{display:flex;gap:8px}.rcd{flex:1;min-width:0;text-align:center;background:var(--glass);border:1px solid var(--bd);border-radius:16px;padding:10px 6px;color:var(--tx);display:flex;flex-direction:column;gap:2px}.rcd b{font-size:26px}.rcd small{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.03em}.rcd span{font-size:12px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rcd.best{border-color:#d9a400;background:linear-gradient(120deg,rgba(217,164,0,.16),var(--glass))}
+.rtb{font-size:13px;color:var(--mu);background:var(--glass);border:1px solid var(--bd);border-radius:12px;padding:8px 12px;margin:-4px 0 12px}.rtb b{color:var(--tx)}
+.how{margin:18px 0 8px;background:var(--glass);border:1px solid var(--bd);border-radius:16px;padding:0 14px}.how summary{padding:12px 0;font-weight:700;cursor:pointer}.how .hb{padding-bottom:6px;font-size:14px}.how .hb p{margin:0 0 10px}
 </style>
 </head>
 <body>
@@ -487,7 +490,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.24.0";
+var VER="1.24.1";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="offerts",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -886,6 +889,11 @@ function jmer(pt,g){var M=[],n=pt.players.length,low=jlow(g),R=jfill(pt),k=R.len
   if(n>=2&&k>=4){var sd=pt.players.map(function(_,i){var v=R.map(function(r){return jnum(r[i])}),m=v.reduce(function(s,x){return s+x},0)/v.length;return Math.sqrt(v.reduce(function(s,x){return s+(x-m)*(x-m)},0)/v.length)}),mn=Math.min.apply(0,sd),ix=sd.map(function(x,i){return x===mn?i:-1}).filter(function(i){return i>-1});if(ix.length===1)M.push({k:"met",ic:"🎯",t:"Le métronome",p:[pt.players[ix[0]]],d:"Le plus régulier d’une manche à l’autre",pos:1})}
   var mx=rk[rk.length-1].r;if(n>=3&&mx>1)M.push({k:"lan",ic:"🏮",t:"Lanterne rouge",p:rk.filter(function(o){return o.r===mx}).map(function(o){return o.n}),d:"Dernière place, on se rattrape à la prochaine"});
   return M}
+function jrec(g){var mn=null,mx=null;list("parties").forEach(function(pt){if(!pt.fin||pt.jeu!==g.id||!jfill(pt).length)return;jrank(pt,g).forEach(function(o){var r={n:o.n,t:o.t,d:pt.date,id:pt.id};if(!mn||o.t<mn.t)mn=r;if(!mx||o.t>mx.t)mx=r})});return mn?{mn:mn,mx:mx}:null}
+function recHTML2(g){var R=jrec(g);if(!R)return'<p class="sub">Aucun score enregistré : le premier record reste à établir.</p>';var low=jlow(g);function cd(r,lb,best){return'<button class="rcd'+(best?" best":"")+'" data-a="jp" data-v="'+r.id+'"><small>'+(best?"🏅 ":"")+lb+'</small><b>'+jn(r.t)+'</b><span>'+esc(r.n)+' · '+fd(r.d)+'</span></button>'}
+  return'<div class="rcs">'+cd(R.mn,"Score le plus faible"+(low?" · à battre":""),low)+cd(R.mx,"Score le plus élevé"+(low?"":" · à battre"),!low)+'</div>'}
+function howHTML(g){var low=g&&jlow(g),b=g?jbar(g):null,pts=b==="Podium 3-2-1"?"1er : 3 pts · 2e : 2 pts · 3e : 1 pt · les autres : 0":b==="Barème F1"?"1er : 25 · 2e : 18 · 3e : 15 · 4e : 12 · 5e : 10 · 6e : 8 · 7e : 6 · 8e : 4 · 9e : 2 · 10e : 1":b==="Victoire seule"?"Le vainqueur gagne 1 pt, les autres 0":"1 pt par adversaire battu (dernier : 0, avec 4 joueurs le 1er gagne 3 pts)";
+  return'<details class="how"><summary>Comment ça marche ?</summary><div class="hb"><p><b>Qui gagne ?</b> '+(g?(low?"Le moins de points l’emporte.":"Le plus de points l’emporte.")+(g.cible?" Objectif : "+esc(g.cible)+" points, la partie peut alors être terminée.":""):"Selon le jeu : le plus de points, ou le moins de points.")+'</p><p><b>Les manches.</b> Saisissez le score de chaque joueur à chaque manche : les totaux et le classement se mettent à jour tout seuls. Une partie se termine avec le bouton « Terminer la partie » et un résumé s’affiche.</p><p><b>Points de classement.</b> '+(g?esc(b)+" — "+pts+".":"Chaque jeu a son barème (réglable dans « Modifier le jeu ») : joueurs battus, podium 3-2-1, barème F1 ou victoire seule.")+' En cas d’égalité, les joueurs partagent la même place et les mêmes points.</p><p><b>Le classement.</b> Triez-le par victoires, points de classement, % de victoires, podiums, rang moyen (plus il est bas, mieux c’est) ou mérites'+(g?", ou moyenne de points":"")+'. En cas d’égalité : victoires, puis points de classement.</p><p><b>Score à battre.</b> Le meilleur total jamais réalisé sur ce jeu, '+(low?"c’est ici le plus faible":"c’est ici le plus élevé")+'. Le pire score est affiché à côté.</p><p><b>Mérites.</b> 🏰 mené de bout en bout · 🚀 remontada · 📸 photo-finish · 🔨 victoire écrasante · 💥 plus grosse manche · 🎯 le plus régulier (+ 🧨 la boulette et 🏮 lanterne rouge, sans point). Ils comptent dans le classement « Mérites ».</p></div></details>'}
 function jstats(P){var o={};P.forEach(function(pt){var g=jgame(pt.jeu),n=pt.players.length,rk=jrank(pt,g),M=jmer(pt,g),fl=jfill(pt).length;if(!fl)return;rk.forEach(function(r){var s=o[r.n]=o[r.n]||{n:r.n,p:0,w:0,s2:0,pod:0,last:0,rp:0,rs:0,sc:0,mer:0};s.p++;s.rp+=r.pts;s.rs+=r.r;s.sc+=r.t;if(r.r===1)s.w++;if(r.r===2)s.s2++;if(n>=3&&r.r<=3)s.pod++;if(n>=3&&r.r===rk[rk.length-1].r&&r.r>1)s.last++});M.forEach(function(m){if(m.pos)m.p.forEach(function(x){if(o[x])o[x].mer++})})});return jsort(Object.keys(o).map(function(k){return o[k]}),"w")}
 var LBM=[["w","Victoires"],["rp","Points classement"],["wr","% victoires"],["pod","Podiums"],["rm","Rang moyen"],["mer","Mérites"]];
 function jval(s,m,low){return m==="rp"?s.rp:m==="wr"?s.w/s.p:m==="pod"?s.pod:m==="rm"?-(s.rs/s.p):m==="mer"?s.mer:m==="avg"?(low?-1:1)*s.sc/s.p:s.w}
@@ -920,7 +928,7 @@ function jupd(pt){var g=jgame(pt.jeu),t=jtot(pt),W=jwin(pt,g),b=$("#pban");if(b)
 function partyHTML(pt,back){
   var g=jgame(pt.jeu),t=jtot(pt),W=jwin(pt,g);
   var h='<div class="top">'+back+'<div class="mhead"><div><h1>'+esc(g?g.titre:"Jeu")+'</h1><div class="sub" style="margin:0">'+fd(pt.date)+' · '+(jlow(g)?"Le moins de points gagne":"Le plus de points gagne")+(g&&g.cible?" · objectif "+esc(g.cible):"")+(pt.fin?" · terminée":"")+'</div></div></div></div>';
-  h+='<div class="pban" id="pban">'+banHTML(pt,g)+'</div><div class="sc"><table><thead><tr><th></th>'+pt.players.map(function(n,i){return'<th class="pl'+(W.indexOf(n)>-1?" w":"")+'" id="ph'+i+'">'+avp(n,30)+'<span>'+esc(n)+'</span><b class="ht" id="ht'+i+'">'+jn(t[i])+'</b></th>'}).join("")+'</tr></thead><tbody>';
+  var RC=g?jrec(g):null,rtb=RC?(jlow(g)?RC.mn:RC.mx):null;h+='<div class="pban" id="pban">'+banHTML(pt,g)+'</div>'+(rtb?'<div class="rtb">🏅 Score à battre : <b>'+jn(rtb.t)+'</b> ('+esc(rtb.n)+', '+fd(rtb.d)+') · '+(jlow(g)?"le plus élevé":"le plus faible")+' : '+jn((jlow(g)?RC.mx:RC.mn).t)+'</div>':"")+'<div class="sc"><table><thead><tr><th></th>'+pt.players.map(function(n,i){return'<th class="pl'+(W.indexOf(n)>-1?" w":"")+'" id="ph'+i+'">'+avp(n,30)+'<span>'+esc(n)+'</span><b class="ht" id="ht'+i+'">'+jn(t[i])+'</b></th>'}).join("")+'</tr></thead><tbody>';
   pt.manches.forEach(function(r,ri){h+='<tr><th>M'+(ri+1)+'</th>'+pt.players.map(function(n,i){return'<td><input type="number" step="any" data-ps="'+ri+'|'+i+'" value="'+esc(r[i]==null?"":r[i])+'"'+(pt.fin?" disabled":"")+'></td>'}).join("")+'</tr>'});
   h+='</tbody><tfoot><tr><th>Total</th>'+pt.players.map(function(n,i){return'<td id="tt'+i+'"'+(W.indexOf(n)>-1?' class="lead"':"")+'>'+jn(t[i])+'</td>'}).join("")+'</tr></tfoot></table></div>';
   if(pt.fin)h+='<h2>Résumé de la partie</h2>'+sumHTML(pt);
@@ -932,9 +940,9 @@ function gameHTML(g,P,back){
   var h='<div class="top">'+back+'<div class="mhead"><div><h1>'+esc(g.titre)+'</h1><div class="sub" style="margin:0">'+(jlow(g)?"Le moins de points gagne":"Le plus de points gagne")+(g.cible?" · objectif "+esc(g.cible):"")+" · "+esc(jbar(g))+'</div></div></div><button class="btn" data-a="newp" data-v="'+g.id+'">+ Partie</button></div>';
   h+='<div class="tools"><button class="btn g sm" data-a="editj" data-v="'+g.id+'">Modifier le jeu</button></div>';
   if(g.note)h+='<p class="sub">'+esc(g.note)+'</p>';
-  if(st.length)h+='<h2>Classement</h2>'+lbHTML(st,g);
+  h+='<h2>Records</h2>'+recHTML2(g);if(st.length)h+='<h2>Classement</h2>'+lbHTML(st,g);
   if(enc.length)h+='<h2>En cours</h2>'+enc.map(partyRow).join("");
-  h+='<h2>Historique</h2>'+(fin.length?fin.map(partyRow).join(""):'<p class="sub">Aucune partie terminée pour ce jeu.</p>');
+  h+='<h2>Historique</h2>'+(fin.length?fin.map(partyRow).join(""):'<p class="sub">Aucune partie terminée pour ce jeu.</p>')+howHTML(g);
   return h}
 function jeuxHTML(c){
   var P=list("parties"),back='<button class="back" data-a="back">‹</button>';
@@ -951,7 +959,7 @@ function jeuxHTML(c){
   var have=G.map(function(g){return(g.titre||"").toLowerCase()}),sg=JSUG.map(function(g,i){return have.indexOf(g[0].toLowerCase())<0?'<button class="cp" data-a="jsug" data-v="'+i+'">+ '+esc(g[0])+'</button>':""}).join("");
   if(sg)h+='<h2>Idées de jeux</h2><div class="sg">'+sg+'</div>';
   if(fin.length)h+='<h2>Dernières parties</h2>'+fin.slice(0,8).map(partyRow).join("");
-  return h}
+  return h+howHTML(null)}
 function newPHTML(gid){
   var G=list("jeux").slice().sort(function(a,b){return(a.titre||"").localeCompare(b.titre||"","fr")});
   return'<h1 style="font-size:22px">Nouvelle partie</h1><label>Jeu</label><select id="pg"><option value="">— choisir —</option>'+G.map(function(g){return'<option value="'+g.id+'"'+(g.id===gid?" selected":"")+'>'+esc(g.titre)+'</option>'}).join("")+'</select><label>ou créer un nouveau jeu</label><input id="pgn" placeholder="Nom du jeu"><select id="pgm" style="margin-top:6px"><option>Le plus de points gagne</option><option>Le moins de points gagne</option></select><label>Joueurs</label><div class="pcs" id="pcs">'+people("jeux").map(function(n){return'<button class="pc" data-a="pc" data-v="'+esc(n)+'">'+avp(n,22)+esc(n)+'</button>'}).join("")+'</div><div class="row" style="margin-top:8px"><input id="gst" placeholder="Invité (prénom)"><button class="btn g" style="flex:none" data-a="gadd">+ Invité</button></div><div class="row"><button class="btn g" data-a="close">Annuler</button><button class="btn" data-a="startp">Commencer</button></div>'}

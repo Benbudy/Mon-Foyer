@@ -168,15 +168,15 @@ input[type=range]{padding:0;accent-color:var(--ac)}
 .lr .rk{font-style:normal;font-weight:800;width:22px;text-align:center;color:var(--mu)}.lr.top{border-color:#d9a400;background:linear-gradient(120deg,rgba(217,164,0,.16),var(--glass))}.lr.top .rk{color:#d9a400}
 .item .wv{color:#d9a400;font-size:22px;line-height:1;display:inline-flex}
 .pban{display:flex;align-items:center;gap:10px;background:var(--ac2);border-radius:16px;padding:12px 14px;margin:8px 0 12px}.pban .tr{font-size:28px;flex:none}.pban div{display:flex;flex-direction:column}.pban span{font-size:13px;color:var(--mu)}
-.sc{overflow-x:auto;margin:0 -16px;padding:0 16px}.sc table{border-collapse:separate;border-spacing:4px;width:100%}
-.sc th{font-size:12px;color:var(--mu);font-weight:700;text-align:center;padding:4px 2px;min-width:52px}.sc thead th.pl{min-width:68px;vertical-align:bottom}.sc th.pl .av{margin:0 auto 4px;display:grid}.sc th.pl span{display:block;overflow-wrap:anywhere}.sc th.pl.w{color:var(--ac)}
-.sc th:first-child{position:sticky;left:0;background:var(--bg);text-align:left;min-width:44px}
-.sc td{padding:0}.sc input{padding:11px 4px;text-align:center;font-size:17px;font-weight:600;min-width:60px}
+.sc{margin:0 -16px;padding:0 16px}.sc table{border-collapse:separate;border-spacing:0;width:100%;table-layout:fixed}
+.sc th{font-size:12px;color:var(--mu);font-weight:700;text-align:center;padding:4px 2px}.sc thead th{position:sticky;top:52px;z-index:4;background:var(--bg);padding-top:24px;padding-bottom:6px;border-bottom:1px solid var(--bd);vertical-align:bottom;overflow:hidden}.sc thead th span{display:block;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sc thead th .ht{display:block;font-size:15px;color:var(--tx)}.sc th.pl .av{margin:0 auto 4px;display:grid}.sc th.pl span{display:block;overflow-wrap:anywhere}.sc th.pl.w{color:var(--ac)}
+.sc th:first-child{width:40px;text-align:left}.sc thead th:first-child{z-index:5}
+.sc td{padding:2px}.sc input{padding:11px 2px;text-align:center;font-size:17px;font-weight:600;min-width:0;width:100%}
 .sc tfoot td{text-align:center;font-weight:800;font-size:20px;padding:10px 4px;border-top:2px solid var(--ac)}.sc tfoot th{font-size:13px;color:var(--tx)}
 .sc td.lead{background:var(--ac2);color:var(--ac);border-radius:12px}
 .pcs{display:flex;flex-wrap:wrap;gap:8px}.pc{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--bd);background:var(--card);color:var(--tx);border-radius:22px;padding:5px 12px 5px 6px;font-weight:600;font-size:14px;font-family:inherit;cursor:pointer}.pc .av{margin:0}.pc.on{border-color:var(--ac);background:var(--ac2);color:var(--ac)}
 .mh2{flex:1;min-width:0;display:flex;align-items:center;gap:12px}.mh2 .av{margin:0;flex:none}.mh2 h1{margin:0}.mh2 .sub{font-size:13px}.top .btn{white-space:nowrap}
-.sc thead th:first-child{background:none}
+.sc thead th:first-child{background:var(--bg)}
 .sil img.mn{position:absolute;left:28.1%;top:3.9%;width:43.8%;height:92.2%;pointer-events:none}
 .sil label.sf{width:26%}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sil img.mn{filter:invert(1)}}
@@ -430,6 +430,11 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 .tile,.item,.gc,.mt{animation:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 #modal{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 .sheet{animation-duration:.18s}
+.lbm{display:flex;gap:6px;overflow-x:auto;margin:0 -16px 8px;padding:0 16px;scrollbar-width:none}.lbm::-webkit-scrollbar{display:none}.lbm button{flex:none;border:1.5px solid var(--bd);background:var(--card);color:var(--tx);border-radius:18px;padding:6px 12px;font-size:13px;font-weight:600}.lbm button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.sum .sh{display:flex;align-items:center;gap:12px;background:var(--ac2);border-radius:16px;padding:12px 14px}.sum .sh .big{font-size:38px}.sum .sh div{display:flex;flex-direction:column}.sum .sh small,.sum .sh span{font-size:12px;color:var(--mu)}.sum .sh b{font-size:20px}
+.sum .qt{font-style:italic;text-align:center;margin:12px 6px;color:var(--tx)}.sum .qt.l{color:var(--mu);font-size:14px}.sum .lr em{font-size:12px;color:var(--mu);font-style:normal}.sum .bdg{font-size:14px}
+.mr{display:flex;gap:10px;align-items:center;padding:6px 0}.mr i{font-style:normal;font-size:24px;width:32px;text-align:center}.mr div{display:flex;flex-direction:column}.mr span{font-size:12px;color:var(--mu)}
+.kst{display:flex;gap:8px;margin:12px 0}.kst div{flex:1;background:var(--glass);border:1px solid var(--bd);border-radius:14px;padding:8px;text-align:center;display:flex;flex-direction:column}.kst b{font-size:20px}.kst span{font-size:11px;color:var(--mu)}
 </style>
 </head>
 <body>
@@ -466,7 +471,7 @@ var CATS=[
 
 {id:"recettes",i:"🍲",n:"Recettes",ex:"Plats favoris",t:"nom",s:["temps","note"],f:[["nom","Plat","text"],["temps","Durée","text"],["note","Ingrédients","area"],["prep","Préparation","area"]]},
 {id:"cadeaux",i:"🎁",n:"Cadeaux",ex:"Idées et cadeaux déjà offerts, par personne",t:"idee",s:["occ","quand"],f:[["idee","Cadeau","text"],["pour","Pour","who"],["statut","Statut","sel:Idée,Acheté,Offert"],["occ","Occasion","pick:Anniversaire,Noël,Naissance,Baptême,Mariage,Fête,Remerciement,Autre"],["quand","Date offerte","date"],["annee","Ou année seule (si date inconnue)","number"],["prix","Budget / prix","text"],["note","Notes","area"]]},
-{id:"jeux",i:"🎲",n:"Jeux",ex:"Scores, parties et classement",t:"titre",s:["mode"],f:[["titre","Jeu","text"],["mode","Qui gagne ?","sel:Le plus de points gagne,Le moins de points gagne"],["cible","Score à atteindre (facultatif)","number"],["note","Notes / règles","area"]]},
+{id:"jeux",i:"🎲",n:"Jeux",ex:"Scores, parties et classement",t:"titre",s:["mode"],f:[["titre","Jeu","text"],["mode","Qui gagne ?","sel:Le plus de points gagne,Le moins de points gagne"],["cible","Score à atteindre (facultatif)","number"],["bareme","Points de classement","sel:Joueurs battus,Podium 3-2-1,Barème F1,Victoire seule"],["note","Notes / règles","area"]]},
 {id:"piscine",i:"🏊",n:"Piscine",ex:"Entretien, analyses de l’eau, filtration, produits…",chk:1,t:"titre",s:["quand","proch"],f:[["titre","Élément / tâche","text"],["rub","Rubrique","pick:Analyse de l’eau,Filtration,Nettoyage,Produits,Équipement,Hivernage & saison,Administratif"],["quand","Dernière fois","date"],["proch","Prochaine échéance","date"],["freq","Fréquence","text"],["ph","pH","number"],["cl","Chlore (mg/L)","number"],["tac","TAC","number"],["temp","Température de l’eau (°C)","number"],["vol","Volume du bassin (m³)","number"],["produit","Produit / quantité","text"],["note","Notes","area"],["fait","Fait","chk"],["photo","Photo","photo"]]},
 {id:"couture",i:"🧵",n:"Couture",ex:"Projets, tissus, mercerie, retouches…",t:"nom",s:[],f:[]},
 {id:"cycle",i:"🌸",n:"Menstrues",ex:"Suivi des règles et prévisions",t:"debut",s:["fin","qui"],f:[["debut","Début des règles","date"],["fin","Fin des règles","date"],["qui","Pour","member"],["note","Symptômes / notes","area"]]},
@@ -482,7 +487,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.23.1";
+var VER="1.24.0";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="offerts",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -859,29 +864,75 @@ function jgame(id){return list("jeux").filter(function(g){return g.id===id})[0]}
 function jpart(){return list("parties").filter(function(x){return x.id===jp})[0]}
 function jn(x){return Math.round(x*100)/100}
 function jtot(pt){return pt.players.map(function(_,i){return pt.manches.reduce(function(s,r){return s+(parseFloat(String(r[i]==null?"":r[i]).replace(",","."))||0)},0)})}
-function jwin(pt,g){if(!pt.manches.some(function(r){return r.some(function(v){return v!==""&&v!=null})}))return[];var t=jtot(pt),low=jlow(g),b=t.reduce(function(a,x){return low?Math.min(a,x):Math.max(a,x)},low?Infinity:-Infinity);return pt.players.filter(function(_,i){return t[i]===b})}
-function jstats(P){var o={};P.forEach(function(pt){var g=jgame(pt.jeu),W=jwin(pt,g);pt.players.forEach(function(n){o[n]=o[n]||{n:n,w:0,p:0};o[n].p++});W.forEach(function(n){o[n].w++})});return Object.keys(o).map(function(k){return o[k]}).sort(function(a,b){return b.w-a.w||a.p-b.p||a.n.localeCompare(b.n,"fr")})}
-function lbHTML(st){return'<div class="lb">'+st.map(function(s,i){return'<div class="lr'+(i===0&&s.w>0?" top":"")+'"><i class="rk">'+(i+1)+'</i>'+avp(s.n,34)+'<b>'+esc(s.n)+'</b><span class="wn">'+TR+s.w+'</span><em>'+s.p+(s.p>1?" parties":" partie")+'</em></div>'}).join("")+'</div>'}
-function partyRow(pt){var g=jgame(pt.jeu),W=pt.fin?jwin(pt,g):[],t=jtot(pt),sc=pt.players.map(function(n,i){return esc(n)+" "+jn(t[i])}).join(" · ");
+function jnum(v){return parseFloat(String(v==null?"":v).replace(",","."))||0}
+function jbar(g){return g&&g.bareme||"Joueurs battus"}
+function jrp(g,r,n){var b=jbar(g);if(b==="Podium 3-2-1")return[3,2,1][r-1]||0;if(b==="Barème F1")return[25,18,15,12,10,8,6,4,2,1][r-1]||0;if(b==="Victoire seule")return r===1?1:0;return n-r}
+function jfill(pt){return pt.manches.filter(function(r){return r.some(function(v){return v!==""&&v!=null})})}
+function jrank(pt,g){var t=jtot(pt),low=jlow(g),n=pt.players.length,a=pt.players.map(function(p,i){return{n:p,i:i,t:jn(t[i])}});a.sort(function(x,y){return(low?x.t-y.t:y.t-x.t)||x.i-y.i});a.forEach(function(o,k){o.r=k&&o.t===a[k-1].t?a[k-1].r:k+1;o.pts=jrp(g,o.r,n)});return a}
+function jwin(pt,g){if(!jfill(pt).length)return[];return jrank(pt,g).filter(function(o){return o.r===1}).map(function(o){return o.n})}
+function jmer(pt,g){var M=[],n=pt.players.length,low=jlow(g),R=jfill(pt),k=R.length;if(!k||n<1)return M;
+  var rk=jrank(pt,g),W=rk.filter(function(o){return o.r===1}),cum=pt.players.map(function(){return 0}),H=[];
+  R.forEach(function(r){pt.players.forEach(function(_,i){cum[i]+=jnum(r[i])});H.push(cum.slice())});
+  function ext(a,hi){var b=a.reduce(function(m,x){return hi?Math.max(m,x):Math.min(m,x)},hi?-Infinity:Infinity);return a.map(function(v,i){return jn(v)===jn(b)?i:-1}).filter(function(i){return i>-1})}
+  function pos(h,i){var c=0;h.forEach(function(v){if(low?jn(v)<jn(h[i]):jn(v)>jn(h[i]))c++});return c+1}
+  var w=W.length===1?W[0].i:-1;
+  if(W.length>1)M.push({k:"nul",ic:"🤝",t:"Égalité parfaite",p:W.map(function(o){return o.n}),d:"Impossible de les départager",pos:1});
+  if(n>=2&&k>=3&&w>-1&&H.every(function(h){var e=ext(h,!low);return e.length===1&&e[0]===w}))M.push({k:"dom",ic:"🏰",t:"Du début à la fin",p:[pt.players[w]],d:"En tête à chaque manche",pos:1});
+  else if(n>=2&&k>=4&&w>-1){var hh=H[Math.floor(k/2)-1];if(pos(hh,w)>=Math.max(2,n-1))M.push({k:"rem",ic:"🚀",t:"Remontada",p:[pt.players[w]],d:"Loin derrière à mi-partie, vainqueur au final",pos:1})}
+  if(n>=2&&w>-1){var sec=rk.filter(function(o){return o.r>1})[0];if(sec){var mg=Math.abs(rk[0].t-sec.t),tw=Math.abs(rk[0].t);if(mg<=Math.max(1,tw*.03))M.push({k:"photo",ic:"📸",t:"Photo-finish",p:[pt.players[w]],d:"Seulement "+jn(mg)+" pt"+(mg>1?"s":"")+" d’écart avec "+sec.n,pos:1});else if(tw>0&&mg>=tw*.4)M.push({k:"ecr",ic:"🔨",t:"Victoire écrasante",p:[pt.players[w]],d:jn(mg)+" pts d’avance sur "+sec.n,pos:1})}}
+  var cells=[];R.forEach(function(r,ri){pt.players.forEach(function(p,i){if(r[i]!==""&&r[i]!=null)cells.push({p:p,v:jnum(r[i]),m:ri+1})})});
+  if(cells.length>=2&&n>=2){var bs=cells[0],ws=cells[0];cells.forEach(function(c){if(low?c.v<bs.v:c.v>bs.v)bs=c;if(low?c.v>ws.v:c.v<ws.v)ws=c});
+    if(bs.v!==ws.v){M.push({k:"ec",ic:"💥",t:"Coup d’éclat",p:[bs.p],d:jn(bs.v)+" pts en manche "+bs.m,pos:1});M.push({k:"bou",ic:"🧨",t:"La boulette",p:[ws.p],d:jn(ws.v)+" pts en manche "+ws.m})}}
+  if(n>=2&&k>=4){var sd=pt.players.map(function(_,i){var v=R.map(function(r){return jnum(r[i])}),m=v.reduce(function(s,x){return s+x},0)/v.length;return Math.sqrt(v.reduce(function(s,x){return s+(x-m)*(x-m)},0)/v.length)}),mn=Math.min.apply(0,sd),ix=sd.map(function(x,i){return x===mn?i:-1}).filter(function(i){return i>-1});if(ix.length===1)M.push({k:"met",ic:"🎯",t:"Le métronome",p:[pt.players[ix[0]]],d:"Le plus régulier d’une manche à l’autre",pos:1})}
+  var mx=rk[rk.length-1].r;if(n>=3&&mx>1)M.push({k:"lan",ic:"🏮",t:"Lanterne rouge",p:rk.filter(function(o){return o.r===mx}).map(function(o){return o.n}),d:"Dernière place, on se rattrape à la prochaine"});
+  return M}
+function jstats(P){var o={};P.forEach(function(pt){var g=jgame(pt.jeu),n=pt.players.length,rk=jrank(pt,g),M=jmer(pt,g),fl=jfill(pt).length;if(!fl)return;rk.forEach(function(r){var s=o[r.n]=o[r.n]||{n:r.n,p:0,w:0,s2:0,pod:0,last:0,rp:0,rs:0,sc:0,mer:0};s.p++;s.rp+=r.pts;s.rs+=r.r;s.sc+=r.t;if(r.r===1)s.w++;if(r.r===2)s.s2++;if(n>=3&&r.r<=3)s.pod++;if(n>=3&&r.r===rk[rk.length-1].r&&r.r>1)s.last++});M.forEach(function(m){if(m.pos)m.p.forEach(function(x){if(o[x])o[x].mer++})})});return jsort(Object.keys(o).map(function(k){return o[k]}),"w")}
+var LBM=[["w","Victoires"],["rp","Points classement"],["wr","% victoires"],["pod","Podiums"],["rm","Rang moyen"],["mer","Mérites"]];
+function jval(s,m,low){return m==="rp"?s.rp:m==="wr"?s.w/s.p:m==="pod"?s.pod:m==="rm"?-(s.rs/s.p):m==="mer"?s.mer:m==="avg"?(low?-1:1)*s.sc/s.p:s.w}
+function jsort(a,m,low){return a.slice().sort(function(x,y){return(jval(y,m,low)-jval(x,m,low))||(y.w-x.w)||(y.rp-x.rp)||(y.p-x.p)||x.n.localeCompare(y.n,"fr")})}
+function jshow(s,m,low){return m==="rp"?s.rp+" pt"+(s.rp>1?"s":""):m==="wr"?Math.round(100*s.w/s.p)+" %":m==="pod"?s.pod:m==="rm"?(Math.round(10*s.rs/s.p)/10).toString().replace(".",","):m==="mer"?s.mer:m==="avg"?(Math.round(10*s.sc/s.p)/10).toString().replace(".",","):s.w}
+function lbHTML(st,g){var m=S.lbm||"w",M=LBM.concat(g?[["avg","Moy. points"]]:[]);if(m==="avg"&&!g)m="w";var low=g&&jlow(g),A=jsort(st,m,low),pr=null,rk=0;
+  return'<div class="lbm">'+M.map(function(x){return'<button class="'+(x[0]===m?"on":"")+'" data-a="lbm" data-v="'+x[0]+'">'+x[1]+'</button>'}).join("")+'</div><div class="lb">'+A.map(function(s,i){var v=jval(s,m,low);if(pr===null||v!==pr)rk=i+1;pr=v;var md=rk===1?"🥇":rk===2?"🥈":rk===3&&A.length>2?"🥉":rk;return'<div class="lr'+(rk===1&&v>0?" top":"")+'"><i class="rk">'+md+'</i>'+avp(s.n,34)+'<b>'+esc(s.n)+'<small class="sub" style="display:block;margin:0">'+s.w+' V · '+s.rp+' pts · '+s.p+(s.p>1?" parties":" partie")+'</small></b><span class="wn">'+(m==="w"?TR:"")+jshow(s,m,low)+'</span></div>'}).join("")+'</div>'}
+function partyRow(pt){var g=jgame(pt.jeu),W=pt.fin?jwin(pt,g):[],rk=jrank(pt,g),sc=rk.map(function(o){return esc(o.n)+" "+jn(o.t)}).join(" · ");
   return'<div class="item" data-a="jp" data-v="'+pt.id+'"><div class="t"><b>'+esc(g?g.titre:"Jeu supprimé")+' <small class="sub">· '+fd(pt.date)+'</small></b><span>'+(pt.fin?(W.length?"Gagnant : "+W.map(esc).join(", ")+" · ":""):"En cours · ")+sc+'</span></div>'+(W.length?'<span class="wv">'+TR+'</span>':"")+'</div>'}
+var PH={win:["{w} a rangé tout le monde dans sa poche.","Quand {w} joue, les autres regardent.","Ce soir, la légende s’écrit au nom de {w}.","{w} : 1. Le reste de la table : 0.","Il paraît que {w} a des dés pipés… non, juste du talent.","Chapeau {w} ! On redemande une revanche (pour la forme)."],
+ dom:["{w} n’a jamais lâché la première place. Insolent.","Du premier au dernier tour, {w} a mené la danse.","Aucun suspense ce soir : {w} avait déjà gagné à la première manche."],
+ rem:["{w} s’est réveillé juste à temps. Quelle remontée !","Dernier au début, premier à la fin : {w} adore faire peur.","Celui qui rit le dernier rit le mieux, bravo {w} !"],
+ photo:["Ça s’est joué à un cheveu : {w} gagne sur le fil.","Un point de plus, un point de moins… {w} respire.","Suspense jusqu’à la dernière manche, {w} l’emporte de justesse."],
+ ecr:["{w} a fait un carnage. Pas de survivants.","Victoire sans appel pour {w}. Les autres ont fait de leur mieux.","{w} écrase la concurrence, on demande l’arbitrage vidéo."],
+ nul:["Égalité parfaite : personne n’a rien à se reprocher (ou tout).","Match nul ! Il va falloir une belle pour départager."],
+ lose:["{l} termine dernier mais garde le sourire.","{l} a fait de la figuration, mais avec élégance.","Pour {l}, l’important c’était de participer.","{l} prépare déjà sa revanche, on le sent."]};
+function jpick(a,s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return a[Math.abs(h)%a.length]}
+function jphr(pt,g,rk,M){var W=rk.filter(function(o){return o.r===1}),ks=M.map(function(m){return m.k}),key=ks.indexOf("nul")>-1?"nul":ks.indexOf("dom")>-1?"dom":ks.indexOf("rem")>-1?"rem":ks.indexOf("photo")>-1?"photo":ks.indexOf("ecr")>-1?"ecr":"win",wn=W.map(function(o){return o.n}).join(" et "),L=M.filter(function(m){return m.k==="lan"})[0];
+  return{w:jpick(PH[key],pt.id+"w").replace(/\{w\}/g,wn),l:L?jpick(PH.lose,pt.id+"l").replace(/\{l\}/g,L.p.join(" et ")):""}}
+function sumText(pt){var g=jgame(pt.jeu),rk=jrank(pt,g),M=jmer(pt,g),ph=jphr(pt,g,rk,M),md=["🥇","🥈","🥉"];
+  return"🎲 "+(g?g.titre:"Partie")+" – "+fd(pt.date)+"\n"+rk.map(function(o){return(md[o.r-1]||o.r+".")+" "+o.n+" : "+jn(o.t)+" pts"}).join("\n")+"\n\n« "+ph.w+" »"+(M.length?"\n\n"+M.map(function(m){return m.ic+" "+m.t+" : "+m.p.join(", ")+" ("+m.d+")"}).join("\n"):"")}
+function sumHTML(pt){var g=jgame(pt.jeu),rk=jrank(pt,g),M=jmer(pt,g),R=jfill(pt),k=R.length;if(!k)return"";var ph=jphr(pt,g,rk,M),W=rk.filter(function(o){return o.r===1}),md=["🥇","🥈","🥉"],tot=rk.reduce(function(s,o){return s+o.t},0),sec=rk.filter(function(o){return o.r>1})[0];
+  var h='<div class="sum"><div class="sh"><span class="big">🏆</span><div><small>'+(W.length>1?"Égalité":"Vainqueur")+' · '+esc(g?g.titre:"")+'</small><b>'+W.map(function(o){return esc(o.n)}).join(" &amp; ")+'</b><span>'+jn(W[0].t)+' pts</span></div></div><p class="qt">« '+esc(ph.w)+' »</p><div class="lb">';
+  h+=rk.map(function(o){var bd=M.filter(function(m){return m.pos&&m.p.indexOf(o.n)>-1}).map(function(m){return m.ic}).join("");return'<div class="lr'+(o.r===1?" top":"")+'"><i class="rk">'+(md[o.r-1]||o.r)+'</i>'+avp(o.n,30)+'<b>'+esc(o.n)+(bd?' <span class="bdg">'+bd+'</span>':"")+'</b><span class="wn">'+jn(o.t)+'</span><em>+'+o.pts+' cl.</em></div>'}).join("")+'</div>';
+  if(M.length)h+='<h2>Mérites</h2>'+M.map(function(m){return'<div class="mr"><i>'+m.ic+'</i><div><b>'+esc(m.t)+' · '+m.p.map(esc).join(", ")+'</b><span>'+esc(m.d)+'</span></div></div>'}).join("");
+  if(ph.l)h+='<p class="qt l">« '+esc(ph.l)+' »</p>';
+  h+='<div class="kst"><div><b>'+k+'</b><span>manche'+(k>1?"s":"")+'</span></div><div><b>'+jn(tot)+'</b><span>pts au total</span></div>'+(sec?'<div><b>'+jn(Math.abs(rk[0].t-sec.t))+'</b><span>d’écart 1er/2e</span></div>':"")+'</div>';
+  return h+'<div class="row"><button class="btn g" data-a="jshare" data-v="'+pt.id+'">Partager le résumé</button></div></div>'}
 function banHTML(pt,g){var W=jwin(pt,g),t=jtot(pt);if(!W.length)return'<span class="sub" style="margin:0">Saisissez les scores : les totaux et le gagnant se mettent à jour.</span>';var best=t[pt.players.indexOf(W[0])],cib=g?parseFloat(g.cible):0,reach=cib&&t.some(function(x){return x>=cib});
   return TR+'<div><b>'+(pt.fin?"Gagnant":"En tête")+' : '+W.map(esc).join(" &amp; ")+'</b><span>'+jn(best)+' pts'+(W.length>1?" (égalité)":"")+(reach&&!pt.fin?" · objectif atteint, vous pouvez terminer":"")+'</span></div>'}
-function jupd(pt){var g=jgame(pt.jeu),t=jtot(pt),W=jwin(pt,g),b=$("#pban");if(b)b.innerHTML=banHTML(pt,g);pt.players.forEach(function(n,i){var c=$("#tt"+i),h=$("#ph"+i),w=W.indexOf(n)>-1;if(c){c.textContent=jn(t[i]);c.className=w?"lead":""}if(h)h.className="pl"+(w?" w":"")})}
+function jupd(pt){var g=jgame(pt.jeu),t=jtot(pt),W=jwin(pt,g),b=$("#pban");if(b)b.innerHTML=banHTML(pt,g);pt.players.forEach(function(n,i){var c=$("#tt"+i),h=$("#ph"+i),w=W.indexOf(n)>-1;var ht=$("#ht"+i);if(ht)ht.textContent=jn(t[i]);if(c){c.textContent=jn(t[i]);c.className=w?"lead":""}if(h)h.className="pl"+(w?" w":"")})}
 function partyHTML(pt,back){
   var g=jgame(pt.jeu),t=jtot(pt),W=jwin(pt,g);
   var h='<div class="top">'+back+'<div class="mhead"><div><h1>'+esc(g?g.titre:"Jeu")+'</h1><div class="sub" style="margin:0">'+fd(pt.date)+' · '+(jlow(g)?"Le moins de points gagne":"Le plus de points gagne")+(g&&g.cible?" · objectif "+esc(g.cible):"")+(pt.fin?" · terminée":"")+'</div></div></div></div>';
-  h+='<div class="pban" id="pban">'+banHTML(pt,g)+'</div><div class="sc"><table><thead><tr><th></th>'+pt.players.map(function(n,i){return'<th class="pl'+(W.indexOf(n)>-1?" w":"")+'" id="ph'+i+'">'+avp(n,34)+'<span>'+esc(n)+'</span></th>'}).join("")+'</tr></thead><tbody>';
+  h+='<div class="pban" id="pban">'+banHTML(pt,g)+'</div><div class="sc"><table><thead><tr><th></th>'+pt.players.map(function(n,i){return'<th class="pl'+(W.indexOf(n)>-1?" w":"")+'" id="ph'+i+'">'+avp(n,30)+'<span>'+esc(n)+'</span><b class="ht" id="ht'+i+'">'+jn(t[i])+'</b></th>'}).join("")+'</tr></thead><tbody>';
   pt.manches.forEach(function(r,ri){h+='<tr><th>M'+(ri+1)+'</th>'+pt.players.map(function(n,i){return'<td><input type="number" step="any" data-ps="'+ri+'|'+i+'" value="'+esc(r[i]==null?"":r[i])+'"'+(pt.fin?" disabled":"")+'></td>'}).join("")+'</tr>'});
   h+='</tbody><tfoot><tr><th>Total</th>'+pt.players.map(function(n,i){return'<td id="tt'+i+'"'+(W.indexOf(n)>-1?' class="lead"':"")+'>'+jn(t[i])+'</td>'}).join("")+'</tr></tfoot></table></div>';
+  if(pt.fin)h+='<h2>Résumé de la partie</h2>'+sumHTML(pt);
   if(!pt.fin)h+='<div class="row"><button class="btn g" data-a="addr">+ Manche</button><button class="btn g" data-a="delr">− Manche</button></div>';
   h+='<div class="row"><button class="btn'+(pt.fin?" g":"")+'" data-a="jfin">'+(pt.fin?"Reprendre la partie":"Terminer la partie")+'</button></div><div class="row"><button class="btn d" data-a="delp">Supprimer la partie</button></div>';
   return h}
 function gameHTML(g,P,back){
   var fin=P.filter(function(x){return x.fin}),enc=P.filter(function(x){return!x.fin}),st=jstats(fin);
-  var h='<div class="top">'+back+'<div class="mhead"><div><h1>'+esc(g.titre)+'</h1><div class="sub" style="margin:0">'+(jlow(g)?"Le moins de points gagne":"Le plus de points gagne")+(g.cible?" · objectif "+esc(g.cible):"")+'</div></div></div><button class="btn" data-a="newp" data-v="'+g.id+'">+ Partie</button></div>';
+  var h='<div class="top">'+back+'<div class="mhead"><div><h1>'+esc(g.titre)+'</h1><div class="sub" style="margin:0">'+(jlow(g)?"Le moins de points gagne":"Le plus de points gagne")+(g.cible?" · objectif "+esc(g.cible):"")+" · "+esc(jbar(g))+'</div></div></div><button class="btn" data-a="newp" data-v="'+g.id+'">+ Partie</button></div>';
   h+='<div class="tools"><button class="btn g sm" data-a="editj" data-v="'+g.id+'">Modifier le jeu</button></div>';
   if(g.note)h+='<p class="sub">'+esc(g.note)+'</p>';
-  if(st.length)h+='<h2>Classement</h2>'+lbHTML(st);
+  if(st.length)h+='<h2>Classement</h2>'+lbHTML(st,g);
   if(enc.length)h+='<h2>En cours</h2>'+enc.map(partyRow).join("");
   h+='<h2>Historique</h2>'+(fin.length?fin.map(partyRow).join(""):'<p class="sub">Aucune partie terminée pour ce jeu.</p>');
   return h}
@@ -1053,7 +1104,9 @@ document.addEventListener("click",function(e){
   else if(a==="startp"){var nms=[].map.call(document.querySelectorAll("#pcs .pc.on"),function(b){return b.dataset.v}),gid=$("#pg").value,gnn=$("#pgn").value.trim();if(gnn){var ng={id:"j"+Date.now(),titre:gnn,mode:$("#pgm").value,cible:""};list("jeux").push(ng);gid=ng.id}if(!gid){alert("Choisissez un jeu ou créez-en un.");return}if(!nms.length){alert("Choisissez au moins un joueur.");return}var npt={id:"p"+Date.now(),jeu:gid,date:today(),players:nms,manches:[nms.map(function(){return""})],fin:false};list("parties").unshift(npt);save();closeForm();cat="jeux";jp=npt.id;render()}
   else if(a==="addr"){var pa=jpart();if(pa){pa.manches.push(pa.players.map(function(){return""}));save();rr();var ni=document.querySelectorAll('[data-ps^="'+(pa.manches.length-1)+'|"]');if(ni[0])ni[0].focus()}}
   else if(a==="delr"){var pd=jpart();if(pd&&pd.manches.length>1&&(!pd.manches[pd.manches.length-1].some(function(x){return x!==""})||confirm("Supprimer la dernière manche ?"))){pd.manches.pop();save();rr()}}
-  else if(a==="jfin"){var pf=jpart();if(pf){pf.fin=!pf.fin;save();rr()}}
+  else if(a==="lbm"){S.lbm=v;save();rr()}
+  else if(a==="jshare"){var ps=list("parties").filter(function(x){return x.id===v})[0];if(ps){var tx=sumText(ps);if(navigator.share){navigator.share({text:tx}).catch(function(){})}else if(navigator.clipboard){navigator.clipboard.writeText(tx).then(function(){alert("Résumé copié.")},function(){})}}}
+  else if(a==="jfin"){var pf=jpart();if(pf){pf.fin=!pf.fin;save();rr();if(pf.fin&&jfill(pf).length){$("#sheet").innerHTML='<h1 style="font-size:22px">Partie terminée</h1>'+sumHTML(pf)+'<div class="row"><button class="btn" data-a="close">Fermer</button></div>';$("#modal").className="open"}}}
   else if(a==="delp"){if(confirm("Supprimer cette partie ?")){S.data.parties=list("parties").filter(function(x){return x.id!==jp});jp=null;save();render()}}
   else if(a==="mem"){tmem=v;mtab="tailles";render()}
   else if(a==="mtab"){mtab=v;render()}

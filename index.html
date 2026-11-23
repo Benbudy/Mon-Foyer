@@ -440,6 +440,7 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 .how{margin:18px 0 8px;background:var(--glass);border:1px solid var(--bd);border-radius:16px;padding:0 14px}.how summary{padding:12px 0;font-weight:700;cursor:pointer}.how .hb{padding-bottom:6px;font-size:14px}.how .hb p{margin:0 0 10px}
 .phd{position:sticky;top:52px;z-index:4;display:grid;margin:0 -16px;padding:22px 18px 6px;background:var(--bg);border-bottom:1px solid var(--bd);text-align:center}.phd .pl{display:flex;flex-direction:column;align-items:center;min-width:0;padding:0 2px}.phd .pl .av{margin:0 auto 4px}.phd span{font-size:11px;font-weight:700;color:var(--mu);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.phd .w span{color:var(--ac)}.phd .ht{font-size:15px;color:var(--tx)}
 .phd,#main>.top{transform:translateY(var(--vo,0px))}.phd .pl.act{background:var(--ac2);border-radius:12px}.phd .pl.act span{color:var(--ac)}
+.pban:empty{display:none}
 </style>
 </head>
 <body>
@@ -492,7 +493,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.24.3";
+var VER="1.24.4";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="offerts",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -924,13 +925,13 @@ function sumHTML(pt){var g=jgame(pt.jeu),rk=jrank(pt,g),M=jmer(pt,g),R=jfill(pt)
   if(ph.l)h+='<p class="qt l">« '+esc(ph.l)+' »</p>';
   h+='<div class="kst"><div><b>'+k+'</b><span>manche'+(k>1?"s":"")+'</span></div><div><b>'+jn(tot)+'</b><span>pts au total</span></div>'+(sec?'<div><b>'+jn(Math.abs(rk[0].t-sec.t))+'</b><span>d’écart 1er/2e</span></div>':"")+'</div>';
   return h+'<div class="row"><button class="btn g" data-a="jshare" data-v="'+pt.id+'">Partager le résumé</button></div></div>'}
-function banHTML(pt,g){var W=jwin(pt,g),t=jtot(pt);if(!W.length)return'<span class="sub" style="margin:0">Saisissez les scores : les totaux et le gagnant se mettent à jour.</span>';var best=t[pt.players.indexOf(W[0])],cib=g?parseFloat(g.cible):0,reach=cib&&t.some(function(x){return x>=cib});
+function banHTML(pt,g){var W=jwin(pt,g),t=jtot(pt);if(!W.length)return'';var best=t[pt.players.indexOf(W[0])],cib=g?parseFloat(g.cible):0,reach=cib&&t.some(function(x){return x>=cib});
   return TR+'<div><b>'+(pt.fin?"Gagnant":"En tête")+' : '+W.map(esc).join(" &amp; ")+'</b><span>'+jn(best)+' pts'+(W.length>1?" (égalité)":"")+(reach&&!pt.fin?" · objectif atteint, vous pouvez terminer":"")+'</span></div>'}
 function jupd(pt){var g=jgame(pt.jeu),t=jtot(pt),W=jwin(pt,g),b=$("#pban");if(b)b.innerHTML=banHTML(pt,g);pt.players.forEach(function(n,i){var c=$("#tt"+i),h=$("#ph"+i),w=W.indexOf(n)>-1;var ht=$("#ht"+i);if(ht)ht.textContent=jn(t[i]);if(c){c.textContent=jn(t[i]);c.className=w?"lead":""}if(h)h.classList.toggle("w",w)})}
 function partyHTML(pt,back){
   var g=jgame(pt.jeu),t=jtot(pt),W=jwin(pt,g);
   var h='<div class="top">'+back+'<div class="mhead"><div><h1>'+esc(g?g.titre:"Jeu")+'</h1><div class="sub" style="margin:0">'+fd(pt.date)+' · '+(jlow(g)?"Le moins de points gagne":"Le plus de points gagne")+(g&&g.cible?" · objectif "+esc(g.cible):"")+(pt.fin?" · terminée":"")+'</div></div></div></div>';
-  var RC=g?jrec(g):null,rtb=RC?(jlow(g)?RC.mn:RC.mx):null;h+='<div class="pban" id="pban">'+banHTML(pt,g)+'</div>'+(rtb?'<div class="rtb">🏅 Score à battre : <b>'+jn(rtb.t)+'</b> ('+esc(rtb.n)+', '+fd(rtb.d)+') · '+(jlow(g)?"le plus élevé":"le plus faible")+' : '+jn((jlow(g)?RC.mx:RC.mn).t)+'</div>':"")+'<div class="phd" style="grid-template-columns:40px repeat('+pt.players.length+',minmax(0,1fr))"><i></i>'+pt.players.map(function(n,i){return'<div class="pl'+(W.indexOf(n)>-1?" w":"")+'" id="ph'+i+'">'+avp(n,30)+'<span>'+esc(n)+'</span><b class="ht" id="ht'+i+'">'+jn(t[i])+'</b></div>'}).join("")+'</div><div class="sc"><table><tbody>';
+  var RC=g?jrec(g):null,rtb=RC?(jlow(g)?RC.mn:RC.mx):null;h+='<div class="pban" id="pban">'+banHTML(pt,g)+'</div>'+'<div class="phd" style="grid-template-columns:40px repeat('+pt.players.length+',minmax(0,1fr))"><i></i>'+pt.players.map(function(n,i){return'<div class="pl'+(W.indexOf(n)>-1?" w":"")+'" id="ph'+i+'">'+avp(n,30)+'<span>'+esc(n)+'</span><b class="ht" id="ht'+i+'">'+jn(t[i])+'</b></div>'}).join("")+'</div><div class="sc"><table><tbody>';
   pt.manches.forEach(function(r,ri){h+='<tr><th>M'+(ri+1)+'</th>'+pt.players.map(function(n,i){return'<td><input type="number" step="any" data-ps="'+ri+'|'+i+'" value="'+esc(r[i]==null?"":r[i])+'"'+(pt.fin?" disabled":"")+'></td>'}).join("")+'</tr>'});
   h+='</tbody><tfoot><tr><th>Total</th>'+pt.players.map(function(n,i){return'<td id="tt'+i+'"'+(W.indexOf(n)>-1?' class="lead"':"")+'>'+jn(t[i])+'</td>'}).join("")+'</tr></tfoot></table></div>';
   if(pt.fin)h+='<h2>Résumé de la partie</h2>'+sumHTML(pt);

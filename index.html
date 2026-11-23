@@ -439,6 +439,7 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 .rtb{font-size:13px;color:var(--mu);background:var(--glass);border:1px solid var(--bd);border-radius:12px;padding:8px 12px;margin:-4px 0 12px}.rtb b{color:var(--tx)}
 .how{margin:18px 0 8px;background:var(--glass);border:1px solid var(--bd);border-radius:16px;padding:0 14px}.how summary{padding:12px 0;font-weight:700;cursor:pointer}.how .hb{padding-bottom:6px;font-size:14px}.how .hb p{margin:0 0 10px}
 .phd{position:sticky;top:52px;z-index:4;display:grid;margin:0 -16px;padding:22px 18px 6px;background:var(--bg);border-bottom:1px solid var(--bd);text-align:center}.phd .pl{display:flex;flex-direction:column;align-items:center;min-width:0;padding:0 2px}.phd .pl .av{margin:0 auto 4px}.phd span{font-size:11px;font-weight:700;color:var(--mu);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.phd .w span{color:var(--ac)}.phd .ht{font-size:15px;color:var(--tx)}
+.phd,#main>.top{transform:translateY(var(--vo,0px))}.phd .pl.act{background:var(--ac2);border-radius:12px}.phd .pl.act span{color:var(--ac)}
 </style>
 </head>
 <body>
@@ -491,7 +492,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.24.2";
+var VER="1.24.3";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="offerts",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -925,7 +926,7 @@ function sumHTML(pt){var g=jgame(pt.jeu),rk=jrank(pt,g),M=jmer(pt,g),R=jfill(pt)
   return h+'<div class="row"><button class="btn g" data-a="jshare" data-v="'+pt.id+'">Partager le résumé</button></div></div>'}
 function banHTML(pt,g){var W=jwin(pt,g),t=jtot(pt);if(!W.length)return'<span class="sub" style="margin:0">Saisissez les scores : les totaux et le gagnant se mettent à jour.</span>';var best=t[pt.players.indexOf(W[0])],cib=g?parseFloat(g.cible):0,reach=cib&&t.some(function(x){return x>=cib});
   return TR+'<div><b>'+(pt.fin?"Gagnant":"En tête")+' : '+W.map(esc).join(" &amp; ")+'</b><span>'+jn(best)+' pts'+(W.length>1?" (égalité)":"")+(reach&&!pt.fin?" · objectif atteint, vous pouvez terminer":"")+'</span></div>'}
-function jupd(pt){var g=jgame(pt.jeu),t=jtot(pt),W=jwin(pt,g),b=$("#pban");if(b)b.innerHTML=banHTML(pt,g);pt.players.forEach(function(n,i){var c=$("#tt"+i),h=$("#ph"+i),w=W.indexOf(n)>-1;var ht=$("#ht"+i);if(ht)ht.textContent=jn(t[i]);if(c){c.textContent=jn(t[i]);c.className=w?"lead":""}if(h)h.className="pl"+(w?" w":"")})}
+function jupd(pt){var g=jgame(pt.jeu),t=jtot(pt),W=jwin(pt,g),b=$("#pban");if(b)b.innerHTML=banHTML(pt,g);pt.players.forEach(function(n,i){var c=$("#tt"+i),h=$("#ph"+i),w=W.indexOf(n)>-1;var ht=$("#ht"+i);if(ht)ht.textContent=jn(t[i]);if(c){c.textContent=jn(t[i]);c.className=w?"lead":""}if(h)h.classList.toggle("w",w)})}
 function partyHTML(pt,back){
   var g=jgame(pt.jeu),t=jtot(pt),W=jwin(pt,g);
   var h='<div class="top">'+back+'<div class="mhead"><div><h1>'+esc(g?g.titre:"Jeu")+'</h1><div class="sub" style="margin:0">'+fd(pt.date)+' · '+(jlow(g)?"Le moins de points gagne":"Le plus de points gagne")+(g&&g.cible?" · objectif "+esc(g.cible):"")+(pt.fin?" · terminée":"")+'</div></div></div></div>';
@@ -1237,6 +1238,9 @@ function tms(v){document.querySelectorAll("#sheet .ms").forEach(function(d){d.st
 document.addEventListener("change",function(e){var t=e.target;if(t.classList&&t.classList.contains("mo")){var n=t.dataset.n;S.minfo[n]=S.minfo[n]||{};S.minfo[n].rel=t.value.trim();save()}});
 document.addEventListener("input",function(e){var d=e.target.dataset;if(d&&d.ps&&jp){var pr=d.ps.split("|"),pt=jpart();if(pt){pt.manches[+pr[0]][+pr[1]]=e.target.value;save();jupd(pt)}}});
 document.addEventListener("change",function(e){if(e.target.id!=="imr")return;var f=e.target.files[0];if(!f)return;var fr=new FileReader();fr.onload=function(){try{var o=JSON.parse(fr.result),arr=Array.isArray(o)?o:o.recettes;if(!Array.isArray(arr))throw 0;var L=list("recettes"),n=0,names={};L.forEach(function(x){names[(x.nom||"").toLowerCase()]=1});arr.forEach(function(x,i){if(!x||!x.nom||names[String(x.nom).toLowerCase()])return;var y={};Object.keys(x).forEach(function(k){y[k]=x[k]});y.id=String(Date.now()+i);L.push(y);names[String(x.nom).toLowerCase()]=1;n++});save();render();alert(n+" recette(s) importée(s)."+(arr.length-n?" "+(arr.length-n)+" déjà présente(s) ou invalide(s) ignorée(s).":""))}catch(x){alert("Fichier de recettes invalide.")}};fr.readAsText(f);e.target.value=""});
+(function(){var vv=window.visualViewport;if(!vv)return;function f(){document.documentElement.style.setProperty("--vo",Math.round(vv.offsetTop)+"px")}vv.addEventListener("scroll",f);vv.addEventListener("resize",f);f()})();
+document.addEventListener("focusin",function(e){var d=e.target.dataset;if(d&&d.ps){var c=+d.ps.split("|")[1];[].forEach.call(document.querySelectorAll(".phd .pl"),function(x,i){x.classList.toggle("act",i===c)})}});
+document.addEventListener("focusout",function(e){if(e.target.dataset&&e.target.dataset.ps)[].forEach.call(document.querySelectorAll(".phd .pl"),function(x){x.classList.remove("act")})});
 navLoad();
 var booted=false;function boot(){if(booted)return;booted=true;theme();render()}
 idbGet(function(r){try{if(r){var o=JSON.parse(r);if((o._t||0)>(S._t||0)){S=norm(o)}}else{idbPut(JSON.stringify(S),function(){})}}catch(e){}boot()});

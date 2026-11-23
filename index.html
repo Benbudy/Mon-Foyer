@@ -169,14 +169,14 @@ input[type=range]{padding:0;accent-color:var(--ac)}
 .item .wv{color:#d9a400;font-size:22px;line-height:1;display:inline-flex}
 .pban{display:flex;align-items:center;gap:10px;background:var(--ac2);border-radius:16px;padding:12px 14px;margin:8px 0 12px}.pban .tr{font-size:28px;flex:none}.pban div{display:flex;flex-direction:column}.pban span{font-size:13px;color:var(--mu)}
 .sc{margin:0 -16px;padding:0 16px}.sc table{border-collapse:separate;border-spacing:0;width:100%;table-layout:fixed}
-.sc th{font-size:12px;color:var(--mu);font-weight:700;text-align:center;padding:4px 2px}.sc thead th{position:sticky;top:52px;z-index:4;background:var(--bg);padding-top:24px;padding-bottom:6px;border-bottom:1px solid var(--bd);vertical-align:bottom;overflow:hidden}.sc thead th span{display:block;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sc thead th .ht{display:block;font-size:15px;color:var(--tx)}.sc th.pl .av{margin:0 auto 4px;display:grid}.sc th.pl span{display:block;overflow-wrap:anywhere}.sc th.pl.w{color:var(--ac)}
-.sc th:first-child{width:40px;text-align:left}.sc thead th:first-child{z-index:5}
+.sc th{font-size:12px;color:var(--mu);font-weight:700;text-align:center;padding:4px 2px}.sc th.pl .av{margin:0 auto 4px;display:grid}.sc th.pl span{display:block;overflow-wrap:anywhere}.sc th.pl.w{color:var(--ac)}
+.sc th:first-child{width:40px;text-align:left}
 .sc td{padding:2px}.sc input{padding:11px 2px;text-align:center;font-size:17px;font-weight:600;min-width:0;width:100%}
 .sc tfoot td{text-align:center;font-weight:800;font-size:20px;padding:10px 4px;border-top:2px solid var(--ac)}.sc tfoot th{font-size:13px;color:var(--tx)}
 .sc td.lead{background:var(--ac2);color:var(--ac);border-radius:12px}
 .pcs{display:flex;flex-wrap:wrap;gap:8px}.pc{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--bd);background:var(--card);color:var(--tx);border-radius:22px;padding:5px 12px 5px 6px;font-weight:600;font-size:14px;font-family:inherit;cursor:pointer}.pc .av{margin:0}.pc.on{border-color:var(--ac);background:var(--ac2);color:var(--ac)}
 .mh2{flex:1;min-width:0;display:flex;align-items:center;gap:12px}.mh2 .av{margin:0;flex:none}.mh2 h1{margin:0}.mh2 .sub{font-size:13px}.top .btn{white-space:nowrap}
-.sc thead th:first-child{background:var(--bg)}
+
 .sil img.mn{position:absolute;left:28.1%;top:3.9%;width:43.8%;height:92.2%;pointer-events:none}
 .sil label.sf{width:26%}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sil img.mn{filter:invert(1)}}
@@ -438,6 +438,7 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 .rcs{display:flex;gap:8px}.rcd{flex:1;min-width:0;text-align:center;background:var(--glass);border:1px solid var(--bd);border-radius:16px;padding:10px 6px;color:var(--tx);display:flex;flex-direction:column;gap:2px}.rcd b{font-size:26px}.rcd small{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.03em}.rcd span{font-size:12px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rcd.best{border-color:#d9a400;background:linear-gradient(120deg,rgba(217,164,0,.16),var(--glass))}
 .rtb{font-size:13px;color:var(--mu);background:var(--glass);border:1px solid var(--bd);border-radius:12px;padding:8px 12px;margin:-4px 0 12px}.rtb b{color:var(--tx)}
 .how{margin:18px 0 8px;background:var(--glass);border:1px solid var(--bd);border-radius:16px;padding:0 14px}.how summary{padding:12px 0;font-weight:700;cursor:pointer}.how .hb{padding-bottom:6px;font-size:14px}.how .hb p{margin:0 0 10px}
+.phd{position:sticky;top:52px;z-index:4;display:grid;margin:0 -16px;padding:22px 18px 6px;background:var(--bg);border-bottom:1px solid var(--bd);text-align:center}.phd .pl{display:flex;flex-direction:column;align-items:center;min-width:0;padding:0 2px}.phd .pl .av{margin:0 auto 4px}.phd span{font-size:11px;font-weight:700;color:var(--mu);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.phd .w span{color:var(--ac)}.phd .ht{font-size:15px;color:var(--tx)}
 </style>
 </head>
 <body>
@@ -490,7 +491,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.24.1";
+var VER="1.24.2";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="offerts",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -928,7 +929,7 @@ function jupd(pt){var g=jgame(pt.jeu),t=jtot(pt),W=jwin(pt,g),b=$("#pban");if(b)
 function partyHTML(pt,back){
   var g=jgame(pt.jeu),t=jtot(pt),W=jwin(pt,g);
   var h='<div class="top">'+back+'<div class="mhead"><div><h1>'+esc(g?g.titre:"Jeu")+'</h1><div class="sub" style="margin:0">'+fd(pt.date)+' · '+(jlow(g)?"Le moins de points gagne":"Le plus de points gagne")+(g&&g.cible?" · objectif "+esc(g.cible):"")+(pt.fin?" · terminée":"")+'</div></div></div></div>';
-  var RC=g?jrec(g):null,rtb=RC?(jlow(g)?RC.mn:RC.mx):null;h+='<div class="pban" id="pban">'+banHTML(pt,g)+'</div>'+(rtb?'<div class="rtb">🏅 Score à battre : <b>'+jn(rtb.t)+'</b> ('+esc(rtb.n)+', '+fd(rtb.d)+') · '+(jlow(g)?"le plus élevé":"le plus faible")+' : '+jn((jlow(g)?RC.mx:RC.mn).t)+'</div>':"")+'<div class="sc"><table><thead><tr><th></th>'+pt.players.map(function(n,i){return'<th class="pl'+(W.indexOf(n)>-1?" w":"")+'" id="ph'+i+'">'+avp(n,30)+'<span>'+esc(n)+'</span><b class="ht" id="ht'+i+'">'+jn(t[i])+'</b></th>'}).join("")+'</tr></thead><tbody>';
+  var RC=g?jrec(g):null,rtb=RC?(jlow(g)?RC.mn:RC.mx):null;h+='<div class="pban" id="pban">'+banHTML(pt,g)+'</div>'+(rtb?'<div class="rtb">🏅 Score à battre : <b>'+jn(rtb.t)+'</b> ('+esc(rtb.n)+', '+fd(rtb.d)+') · '+(jlow(g)?"le plus élevé":"le plus faible")+' : '+jn((jlow(g)?RC.mx:RC.mn).t)+'</div>':"")+'<div class="phd" style="grid-template-columns:40px repeat('+pt.players.length+',minmax(0,1fr))"><i></i>'+pt.players.map(function(n,i){return'<div class="pl'+(W.indexOf(n)>-1?" w":"")+'" id="ph'+i+'">'+avp(n,30)+'<span>'+esc(n)+'</span><b class="ht" id="ht'+i+'">'+jn(t[i])+'</b></div>'}).join("")+'</div><div class="sc"><table><tbody>';
   pt.manches.forEach(function(r,ri){h+='<tr><th>M'+(ri+1)+'</th>'+pt.players.map(function(n,i){return'<td><input type="number" step="any" data-ps="'+ri+'|'+i+'" value="'+esc(r[i]==null?"":r[i])+'"'+(pt.fin?" disabled":"")+'></td>'}).join("")+'</tr>'});
   h+='</tbody><tfoot><tr><th>Total</th>'+pt.players.map(function(n,i){return'<td id="tt'+i+'"'+(W.indexOf(n)>-1?' class="lead"':"")+'>'+jn(t[i])+'</td>'}).join("")+'</tr></tfoot></table></div>';
   if(pt.fin)h+='<h2>Résumé de la partie</h2>'+sumHTML(pt);

@@ -500,7 +500,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.26.1";
+var VER="1.26.2";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="offerts",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -596,8 +596,8 @@ function couHTML(c){
   if(c.id==="cou_mes")return h+mesCouHTML();
   if(c.id==="cou_mer"){var rb=list("cou_mer").filter(function(x){return x.racheter==="Oui"});if(rb.length)h+='<div class="pban"><div><b>À racheter ('+rb.length+')</b><span>'+rb.map(function(x){return esc(x.nom)}).join(" · ")+'</span></div></div>'}
   if(c.id==="cou_tis"){var tl=list("cou_tis"),tm=tl.reduce(function(a,x){return a+(parseFloat(String(x.metrage).replace(",","."))||0)},0);if(tl.length)h+='<div class="pban"><div><b>'+tl.length+(tl.length>1?" tissus":" tissu")+' en stock</b><span>'+(tm>0?'Environ '+(Math.round(tm*10)/10).toString().replace(".",",")+' m au total':'Ajoutez le métrage de chaque tissu')+'</span></div></div>'}
-  h+=lkBlock(c.id)+toolsHTML(c.id)+'<input id="q" placeholder="Rechercher…" value="'+esc(q)+'">';
-  h+='<div id="list">'+itemsHTML()+'</div>';
+  h+=toolsHTML(c.id)+'<input id="q" placeholder="Rechercher…" value="'+esc(q)+'">';
+  h+='<div id="list">'+itemsHTML()+'</div>'+lkBlock(c.id);
   if(c.id==="cou_ret"&&list(c.id).some(function(x){return x.fait}))h+='<div class="row"><button class="btn g" data-a="clear">Retirer les retouches faites</button></div>';
   return h}
 function mesCouHTML(){
@@ -665,7 +665,7 @@ function lkFiltered(){var s=lq.trim().toLowerCase();return(S.links||[]).slice().
 function lkList(){var L=lkFiltered();return L.length?L.map(function(x){return lkCard(x,true)}).join(""):'<p class="sub" style="text-align:center;margin:30px 0">'+((S.links||[]).length?"Aucun lien ne correspond.":"Aucun lien enregistré. Touchez + pour garder le lien d’une vidéo de recette, d’une idée de sortie ou d’un lieu à tester.")+'</p>'}
 function liensHTML(){var A=S.links||[],ch=[["all","Tous ("+A.length+")"],["todo","À voir ("+A.filter(function(x){return!x.v}).length+")"]];LT.forEach(function(T){var n=A.filter(function(x){return x.ty===T[0]}).length;if(n)ch.push(["t:"+T[0],T[1]+" "+T[2]+" "+n])});CATS.forEach(function(c){if(c.par)return;var n=A.filter(function(x){return x.cat===c.id}).length;if(n)ch.push(["c:"+c.id,(c.i||"")+" "+c.n+" "+n])});if(!ch.some(function(x){return x[0]===lf}))lf="all";
   return'<div class="top">'+(lback?'<button class="back" data-a="lbackcat">‹</button>':"")+'<h1>🔖 Liens</h1><button class="btn" data-a="ladd" aria-label="Ajouter">'+PLUS+'</button></div><input id="lq" type="search" placeholder="Rechercher un lien…" value="'+esc(lq)+'"><div class="lbm">'+ch.map(function(x){return'<button class="'+(x[0]===lf?"on":"")+'" data-a="lf" data-v="'+x[0]+'">'+esc(x[1])+'</button>'}).join("")+'</div><div id="llist">'+lkList()+'</div>'}
-function lkBlock(cid){var n=(S.links||[]).filter(function(x){return x.cat===cid}).length;if(!n)return"";return'<div class="item" data-a="lkopen" data-v="'+cid+'" style="margin:0 0 12px"><span style="font-size:26px">🔖</span><div class="t"><b>Liens enregistrés</b><span>'+n+(n>1?" liens":" lien")+'</span></div><span style="color:var(--mu);font-size:22px">›</span></div>'}
+function lkBlock(cid){var n=(S.links||[]).filter(function(x){return x.cat===cid}).length;if(!n)return"";return'<div class="ig" style="margin-top:14px"><div class="item" data-a="lkopen" data-v="'+cid+'" style="--h:48"><span style="font-size:28px;line-height:1">🔖</span><div class="t"><b>Liens enregistrés</b><span>'+n+(n>1?" liens":" lien")+'</span></div></div></div>'}
 function lkForm(id,cid){var x=id?(S.links||[]).filter(function(l){return l.id===id})[0]:null;LK=x?x.id:null;
   var opts=LT.map(function(T){return'<option value="'+T[0]+'"'+((x?x.ty:"autre")===T[0]?" selected":"")+'>'+T[1]+' '+T[2]+'</option>'}).join(""),co='<option value="">— Aucune tuile —</option>'+CATS.filter(function(c){return!c.par}).map(function(c){return'<option value="'+c.id+'"'+((x?x.cat:cid)===c.id?" selected":"")+'>'+(c.i||"")+' '+esc(c.n)+'</option>'}).join("");
   $("#sheet").innerHTML='<h1 style="font-size:22px">'+(x?"Modifier le lien":"Nouveau lien")+'</h1><label>Adresse du lien</label><div class="row" style="flex-wrap:nowrap"><input id="lu" type="url" inputmode="url" autocapitalize="off" autocorrect="off" placeholder="https://…" value="'+esc(x?x.url:"")+'"><button class="btn g" style="flex:none" data-a="lpaste">📋 Coller</button></div><label>Titre</label><input id="lt" placeholder="Nom du lien" value="'+esc(x?x.t:"")+'"><label>Type</label><select id="ly">'+opts+'</select><label>Ranger dans une tuile de l’accueil</label><select id="lc">'+co+'</select><label>Note</label><textarea id="ln" rows="3" placeholder="Pourquoi je le garde…">'+esc(x?x.n:"")+'</textarea><div class="row"><button class="btn" data-a="lsave">Enregistrer</button>'+(x?'<button class="btn d" data-a="ldel" data-v="'+x.id+'">Supprimer</button>':"")+'<button class="btn g" data-a="close">Annuler</button></div>';
@@ -680,8 +680,8 @@ function catHTML(){
   if(c.id==="calendriers")h+=tabsHTML(c);
   if(c.id==="calendriers")h+='<div id="cal">'+calHTML()+'</div><h2>Événements enregistrés</h2>';
   if(c.id==="piscine")h+=pisHTML();
-  h+=lkBlock(c.id)+toolsHTML(c.id)+'<input id="q" placeholder="Rechercher…" value="'+esc(q)+'">';
-  h+='<div id="list">'+itemsHTML()+'</div>';
+  h+=toolsHTML(c.id)+'<input id="q" placeholder="Rechercher…" value="'+esc(q)+'">';
+  h+='<div id="list">'+itemsHTML()+'</div>'+lkBlock(c.id);
   if(SUGS[c.id]&&!gpage(c)){var have=list(c.id).map(function(x){return(x.titre||"").toLowerCase()}),sg=SUGS[c.id].map(function(g,i){return have.indexOf(g[0].toLowerCase())<0?'<button class="cp" data-a="sug" data-v="'+i+'">+ '+esc(g[0])+'</button>':""}).join("");if(sg)h+='<details class="sgd"><summary>Idées à ajouter</summary><div class="sg">'+sg+'</div></details>'}
   if(c.id==="recettes")h+='<input type="file" id="imr" accept=".json,application/json" hidden>';
   return h;

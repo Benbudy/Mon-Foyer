@@ -500,7 +500,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.26.0";
+var VER="1.26.1";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="offerts",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -653,7 +653,7 @@ function detHTML(c,x){var UN=["longueur","largeur","hauteur","epaisseur","profon
   if(c.id==="maison"){var hh=(x.hist||[]).slice().sort(function(a,b){return a.d<b.d?1:-1}),nx=hnext(x);
     h+='<h2>Historique</h2>'+(nx?'<p class="sub" style="margin:0 0 8px">Prochain rappel : '+fd(nx)+'</p>':"")+'<button class="btn g" data-a="hquick" data-v="'+x.id+'" style="margin-bottom:8px">↻ Fait aujourd’hui</button>'+(hh.length?hh.map(function(e){return'<div class="hrow"><span>'+fd(e.d)+'</span><div><b>'+esc(e.v||"")+'</b><i>'+esc(e.n||"")+'</i></div></div>'}).join(""):'<p class="sub">Aucune entrée pour l’instant.</p>')}
   return h+(c.id==="cadeaux"?'<button class="btn" data-a="redit" style="width:100%;margin-top:16px">Modifier</button>':"")+'</article>'}
-var LT=[["rec","🍳","Recette"],["vid","▶️","Vidéo"],["lieu","📍","Lieu"],["idee","💡","Idée"],["art","📰","Article"],["autre","🔗","Autre"]],lf="all",lq="",LK=null;
+var lback=null,LT=[["rec","🍳","Recette"],["vid","▶️","Vidéo"],["lieu","📍","Lieu"],["idee","💡","Idée"],["art","📰","Article"],["autre","🔗","Autre"]],lf="all",lq="",LK=null;
 function ltype(k){return LT.filter(function(x){return x[0]===k})[0]||LT[5]}
 function lhost(u){try{return new URL(u).hostname.replace(/^www\./,"")}catch(e){return u}}
 function lfix(u){u=(u||"").trim();if(!u)return"";if(!/^[a-z][a-z0-9+.-]*:/i.test(u))u="https://"+u;return u}
@@ -664,8 +664,8 @@ function lkCard(x,showCat){var T=ltype(x.ty),y=lytid(x.url),c=x.cat&&cof(x.cat);
 function lkFiltered(){var s=lq.trim().toLowerCase();return(S.links||[]).slice().reverse().sort(function(a,b){return(b.d||"")>(a.d||"")?1:(b.d||"")<(a.d||"")?-1:0}).filter(function(x){if(lf==="todo"&&x.v)return false;if(lf.indexOf("t:")===0&&x.ty!==lf.slice(2))return false;if(lf.indexOf("c:")===0&&x.cat!==lf.slice(2))return false;return!s||((x.t||"")+" "+x.url+" "+(x.n||"")).toLowerCase().indexOf(s)>-1})}
 function lkList(){var L=lkFiltered();return L.length?L.map(function(x){return lkCard(x,true)}).join(""):'<p class="sub" style="text-align:center;margin:30px 0">'+((S.links||[]).length?"Aucun lien ne correspond.":"Aucun lien enregistré. Touchez + pour garder le lien d’une vidéo de recette, d’une idée de sortie ou d’un lieu à tester.")+'</p>'}
 function liensHTML(){var A=S.links||[],ch=[["all","Tous ("+A.length+")"],["todo","À voir ("+A.filter(function(x){return!x.v}).length+")"]];LT.forEach(function(T){var n=A.filter(function(x){return x.ty===T[0]}).length;if(n)ch.push(["t:"+T[0],T[1]+" "+T[2]+" "+n])});CATS.forEach(function(c){if(c.par)return;var n=A.filter(function(x){return x.cat===c.id}).length;if(n)ch.push(["c:"+c.id,(c.i||"")+" "+c.n+" "+n])});if(!ch.some(function(x){return x[0]===lf}))lf="all";
-  return'<div class="top"><h1>🔖 Liens</h1><button class="btn" data-a="ladd" aria-label="Ajouter">'+PLUS+'</button></div><input id="lq" type="search" placeholder="Rechercher un lien…" value="'+esc(lq)+'"><div class="lbm">'+ch.map(function(x){return'<button class="'+(x[0]===lf?"on":"")+'" data-a="lf" data-v="'+x[0]+'">'+esc(x[1])+'</button>'}).join("")+'</div><div id="llist">'+lkList()+'</div>'}
-function lkBlock(cid){var L=(S.links||[]).filter(function(x){return x.cat===cid});if(!L.length)return"";return'<details class="lkd" open><summary>🔖 Liens enregistrés ('+L.length+')</summary>'+L.map(function(x){return lkCard(x,false)}).join("")+'</details>'}
+  return'<div class="top">'+(lback?'<button class="back" data-a="lbackcat">‹</button>':"")+'<h1>🔖 Liens</h1><button class="btn" data-a="ladd" aria-label="Ajouter">'+PLUS+'</button></div><input id="lq" type="search" placeholder="Rechercher un lien…" value="'+esc(lq)+'"><div class="lbm">'+ch.map(function(x){return'<button class="'+(x[0]===lf?"on":"")+'" data-a="lf" data-v="'+x[0]+'">'+esc(x[1])+'</button>'}).join("")+'</div><div id="llist">'+lkList()+'</div>'}
+function lkBlock(cid){var n=(S.links||[]).filter(function(x){return x.cat===cid}).length;if(!n)return"";return'<div class="item" data-a="lkopen" data-v="'+cid+'" style="margin:0 0 12px"><span style="font-size:26px">🔖</span><div class="t"><b>Liens enregistrés</b><span>'+n+(n>1?" liens":" lien")+'</span></div><span style="color:var(--mu);font-size:22px">›</span></div>'}
 function lkForm(id,cid){var x=id?(S.links||[]).filter(function(l){return l.id===id})[0]:null;LK=x?x.id:null;
   var opts=LT.map(function(T){return'<option value="'+T[0]+'"'+((x?x.ty:"autre")===T[0]?" selected":"")+'>'+T[1]+' '+T[2]+'</option>'}).join(""),co='<option value="">— Aucune tuile —</option>'+CATS.filter(function(c){return!c.par}).map(function(c){return'<option value="'+c.id+'"'+((x?x.cat:cid)===c.id?" selected":"")+'>'+(c.i||"")+' '+esc(c.n)+'</option>'}).join("");
   $("#sheet").innerHTML='<h1 style="font-size:22px">'+(x?"Modifier le lien":"Nouveau lien")+'</h1><label>Adresse du lien</label><div class="row" style="flex-wrap:nowrap"><input id="lu" type="url" inputmode="url" autocapitalize="off" autocorrect="off" placeholder="https://…" value="'+esc(x?x.url:"")+'"><button class="btn g" style="flex:none" data-a="lpaste">📋 Coller</button></div><label>Titre</label><input id="lt" placeholder="Nom du lien" value="'+esc(x?x.t:"")+'"><label>Type</label><select id="ly">'+opts+'</select><label>Ranger dans une tuile de l’accueil</label><select id="lc">'+co+'</select><label>Note</label><textarea id="ln" rows="3" placeholder="Pourquoi je le garde…">'+esc(x?x.n:"")+'</textarea><div class="row"><button class="btn" data-a="lsave">Enregistrer</button>'+(x?'<button class="btn d" data-a="ldel" data-v="'+x.id+'">Supprimer</button>':"")+'<button class="btn g" data-a="close">Annuler</button></div>';
@@ -1086,6 +1086,8 @@ document.addEventListener("click",function(e){
   var el=e.target.closest("[data-a]");if(!el)return;
   var a=el.dataset.a,v=el.dataset.v;if(el.dataset.m)closeForm();
   if(a==="showprix"){var pb=document.createElement("b");pb.textContent=v;el.replaceWith(pb);return}
+  if(a==="lkopen"){lback=v;lf="c:"+v;lq="";tab="liens";cat=null;render();return}
+  if(a==="lbackcat"){tab="home";cat=lback;lback=null;lf="all";render();return}
   if(a==="ladd"){lkForm(null,v||"");return}
   if(a==="ledit"){lkForm(v);return}
   if(a==="lf"){lf=v;rr();return}
@@ -1094,7 +1096,7 @@ document.addEventListener("click",function(e){
   if(a==="lsave"){var u=lfix($("#lu").value);if(!u){$("#lu").focus();return}S.links=S.links||[];var o=LK&&S.links.filter(function(l){return l.id===LK})[0];if(!o){o={id:"l"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),d:new Date().toISOString().slice(0,10)};S.links.push(o)}o.url=u;o.t=$("#lt").value.trim()||ltitle(u);o.ty=$("#ly").value;o.cat=$("#lc").value;o.n=$("#ln").value.trim();save();closeForm();render();return}
   if(a==="ldel"){if(confirm("Supprimer ce lien ?")){S.links=(S.links||[]).filter(function(l){return l.id!==v});save();closeForm();render()}return}
   if(a==="tog"){e.stopPropagation();var it=list(cat).filter(function(x){return x.id===v})[0];it.fait=it.fait?"":"1";save();render();return}
-  if(a==="tab"){RESTORE=true;gsel=null;tab=v;cat=null;q="";ord=false;tmem=null;ordc=false;gp=null;jg=null;jp=null;render()}
+  if(a==="tab"){lback=null;RESTORE=true;gsel=null;tab=v;cat=null;q="";ord=false;tmem=null;ordc=false;gp=null;jg=null;jp=null;render()}
   else if(a==="open"){rcv=null;gsel=null;cat=v==="couture"?"cou_pro":v;q="";tmem=null;mtab="tailles";ordc=false;gp=null;gtab="offerts";jg=null;jp=null;if(v==="calendriers"){var n0=new Date();calY=n0.getFullYear();calM=n0.getMonth();calSel=ds(calY,calM,n0.getDate())}render()}
   else if(a==="back"){RESTORE=true;ordc=false;if(rcv&&hasDet(cat))rcv=null;else if(gpage(cof(cat)||{}))gsel=null;else if(cat==="tailles"&&tmem)tmem=null;else if(cat==="cadeaux"&&gp)gp=null;else if(cat==="jeux"&&(jp||jg)){if(jp)jp=null;else jg=null}else cat=null;render()}
   else if(a==="tgg"){var kk=cat+"|"+v,c9=cof(cat);if(c9.g&&c9.id!=="calendriers"&&vw(cat,dv(cat))==="grid"){gsel=v;q="";render();return}var ef=openG[kk]===undefined?(!!c9.fixg&&vw(cat,dv(cat))!=="grid"):openG[kk];openG[kk]=!ef;$("#list").innerHTML=itemsHTML()}

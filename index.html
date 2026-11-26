@@ -450,6 +450,7 @@ body.kb .sc input{padding:7px 2px;font-size:16px}
 .gc .gph{width:100%;height:96px;object-fit:cover;border-radius:14px;margin-bottom:4px;background:var(--ac2)}
 .gpics{display:flex;gap:8px;overflow-x:auto;margin:0 -16px 10px;padding:0 16px}.gpics img{flex:none;height:110px;width:auto;max-width:70%;border-radius:14px;object-fit:cover;cursor:zoom-in}
 .tools.gt{display:flex;justify-content:flex-start;margin:0 0 6px}
+.gc .gs{display:block;width:100%;margin-top:auto;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 </style>
 </head>
 <body>
@@ -503,7 +504,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.27.1";
+var VER="1.27.2";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="offerts",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -993,7 +994,7 @@ function jeuxHTML(c){
   var st=jstats(fin);if(st.length)h+='<h2>Classement général</h2>'+lbHTML(st);
   if(enc.length)h+='<h2>Parties en cours</h2>'+enc.map(partyRow).join("");
   h+='<div class="h2r"><h2>Mes jeux</h2><button class="btn g sm" data-a="addg2">+ Jeu</button></div>';
-  h+=G.length?'<div class="mgrid">'+G.map(function(g){var ps=P.filter(function(p){return p.jeu===g.id&&p.fin}),s2=jstats(ps)[0];var gp0=phs(g)[0];return'<button class="gc" style="--h:'+hue(g.titre)+'" data-a="jg" data-v="'+g.id+'">'+(gp0?'<img class="gph" src="'+gp0+'" alt="">':"")+'<b>'+esc(g.titre)+'</b><small>'+(jlow(g)?"Le moins de points gagne":"Le plus de points gagne")+'</small><span class="gs">'+ps.length+(ps.length>1?" parties":" partie")+(s2&&s2.w?" · "+TR+esc(s2.n):"")+'</span></button>'}).join("")+'</div>':'<p class="sub">Aucun jeu pour l’instant.</p>';
+  h+=G.length?'<div class="mgrid">'+G.map(function(g){var ps=P.filter(function(p){return p.jeu===g.id&&p.fin}),s2=jstats(ps)[0];var gp0=phs(g)[0];return'<button class="gc" style="--h:'+hue(g.titre)+'" data-a="jg" aria-label="'+esc(g.titre)+'" data-v="'+g.id+'">'+(gp0?'<img class="gph" src="'+gp0+'" alt="">':'<b>'+esc(g.titre)+'</b>')+'<span class="gs">'+ps.length+(ps.length>1?" parties":" partie")+(s2&&s2.w?" · "+TR+esc(s2.n):"")+'</span></button>'}).join("")+'</div>':'<p class="sub">Aucun jeu pour l’instant.</p>';
   var have=G.map(function(g){return(g.titre||"").toLowerCase()}),sg=JSUG.map(function(g,i){return have.indexOf(g[0].toLowerCase())<0?'<button class="cp" data-a="jsug" data-v="'+i+'">+ '+esc(g[0])+'</button>':""}).join("");
   if(sg)h+='<h2>Idées de jeux</h2><div class="sg">'+sg+'</div>';
   if(fin.length)h+='<h2>Dernières parties</h2>'+fin.slice(0,8).map(partyRow).join("");

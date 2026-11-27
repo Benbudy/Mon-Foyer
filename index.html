@@ -211,6 +211,12 @@ input[type=range]{padding:0;accent-color:var(--ac)}
 .rf{background:var(--glass);border:1px solid var(--bd);border-radius:18px;padding:12px 14px;margin:10px 0}.rf h3{margin:0 0 6px;font-size:15px}.rf p{margin:4px 0;font-size:13px;color:var(--mu)}
 .rf table{width:100%;border-collapse:collapse;font-size:13px}.rf td,.rf th{padding:5px 6px;text-align:left;border-bottom:1px solid var(--bd);vertical-align:top}.rf th{color:var(--mu);font-weight:700}.rf tr:last-child td{border-bottom:0}
 .cmv{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:4px 12px;margin-top:8px;font-size:13px}.cmv span{color:var(--mu)}.cmv b{color:var(--tx)}
+.grid.cols2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid.cols3{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.grid.cols3 .tile{padding:12px 8px 8px;border-radius:18px}
+.grid.cols3 .tile .i{font-size:clamp(32px,10vw,50px);right:2px;bottom:2px}
+.grid.cols3 .tile small{font-size:10px;margin-top:2px}
+.grid.cols4{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.grid.cols4 .tile{padding:9px 4px 5px;border-radius:14px}.grid.cols4 .tile b{font-size:10.5px;overflow-wrap:anywhere;hyphens:auto;line-height:1.15}.grid.cols4 .tile .i{font-size:clamp(24px,7.5vw,34px);right:1px;bottom:1px}.grid.cols4 .tile small{font-size:9px;margin-top:1px}
 #main>.top{position:sticky;top:-20px;z-index:6;margin:-20px -16px 10px;padding:30px 16px 8px;background:linear-gradient(to bottom,var(--bg) 78%,rgba(0,0,0,0));-webkit-backdrop-filter:none;backdrop-filter:none;padding-bottom:18px;margin-bottom:0}
 .item{min-height:56px}
 .ck{width:30px;height:30px;font-size:17px}
@@ -257,6 +263,9 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--ac);outline-offs
 .tile b{color:var(--tx);font-weight:700;letter-spacing:-.02em;margin-top:14px}
 .tile small{color:var(--mu);font-weight:500;margin-top:3px}
 .tile:active{transform:scale(.98)}
+.grid.cols3 .tile{padding:10px;min-height:98px;border-radius:18px}
+.grid.cols3 .tile .i{width:34px;height:34px;font-size:18px;border-radius:11px;right:auto;bottom:auto}
+.grid.cols3 .tile b{margin-top:10px}
 .mv{background:var(--card);color:var(--tx);box-shadow:0 2px 8px rgba(0,0,0,.2)}
 .item{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:14px 16px;box-shadow:var(--sh);-webkit-backdrop-filter:none;backdrop-filter:none}
 .item.done b{color:var(--mu)}
@@ -311,6 +320,9 @@ nav button.on::after{content:"";width:4px;height:4px;border-radius:50%;backgroun
 .tile .i .ic{display:block}
 .tile b,.tile small{position:relative;z-index:2}
 .tile b{margin-top:0}
+.grid.cols3 .tile{padding:10px;min-height:0}
+.grid.cols3 .tile .i{width:auto;height:auto;border-radius:0;background:none;font-size:clamp(34px,18.5vw,90px);right:5%;bottom:7%}
+.grid.cols3 .tile b{margin-top:0}
 .cr .ci{width:36px;flex:none;justify-content:center}
 
 nav{padding:3px 0 calc(env(safe-area-inset-bottom,0px)*.12)}
@@ -435,6 +447,7 @@ body.kb .sc input{padding:7px 2px;font-size:16px}
 .gc.hasph{padding:0!important}.gc.hasph .gph{border-radius:0;object-fit:fill;display:block}.top .mhead{flex:1;min-width:0}
 .back{width:40px;height:40px;min-width:40px;flex:none;display:inline-flex;align-items:center;justify-content:center;padding:0!important;line-height:0!important;font-size:0;border-radius:50%}.back svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;display:block}
 .phd .pl.ab{opacity:.45}.mrow{display:flex;align-items:center;gap:10px;padding:6px 0}
+.mrow{padding:12px 16px}.gbox{padding:14px 16px;row-gap:4px}.mrow .gch{margin:8px 0 2px}.grid.cols4 .tile{padding:11px 8px 6px}.grid.cols3 .tile{padding:12px}
 </style>
 </head>
 <body>
@@ -488,7 +501,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.28.0";
+var VER="1.29.0";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="offerts",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}

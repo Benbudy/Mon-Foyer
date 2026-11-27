@@ -453,6 +453,7 @@ body.kb .sc input{padding:7px 2px;font-size:16px}
 .gc .gs{display:block;width:100%;margin-top:auto;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gw{min-width:0}.gc{aspect-ratio:3/4;width:100%;padding:8px!important;justify-content:center;align-items:center!important;text-align:center;overflow:hidden}.gc .gph{width:100%;height:100%;margin:0;object-fit:contain;border-radius:14px;background:transparent}.gc .gi{font-size:34px;line-height:1}.gc b{font-size:17px;word-break:break-word}.gst{margin-top:6px;text-align:center;font-size:13px;font-weight:600;color:var(--ac);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
 .gc.hasph{padding:0!important}.gc.hasph .gph{border-radius:0;object-fit:fill;display:block}.top .edj,.top>.btn[data-a="newp"]{height:40px;min-height:0;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;margin-left:6px}.top .edj{padding:0 12px;flex:none}
+.back{width:40px;height:40px;min-width:40px;flex:none;display:inline-flex;align-items:center;justify-content:center;padding:0!important;line-height:0!important;font-size:0;border-radius:50%}.back svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;display:block}
 </style>
 </head>
 <body>
@@ -506,7 +507,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.27.4";
+var VER="1.27.5";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="offerts",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -597,7 +598,7 @@ function tabsHTML(c){var par=c.par||c.id,T=par==="calendriers"?[{id:"calendriers
   return'<div class="tabs cts">'+T.map(function(t){var n=t.f&&t.f.length?list(t.id).length:0;return'<button class="tb'+(t.id===c.id?" on":"")+'" data-a="ctab" data-v="'+t.id+'">'+t.n+(n?" · "+n:"")+'</button>'}).join("")+'</div>'}
 function couHTML(c){
   var pc=cof(c.par);
-  var h='<div class="top"><button class="back" data-a="back">‹</button><h1>'+ic(pc)+' '+pc.n+'</h1>'+(c.f.length?mb()+'<button class="btn" data-a="'+(c.par==="calendriers"?"addch":"add")+'" aria-label="Ajouter">'+PLUS+'</button>':"")+'</div>'+tabsHTML(c);
+  var h='<div class="top"><button class="back" data-a="back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><h1>'+ic(pc)+' '+pc.n+'</h1>'+(c.f.length?mb()+'<button class="btn" data-a="'+(c.par==="calendriers"?"addch":"add")+'" aria-label="Ajouter">'+PLUS+'</button>':"")+'</div>'+tabsHTML(c);
   if(c.id==="cou_ref")return h+refHTML();
   if(c.id==="cou_mes")return h+mesCouHTML();
   if(c.id==="cou_mer"){var rb=list("cou_mer").filter(function(x){return x.racheter==="Oui"});if(rb.length)h+='<div class="pban"><div><b>À racheter ('+rb.length+')</b><span>'+rb.map(function(x){return esc(x.nom)}).join(" · ")+'</span></div></div>'}
@@ -641,7 +642,7 @@ function hasDet(id){var c=cof(id);return !!c&&!c.par&&NODET.indexOf(id)<0}
 function recHTML(c){var x=list(c.id).filter(function(y){return y.id===rcv})[0];if(!x){rcv=null;return catHTML()}
   if(c.id!=="recettes")return detHTML(c,x);
   function ls(t){return String(t||"").split(/\n+/).map(function(l){return l.replace(/^\s*[-•*–]\s*/,"").trim()}).filter(Boolean)}
-  var h='<div class="top"><button class="back" data-a="back">‹</button><h1>'+esc(x.nom||"Recette")+'</h1><button class="btn" data-a="redit">Modifier</button></div><article class="rcp">';
+  var h='<div class="top"><button class="back" data-a="back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><h1>'+esc(x.nom||"Recette")+'</h1><button class="btn" data-a="redit">Modifier</button></div><article class="rcp">';
   h+=phgal(phs(x));
   var m=[x.type,x.temps].filter(Boolean);if(m.length)h+='<div class="rmeta">'+m.map(function(t){return"<span>"+esc(t)+"</span>"}).join("")+"</div>";
   var I=ls(x.note),P=ls(x.prep);
@@ -649,7 +650,7 @@ function recHTML(c){var x=list(c.id).filter(function(y){return y.id===rcv})[0];i
   h+='<h2>Préparation</h2>'+(P.length?'<ol class="rstep">'+P.map(function(l){return"<li>"+esc(l)+"</li>"}).join("")+"</ol>":'<p class="sub">Aucune étape notée.</p>');
   return h+"</article>"}
 function detHTML(c,x){var UN=["longueur","largeur","hauteur","epaisseur","profondeur","diametre"];
-  var h='<div class="top"><button class="back" data-a="back">‹</button><h1>'+esc(x[c.t]||c.n)+'</h1>'+(c.id==="cadeaux"?"":'<button class="btn" data-a="redit">Modifier</button>')+'</div><article class="rcp'+(c.id==="cadeaux"?" gdet":"")+'">'+phgal(phs(x));
+  var h='<div class="top"><button class="back" data-a="back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><h1>'+esc(x[c.t]||c.n)+'</h1>'+(c.id==="cadeaux"?"":'<button class="btn" data-a="redit">Modifier</button>')+'</div><article class="rcp'+(c.id==="cadeaux"?" gdet":"")+'">'+phgal(phs(x));
   var sub=[x[c.g]].filter(Boolean);if(sub.length)h+='<div class="rmeta">'+sub.map(function(t){return"<span>"+esc(t)+"</span>"}).join("")+"</div>";
   var rows="";c.f.forEach(function(f){var k=f[0],ty=f[2],v=x[k];if(k===c.t||k===c.g||ty==="photo"||ty==="hist"||k==="unite"||!v||(k==="annee"&&x.quand))return;
     var t=ty==="date"?fd(v):ty==="apd"?fd(v):ty==="chk"?"Oui":UN.indexOf(k)>-1?v+(x.unite?" "+x.unite:""):v;
@@ -670,7 +671,7 @@ function lkCard(x,showCat){var T=ltype(x.ty),y=lytid(x.url),c=x.cat&&cof(x.cat);
 function lkFiltered(){var s=lq.trim().toLowerCase();return(S.links||[]).slice().reverse().sort(function(a,b){return(b.d||"")>(a.d||"")?1:(b.d||"")<(a.d||"")?-1:0}).filter(function(x){if(lf==="todo"&&x.v)return false;if(lf.indexOf("t:")===0&&x.ty!==lf.slice(2))return false;if(lf.indexOf("c:")===0&&x.cat!==lf.slice(2))return false;return!s||((x.t||"")+" "+x.url+" "+(x.n||"")).toLowerCase().indexOf(s)>-1})}
 function lkList(){var L=lkFiltered();return L.length?L.map(function(x){return lkCard(x,true)}).join(""):'<p class="sub" style="text-align:center;margin:30px 0">'+((S.links||[]).length?"Aucun lien ne correspond.":"Aucun lien enregistré. Touchez + pour garder le lien d’une vidéo de recette, d’une idée de sortie ou d’un lieu à tester.")+'</p>'}
 function liensHTML(){var A=S.links||[],ch=[["all","Tous ("+A.length+")"],["todo","À voir ("+A.filter(function(x){return!x.v}).length+")"]];LT.forEach(function(T){var n=A.filter(function(x){return x.ty===T[0]}).length;if(n)ch.push(["t:"+T[0],T[1]+" "+T[2]+" "+n])});CATS.forEach(function(c){if(c.par)return;var n=A.filter(function(x){return x.cat===c.id}).length;if(n)ch.push(["c:"+c.id,(c.i||"")+" "+c.n+" "+n])});if(!ch.some(function(x){return x[0]===lf}))lf="all";
-  return'<div class="top">'+(lback?'<button class="back" data-a="lbackcat">‹</button>':"")+'<h1>🔖 Liens</h1><button class="btn" data-a="ladd" aria-label="Ajouter">'+PLUS+'</button></div><input id="lq" type="search" placeholder="Rechercher un lien…" value="'+esc(lq)+'"><div class="lbm">'+ch.map(function(x){return'<button class="'+(x[0]===lf?"on":"")+'" data-a="lf" data-v="'+x[0]+'">'+esc(x[1])+'</button>'}).join("")+'</div><div id="llist">'+lkList()+'</div>'}
+  return'<div class="top">'+(lback?'<button class="back" data-a="lbackcat"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>':"")+'<h1>🔖 Liens</h1><button class="btn" data-a="ladd" aria-label="Ajouter">'+PLUS+'</button></div><input id="lq" type="search" placeholder="Rechercher un lien…" value="'+esc(lq)+'"><div class="lbm">'+ch.map(function(x){return'<button class="'+(x[0]===lf?"on":"")+'" data-a="lf" data-v="'+x[0]+'">'+esc(x[1])+'</button>'}).join("")+'</div><div id="llist">'+lkList()+'</div>'}
 function lkBlock(cid){var n=(S.links||[]).filter(function(x){return x.cat===cid}).length;if(!n)return"";return'<div class="ig" style="margin-top:14px"><div class="item" data-a="lkopen" data-v="'+cid+'" style="--h:48"><span style="font-size:28px;line-height:1">🔖</span><div class="t"><b>Liens enregistrés</b><span>'+n+(n>1?" liens":" lien")+'</span></div></div></div>'}
 function lkForm(id,cid){var x=id?(S.links||[]).filter(function(l){return l.id===id})[0]:null;LK=x?x.id:null;
   var opts=LT.map(function(T){return'<option value="'+T[0]+'"'+((x?x.ty:"autre")===T[0]?" selected":"")+'>'+T[1]+' '+T[2]+'</option>'}).join(""),co='<option value="">— Aucune tuile —</option>'+CATS.filter(function(c){return!c.par}).map(function(c){return'<option value="'+c.id+'"'+((x?x.cat:cid)===c.id?" selected":"")+'>'+(c.i||"")+' '+esc(c.n)+'</option>'}).join("");
@@ -682,7 +683,7 @@ document.addEventListener("change",function(e){if(e.target.id==="ly")e.target.da
 function lkBoot(){try{var sp=new URLSearchParams(location.search),su=sp.get("lien")||sp.get("url")||(/https?:\/\/\S+/.exec(sp.get("text")||"")||[])[0];if(su){history.replaceState(null,"",location.pathname);tab="liens";cat=null;render();lkForm(null,"");$("#lu").value=su;var st=sp.get("title");if(st){$("#lt").value=st}lauto()}}catch(e){}}
 function catHTML(){
   var c=cof(cat);if(rcv&&hasDet(c.id))return recHTML(c);if(c.par)return couHTML(c);if(c.id==="tailles")return tailHTML(c);if(c.id==="cadeaux")return cadHTML(c);if(c.id==="jeux")return jeuxHTML(c);if(c.id==="cycle")return cycHTML(c);
-  var h=gpage(c)?'<div class="top"><button class="back" data-a="back">‹</button><h1>'+esc(gsel)+'</h1>'+mb()+'<button class="btn" data-a="addg" data-v="'+esc(gsel)+'" aria-label="Ajouter">'+PLUS+'</button></div><p class="sub" style="margin:-6px 0 8px">'+ic(c)+' '+esc(c.n)+'</p>':'<div class="top"><button class="back" data-a="back">‹</button><h1>'+ic(c)+' '+c.n+'</h1>'+mb()+'<button class="btn" data-a="'+(c.id==="calendriers"?"addch":"add")+'" aria-label="Ajouter">'+PLUS+'</button></div>';
+  var h=gpage(c)?'<div class="top"><button class="back" data-a="back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><h1>'+esc(gsel)+'</h1>'+mb()+'<button class="btn" data-a="addg" data-v="'+esc(gsel)+'" aria-label="Ajouter">'+PLUS+'</button></div><p class="sub" style="margin:-6px 0 8px">'+ic(c)+' '+esc(c.n)+'</p>':'<div class="top"><button class="back" data-a="back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><h1>'+ic(c)+' '+c.n+'</h1>'+mb()+'<button class="btn" data-a="'+(c.id==="calendriers"?"addch":"add")+'" aria-label="Ajouter">'+PLUS+'</button></div>';
   if(c.id==="calendriers")h+=tabsHTML(c);
   if(c.id==="calendriers")h+='<div id="cal">'+calHTML()+'</div><h2>Événements enregistrés</h2>';
   if(c.id==="piscine")h+=pisHTML();
@@ -776,7 +777,7 @@ function evOn(d){var o=[],F=feries(+d.slice(0,4))[d];if(F)o.push({k:"fe",t:F,s:"
   return o}
 function calHTML(){
   var off=(new Date(calY,calM,1).getDay()+6)%7,dim=new Date(calY,calM+1,0).getDate(),t=new Date(),td=ds(t.getFullYear(),t.getMonth(),t.getDate());
-  var h='<div class="cal"><div class="cm"><button class="back" data-a="cm" data-v="-1">‹</button><b>'+MONTHS[calM]+" "+calY+'</b><button class="btn g sm" data-a="cn">Aujourd’hui</button><button class="back" data-a="cm" data-v="1">›</button></div><div class="cw">'+["L","M","M","J","V","S","D"].map(function(x){return"<span>"+x+"</span>"}).join("")+'</div><div class="cg">';
+  var h='<div class="cal"><div class="cm"><button class="back" data-a="cm" data-v="-1"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><b>'+MONTHS[calM]+" "+calY+'</b><button class="btn g sm" data-a="cn">Aujourd’hui</button><button class="back" data-a="cm" data-v="1"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div><div class="cw">'+["L","M","M","J","V","S","D"].map(function(x){return"<span>"+x+"</span>"}).join("")+'</div><div class="cg">';
   for(var i=0;i<off;i++)h+="<span></span>";
   for(var d=1;d<=dim;d++){var k=ds(calY,calM,d),E=evOn(k),ks=[];E.forEach(function(e){if(e.k!=="fe"&&ks.indexOf(e.k)<0)ks.push(e.k)});
     h+='<button class="cd'+(k===td?" td":"")+(k===calSel?" sel":"")+(E.some(function(e){return e.k==="fe"})||(off+d-1)%7===6?" fe":"")+'" data-a="cd" data-v="'+k+'"><span>'+d+'</span><div class="dt">'+ks.map(function(x){return'<i class="k-'+x+'"></i>'}).join("")+"</div></button>"}
@@ -793,7 +794,7 @@ function mensHTML(m){var ms=(S.minfo[m]||{}).ms||{},gd="",fl="";
     fl+='<label class="sf" style="top:'+(y/4.8)+'%;'+(L?"left":"right")+':0"><span>'+f[1]+'</span><div><input type="number" step="any" inputmode="decimal" data-mk="ms.'+f[0]+'" value="'+esc(ms[f[0]]||"")+'"><em>cm</em></div></label>'});
   return'<div class="sil">'+SIL+'<g class="gd">'+gd+'</g></svg>'+fl+'</div><label>Mesures prises le</label><input type="date" data-mk="ms.date" value="'+esc(ms.date||"")+'"><p class="sub" style="margin-top:10px">Mesures en centimètres, enregistrées automatiquement.</p>'}
 function tailHTML(c){
-  var back='<button class="back" data-a="back">‹</button>',l=list("tailles"),h;
+  var back='<button class="back" data-a="back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>',l=list("tailles"),h;
   if(!tmem){
     h='<div class="top">'+back+'<h1>'+ic(c)+' '+esc(c.n)+'</h1>'+mb()+'<button class="btn" data-a="addt" aria-label="Ajouter">'+PLUS+'</button></div>';
     if(!S.members.length)return h+'<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Ajoutez d’abord les membres du foyer dans Réglages.</p></div>';
@@ -877,7 +878,7 @@ function othersHTML(){var h='<p class="sub">Filleuls, amis, famille… pour les 
 function giftRow(x,idea){var sub=[x.statut==="Acheté"?"Acheté":"",x.quand?fd(x.quand):x.annee||"",x.prix].filter(Boolean).join(" · ");return'<div class="item" data-a="edit" data-v="'+x.id+'">'+(phs(x)[0]?'<img class="gimg" src="'+phs(x)[0]+'" alt="">':"")+'<div class="t"><b>'+esc(x.idee||"Sans titre")+'</b>'+(sub?'<span>'+esc(sub)+'</span>':"")+'</div>'+(idea?'<button class="btn g sm" data-a="gift" data-v="'+x.id+'">Offert</button>':"")+'</div>'}
 function gGroups(arr,idea){var K=[],M={};arr.forEach(function(x){var o=x.occ||"Sans occasion";if(!M[o]){M[o]=[];K.push(o)}M[o].push(x)});return K.map(function(o){return'<details class="gocc" open><summary>'+esc(o)+' <em>'+M[o].length+'</em></summary>'+M[o].map(function(x){return giftRow(x,idea)}).join("")+'</details>'}).join("")}
 function cadHTML(c){
-  var back='<button class="back" data-a="back">‹</button>',L=list("cadeaux"),h;
+  var back='<button class="back" data-a="back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>',L=list("cadeaux"),h;
   if(!gp){
     var names=people("cadeaux").slice();L.forEach(function(x){if(x.pour&&names.indexOf(x.pour)<0)names.push(x.pour)});
     h='<div class="top">'+back+'<h1>'+ic(c)+' '+esc(c.n)+'</h1>'+mb()+'<button class="btn" data-a="add" aria-label="Ajouter">'+PLUS+'</button></div>'+toolsHTML("cadeaux");
@@ -977,14 +978,14 @@ function partyHTML(pt,back){
   return h}
 function gameHTML(g,P,back){
   var fin=P.filter(function(x){return x.fin}),enc=P.filter(function(x){return!x.fin}),st=jstats(fin);
-  var h='<div class="top">'+back+'<div class="mhead"><div><h1>'+esc(g.titre)+'</h1><div class="sub" style="margin:0">'+(jlow(g)?"Le moins de points gagne":"Le plus de points gagne")+(g.cible?" · objectif "+esc(g.cible):"")+" · "+esc(jbar(g))+'</div></div></div><button class="btn g edj" data-a="editj" data-v="'+g.id+'" aria-label="Modifier le jeu et ses photos" title="Modifier le jeu / photos"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button><button class="btn" data-a="newp" data-v="'+g.id+'">+ Partie</button></div>';
+  var h='<div class="top">'+back+'<div class="mhead"><div><h1>'+esc(g.titre)+'</h1></div></div><button class="btn g edj" data-a="editj" data-v="'+g.id+'" aria-label="Modifier le jeu et ses photos" title="Modifier le jeu / photos"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button><button class="btn" data-a="newp" data-v="'+g.id+'">+ Partie</button></div>';
   if(g.note)h+='<p class="sub">'+esc(g.note)+'</p>';
   h+='<h2>Records</h2>'+recHTML2(g);if(st.length)h+='<h2>Classement</h2>'+lbHTML(st,g);
   if(enc.length)h+='<h2>En cours</h2>'+enc.map(partyRow).join("");
   h+='<h2>Historique</h2>'+(fin.length?fin.map(partyRow).join(""):'<p class="sub">Aucune partie terminée pour ce jeu.</p>')+howHTML(g);
   return h}
 function jeuxHTML(c){
-  var P=list("parties"),back='<button class="back" data-a="back">‹</button>';
+  var P=list("parties"),back='<button class="back" data-a="back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>';
   if(jg&&!jgame(jg))jg=null;if(jp&&!jpart())jp=null;
   if(jp)return partyHTML(jpart(),back);
   if(jg)return gameHTML(jgame(jg),P.filter(function(x){return x.jeu===jg}),back);
@@ -1026,12 +1027,12 @@ function cyStats(n){
   return{L:L,avg:avg,avD:avD,last:last,tn:tn,next:last&&avg?dn(last.debut)+avg:NaN,cd:last?tn-dn(last.debut)+1:0}}
 function cyKind(n,st){var k="";st.L.forEach(function(x){var a=dn(x.debut),b=!isNaN(dn(x.fin))?dn(x.fin):a+st.avD-1;if(n>=a&&n<=b)k="p"});if(!k&&!isNaN(st.next)){for(var j=0;j<3;j++){var a=st.next+j*st.avg;if(n>=a&&n<a+st.avD&&a+st.avD>st.tn)k="r"}}return k}
 function cyCal(st){var rs=cyRapSet(cq),off=(new Date(cyY,cyM,1).getDay()+6)%7,dim=new Date(cyY,cyM+1,0).getDate(),td=today();
-  var h='<div class="cal cy"><div class="cm"><button class="back" data-a="cym" data-v="-1">‹</button><b>'+MONTHS[cyM]+" "+cyY+'</b><button class="back" data-a="cym" data-v="1">›</button></div><div class="cw">'+["L","M","M","J","V","S","D"].map(function(x){return"<span>"+x+"</span>"}).join("")+'</div><div class="cg">';
+  var h='<div class="cal cy"><div class="cm"><button class="back" data-a="cym" data-v="-1"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><b>'+MONTHS[cyM]+" "+cyY+'</b><button class="back" data-a="cym" data-v="1"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div><div class="cw">'+["L","M","M","J","V","S","D"].map(function(x){return"<span>"+x+"</span>"}).join("")+'</div><div class="cg">';
   for(var i=0;i<off;i++)h+="<span></span>";
   for(var d=1;d<=dim;d++){var k=ds(cyY,cyM,d),kd=cyKind(dn(k),st);h+='<button class="cd'+(k===td?" td":"")+(kd==="p"?" kp":kd==="r"?" kr":"")+'" data-a="cyd" data-v="'+k+'"><span>'+d+'</span>'+(rs[k]?'<i class="rp">♥</i>':"")+'</button>'}
   return h+'</div><div class="cl"><span><i class="k-cyp"></i>Règles</span><span><i class="k-cyr"></i>Prévision</span></div></div>'}
 function cycHTML(c){
-  var back='<button class="back" data-a="back">‹</button>',P=cyPeople();
+  var back='<button class="back" data-a="back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>',P=cyPeople();
   var h='<div class="top">'+back+'<h1>'+ic(c)+' '+esc(c.n)+'</h1><button class="btn" data-a="cyadd" aria-label="Ajouter">'+PLUS+'</button></div>';
   if(!P.length)return h+'<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Aucune personne suivie.<br>Ajoutez une fille / femme dans Réglages, ou cochez « Suivi des règles ».</p></div>';
   if(!cq||P.indexOf(cq)<0)cq=P[0];

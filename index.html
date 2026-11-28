@@ -502,7 +502,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.29.1";
+var VER="1.30.0";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="offerts",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -925,7 +925,7 @@ function jmer(pt,g){var M=[],n=pt.players.length,low=jlow(g),R=jfill(pt),k=R.len
   var rka=rk.filter(function(o){return!o.ab}),mx=rka.length?rka[rka.length-1].r:1;if(rka.length>=3&&mx>1)M.push({k:"lan",ic:"🏮",t:"Lanterne rouge",p:rka.filter(function(o){return o.r===mx}).map(function(o){return o.n}),d:"Dernière place, on se rattrape à la prochaine"});
   var AB=rk.filter(function(o){return o.ab});if(AB.length)M.push({k:"ab",ic:"🚪",t:"A quitté la partie",p:AB.map(function(o){return o.n}),d:"Classé après les joueurs restants, sans point de classement"});
   return M}
-function jrec(g){var mn=null,mx=null;list("parties").forEach(function(pt){if(!pt.fin||pt.jeu!==g.id||!jfill(pt).length)return;jrank(pt,g).forEach(function(o){var r={n:o.n,t:o.t,d:pt.date,id:pt.id};if(!mn||o.t<mn.t)mn=r;if(!mx||o.t>mx.t)mx=r})});return mn?{mn:mn,mx:mx}:null}
+function jrec(g){var mn=null,mx=null;list("parties").forEach(function(pt){if((pt.u||"")!==ju()||!pt.fin||pt.jeu!==g.id||!jfill(pt).length)return;jrank(pt,g).forEach(function(o){var r={n:o.n,t:o.t,d:pt.date,id:pt.id};if(!mn||o.t<mn.t)mn=r;if(!mx||o.t>mx.t)mx=r})});return mn?{mn:mn,mx:mx}:null}
 function recHTML2(g){var R=jrec(g);if(!R)return'<p class="sub">Aucun score enregistré : le premier record reste à établir.</p>';var low=jlow(g);function cd(r,lb,best){return'<button class="rcd'+(best?" best":"")+'" data-a="jp" data-v="'+r.id+'"><small>'+(best?"🏅 ":"")+lb+'</small><b>'+jn(r.t)+'</b><span>'+esc(r.n)+' · '+fd(r.d)+'</span></button>'}
   var a=cd(R.mn,"Score le plus faible"+(low?" · à battre":""),low),z=cd(R.mx,"Score le plus élevé"+(low?"":" · à battre"),!low);return'<div class="rcs">'+(low?a+z:z+a)+'</div>'}
 function howHTML(g){var low=g&&jlow(g),b=g?jbar(g):null,pts=b==="Podium 3-2-1"?"1er : 3 pts · 2e : 2 pts · 3e : 1 pt · les autres : 0":b==="Barème F1"?"1er : 25 · 2e : 18 · 3e : 15 · 4e : 12 · 5e : 10 · 6e : 8 · 7e : 6 · 8e : 4 · 9e : 2 · 10e : 1":b==="Victoire seule"?"Le vainqueur gagne 1 pt, les autres 0":"1 pt par adversaire battu (dernier : 0, avec 4 joueurs le 1er gagne 3 pts)";
@@ -947,7 +947,11 @@ var PH={win:["{w} a rangé tout le monde dans sa poche.","Quand {w} joue, les au
  nul:["Égalité parfaite : personne n’a rien à se reprocher (ou tout).","Match nul ! Il va falloir une belle pour départager."],
  lose:["{l} termine dernier mais garde le sourire.","{l} a fait de la figuration, mais avec élégance.","Pour {l}, l’important c’était de participer.","{l} prépare déjà sa revanche, on le sent."]};
 function pcb(a){return a.map(function(n){return'<button class="pc" data-a="pc" data-v="'+esc(n)+'">'+avp(n,22)+esc(n)+'</button>'}).join("")}
-function jpcs(){var P=people("jeux"),ex=P.filter(function(n){return S.members.indexOf(n)<0}),h="",id={},al=[];(S.groups||[]).forEach(function(g){id[g.id]=1;var L=ex.filter(function(n){return(S.minfo[n]||{}).grp===g.id});if(L.length)h+='<label>'+esc(g.n)+'</label><div class="pcs">'+pcb(L)+'</div>'});ex.forEach(function(n){if(!id[(S.minfo[n]||{}).grp])al.push(n)});(S.guests||[]).forEach(function(g){if(P.indexOf(g.n)<0)al.push(g.n)});return h+'<label>Invités</label><div class="pcs" id="pcg">'+pcb(al)+'</div>'}
+function jus(){return(S.groups||[]).filter(function(g){return(g.tiles||[]).indexOf("jeux")>=0})}
+function ju(){var u=S.ju||"";return u&&jus().some(function(g){return g.id===u})?u:""}
+function jun(u){var g=(S.groups||[]).filter(function(x){return x.id===u})[0];return g?g.n:"Foyer"}
+function jchips(){var L=jus();if(!L.length)return"";var U=ju();return'<div class="gch">'+[["","Foyer"]].concat(L.map(function(g){return[g.id,g.n]})).map(function(o){return'<button class="gchip'+(U===o[0]?" on":"")+'" data-a="ju" data-v="'+(o[0]||"f")+'">'+esc(o[1])+'</button>'}).join("")+'</div>'}
+function jpcs(){var U=ju(),P=people("jeux"),ex=P.filter(function(n){return S.members.indexOf(n)<0}),main=S.members,al=[];if(U)main=ex.filter(function(n){return(S.minfo[n]||{}).grp===U});else ex.forEach(function(n){if(!(S.minfo[n]||{}).grp)al.push(n)});(S.guests||[]).forEach(function(g){if(P.indexOf(g.n)<0)al.push(g.n)});return'<label>'+esc(jun(U))+'</label><div class="pcs" id="pcs">'+pcb(main)+'</div><label>Invités</label><div class="pcs" id="pcg">'+pcb(al)+'</div>'}
 function jpick(a,s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return a[Math.abs(h)%a.length]}
 function jphr(pt,g,rk,M){var W=rk.filter(function(o){return o.r===1}),ks=M.map(function(m){return m.k}),key=ks.indexOf("nul")>-1?"nul":ks.indexOf("dom")>-1?"dom":ks.indexOf("rem")>-1?"rem":ks.indexOf("photo")>-1?"photo":ks.indexOf("ecr")>-1?"ecr":"win",wn=W.map(function(o){return o.n}).join(" et "),L=M.filter(function(m){return m.k==="lan"})[0];
   return{w:jpick(PH[key],pt.id+"w").replace(/\{w\}/g,wn),l:L?jpick(PH.lose,pt.id+"l").replace(/\{l\}/g,L.p.join(" et ")):""}}
@@ -982,12 +986,12 @@ function gameHTML(g,P,back){
   h+='<h2>Historique</h2>'+(fin.length?fin.map(partyRow).join(""):'<p class="sub">Aucune partie terminée pour ce jeu.</p>')+howHTML(g);
   return h}
 function jeuxHTML(c){
-  var P=list("parties"),back='<button class="back" data-a="back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>';
+  var P=list("parties").filter(function(x){return(x.u||"")===ju()}),back='<button class="back" data-a="back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>';
   if(jg&&!jgame(jg))jg=null;if(jp&&!jpart())jp=null;
   if(jp)return partyHTML(jpart(),back);
   if(jg)return gameHTML(jgame(jg),P.filter(function(x){return x.jeu===jg}),back);
   var G=list("jeux").slice().sort(function(a,b){return(a.titre||"").localeCompare(b.titre||"","fr")}),fin=P.filter(function(x){return x.fin}),enc=P.filter(function(x){return!x.fin});
-  var h='<div class="top">'+back+'<h1>'+ic(c)+' '+esc(c.n)+'</h1><button class="btn" data-a="newp" aria-label="Ajouter" title="Nouvelle partie">'+PLUS+'</button></div>';
+  var h='<div class="top">'+back+'<h1>'+ic(c)+' '+esc(c.n)+'</h1><button class="btn" data-a="newp" aria-label="Ajouter" title="Nouvelle partie">'+PLUS+'</button></div>'+jchips();
   if(!G.length&&!P.length)h+='<div class="empty"><div class="i">'+ic(c.par?cof(c.par):c)+'</div><p>Ajoutez un jeu, lancez une partie : les scores sont additionnés manche après manche et le gagnant est désigné.</p></div>';
   var st=jstats(fin);if(st.length)h+='<h2>Classement général</h2>'+lbHTML(st);
   if(enc.length)h+='<h2>Parties en cours</h2>'+enc.map(partyRow).join("");
@@ -1003,7 +1007,7 @@ function gmanHTML(){var G=S.guests||[];return'<h1 style="font-size:22px">Mes inv
 function gabHTML(pt){var ab=pt.ab||[];return'<h1 style="font-size:22px">Un joueur quitte la partie</h1><p class="sub">Il est classé après tous les joueurs restants et ne marque aucun point de classement. Vous pouvez le remettre en jeu à tout moment.</p>'+pt.players.map(function(n){var o=ab.indexOf(n)>-1;return'<div class="mrow">'+avp(n,38)+'<b style="flex:1;min-width:0">'+esc(n)+'</b><button class="btn '+(o?"":"g ")+'sm" data-a="jabt" data-v="'+esc(n)+'">'+(o?"Remettre en jeu":"🚪 Quitte")+'</button></div>'}).join("")+'<div class="row"><button class="btn" data-a="close">Terminé</button></div>'}
 function newPHTML(gid){
   var G=list("jeux").slice().sort(function(a,b){return(a.titre||"").localeCompare(b.titre||"","fr")});
-  return'<h1 style="font-size:22px">Nouvelle partie</h1><label>Jeu</label><select id="pg"><option value="">— choisir —</option>'+G.map(function(g){return'<option value="'+g.id+'"'+(g.id===gid?" selected":"")+'>'+esc(g.titre)+'</option>'}).join("")+'</select><label>ou créer un nouveau jeu</label><input id="pgn" placeholder="Nom du jeu"><select id="pgm" style="margin-top:6px"><option>Le plus de points gagne</option><option>Le moins de points gagne</option></select><label>Foyer</label><div class="pcs" id="pcs">'+pcb(S.members)+'</div>'+jpcs()+'<div class="row" style="margin-top:8px"><input id="gst" placeholder="Nouvel invité (prénom)"><button class="btn g" style="flex:none" data-a="gadd">+ Invité</button></div>'+'<div class="row"><button class="btn g sm" data-a="gman">Gérer les invités (photo, emoji)</button></div>'+'<div class="row"><button class="btn g" data-a="close">Annuler</button><button class="btn" data-a="startp">Commencer</button></div>'}
+  return'<h1 style="font-size:22px">Nouvelle partie</h1><label>Jeu</label><select id="pg"><option value="">— choisir —</option>'+G.map(function(g){return'<option value="'+g.id+'"'+(g.id===gid?" selected":"")+'>'+esc(g.titre)+'</option>'}).join("")+'</select><label>ou créer un nouveau jeu</label><input id="pgn" placeholder="Nom du jeu"><select id="pgm" style="margin-top:6px"><option>Le plus de points gagne</option><option>Le moins de points gagne</option></select>'+jpcs()+'<div class="row" style="margin-top:8px"><input id="gst" placeholder="Nouvel invité (prénom)"><button class="btn g" style="flex:none" data-a="gadd">+ Invité</button></div>'+'<div class="row"><button class="btn g sm" data-a="gman">Gérer les invités (photo, emoji)</button></div>'+'<div class="row"><button class="btn g" data-a="close">Annuler</button><button class="btn" data-a="startp">Commencer</button></div>'}
 var PSUG=[["Analyse de l’eau (pH, chlore)","Analyse de l’eau","Repères courants : pH 7,2–7,6 · chlore libre 1–3 mg/L · TAC 80–120 mg/L (à adapter à votre traitement)."],["Ajout de chlore / traitement","Produits",""],["Nettoyage du panier de skimmer","Nettoyage",""],["Brossage des parois","Nettoyage",""],["Aspiration du bassin","Nettoyage",""],["Nettoyage du préfiltre de pompe","Filtration",""],["Contre-lavage du filtre à sable","Filtration","Faire un rinçage après le contre-lavage."],["Nettoyage / remplacement de la cartouche","Filtration",""],["Vérification du niveau d’eau","Nettoyage",""],["Cellule / électrode (électrolyseur)","Équipement",""],["Volume et dimensions du bassin","Équipement","Longueur × largeur × profondeur, volume en m³."],["Couverture / volet","Équipement",""],["Hivernage","Hivernage & saison",""],["Remise en service","Hivernage & saison",""],["Déclaration / assurance piscine","Administratif",""]];
 var SUGS={maison:SUG,piscine:PSUG};
 cof("piscine").sf=function(x){return[x.quand?"Dernière : "+fd(x.quand):"",x.proch?"Prochaine : "+fd(x.proch):"",x.ph?"pH "+x.ph:"",x.cl?"Cl "+x.cl:""].filter(Boolean).join(" · ")};
@@ -1144,7 +1148,7 @@ document.addEventListener("click",function(e){
   else if(a==="gtn"){var gi=gnew.indexOf(v);if(gi>=0)gnew.splice(gi,1);else gnew.push(v);var gv=$("#gn")?$("#gn").value:"";rr();if($("#gn"))$("#gn").value=gv}
   else if(a==="addgrp"){var gn=$("#gn").value.trim();if(!gn)return;S.groups=S.groups||[];S.groups.push({id:"g"+Date.now(),n:gn,tiles:gnew.slice()});gnew=GT.slice();save();sacc.g=true;rr()}
   else if(a==="gtog"){var gq=v.split("|"),gg=(S.groups||[]).filter(function(x){return x.id===gq[0]})[0];if(!gg)return;var gk=gg.tiles.indexOf(gq[1]);if(gk>=0)gg.tiles.splice(gk,1);else gg.tiles.push(gq[1]);save();rr()}
-  else if(a==="delg"){var gd=(S.groups||[]).filter(function(x){return x.id===v})[0];if(!gd||!confirm("Supprimer le groupe « "+gd.n+" » ? Les personnes restent dans « Autres personnes », visibles partout."))return;S.groups=S.groups.filter(function(x){return x.id!==v});Object.keys(S.minfo).forEach(function(k){if(S.minfo[k]&&S.minfo[k].grp===v)delete S.minfo[k].grp});save();rr()}
+  else if(a==="delg"){var gd=(S.groups||[]).filter(function(x){return x.id===v})[0];if(!gd||!confirm("Supprimer le groupe « "+gd.n+" » ? Les personnes restent dans « Autres personnes », visibles partout, et ses parties de jeux passent dans Foyer."))return;S.groups=S.groups.filter(function(x){return x.id!==v});list("parties").forEach(function(p){if(p.u===v)delete p.u});Object.keys(S.minfo).forEach(function(k){if(S.minfo[k]&&S.minfo[k].grp===v)delete S.minfo[k].grp});save();rr()}
   else if(a==="addo"){var on=$("#on").value.trim();if(!on)return;if(people().indexOf(on)<0)S.others.push(on);var mo=S.minfo[on]=S.minfo[on]||{};mo.b=$("#ob").value;if($("#og")&&$("#og").value)mo.grp=$("#og").value;save();render()}
   else if(a==="mph3"){$("#mpf").dataset.t=v;$("#mpf").click()}
   else if(a==="delo"){var dn2=S.others.splice(+v,1)[0];if(S.members.indexOf(dn2)<0)delete S.minfo[dn2];save();render()}
@@ -1153,7 +1157,8 @@ document.addEventListener("click",function(e){
   else if(a==="addgf")openForm(null,null,{pour:gp,statut:gtab==="offerts"?"Offert":"Idée"});
   else if(a==="gift"){var gi=list("cadeaux").filter(function(x){return x.id===v})[0];if(gi){gi.statut="Offert";if(!gi.quand)gi.quand=today();save();rr()}}
   else if(a==="jg"){jg=v;render()}
-  else if(a==="jp"){jp=v;render()}
+  else if(a==="ju"){S.ju=v==="f"?"":v;save();render()}
+  else if(a==="jp"){jp=v;var pp=jpart();if(pp)S.ju=pp.u||"";render()}
   else if(a==="addg2")openForm();
   else if(a==="editj")openForm(v);
   else if(a==="jsug"){var s0=JSUG[+v];list("jeux").push({id:"j"+Date.now(),titre:s0[0],mode:s0[1],cible:s0[2]===""?"":String(s0[2])});save();rr()}
@@ -1166,7 +1171,7 @@ document.addEventListener("click",function(e){
   else if(a==="gem"){var g1=gst(v);if(g1){var em=prompt("Emoji pour "+v+" (laisser vide pour l’enlever)",g1.e||"");if(em!==null){em=Array.from(em.trim())[0]||"";if(em){g1.e=em;delete g1.p}else{delete g1.e}save();$("#sheet").innerHTML=gmanHTML()}}}
   else if(a==="gnoimg"){var g2=gst(v);if(g2){delete g2.p;delete g2.e;save();$("#sheet").innerHTML=gmanHTML()}}
   else if(a==="gdel"){if(confirm("Retirer "+v+" de la liste des invités ?")){S.guests=(S.guests||[]).filter(function(g){return g.n!==v});save();GKEEP=GKEEP.filter(function(x){return x!==v});$("#sheet").innerHTML=gmanHTML()}}
-  else if(a==="startp"){var nms=[].map.call(document.querySelectorAll(".pcs .pc.on"),function(b){return b.dataset.v}),gid=$("#pg").value,gnn=$("#pgn").value.trim();if(gnn){var ng={id:"j"+Date.now(),titre:gnn,mode:$("#pgm").value,cible:""};list("jeux").push(ng);gid=ng.id}if(!gid){alert("Choisissez un jeu ou créez-en un.");return}if(!nms.length){alert("Choisissez au moins un joueur.");return}var npt={id:"p"+Date.now(),jeu:gid,date:today(),players:nms,manches:[nms.map(function(){return""})],fin:false};list("parties").unshift(npt);save();closeForm();cat="jeux";jp=npt.id;render()}
+  else if(a==="startp"){var nms=[].map.call(document.querySelectorAll(".pcs .pc.on"),function(b){return b.dataset.v}),gid=$("#pg").value,gnn=$("#pgn").value.trim();if(gnn){var ng={id:"j"+Date.now(),titre:gnn,mode:$("#pgm").value,cible:""};list("jeux").push(ng);gid=ng.id}if(!gid){alert("Choisissez un jeu ou créez-en un.");return}if(!nms.length){alert("Choisissez au moins un joueur.");return}var npt={id:"p"+Date.now(),u:ju(),jeu:gid,date:today(),players:nms,manches:[nms.map(function(){return""})],fin:false};list("parties").unshift(npt);save();closeForm();cat="jeux";jp=npt.id;render()}
   else if(a==="addr"){var pa=jpart();if(pa){pa.manches.push(pa.players.map(function(){return""}));save();rr();var ni=document.querySelectorAll('[data-ps^="'+(pa.manches.length-1)+'|"]');if(ni[0])ni[0].focus()}}
   else if(a==="delr"){var pd=jpart();if(pd&&pd.manches.length>1&&(!pd.manches[pd.manches.length-1].some(function(x){return x!==""})||confirm("Supprimer la dernière manche ?"))){pd.manches.pop();save();rr()}}
   else if(a==="lbm"){S.lbm=v;save();rr()}

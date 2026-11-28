@@ -449,6 +449,7 @@ body.kb .sc input{padding:7px 2px;font-size:16px}
 .phd .pl.ab{opacity:.45}.mrow{display:flex;align-items:center;gap:10px;padding:6px 0}
 .mrow{padding:12px 16px}.gbox{padding:14px 16px;row-gap:4px}.mrow .gch{margin:8px 0 2px}.grid.cols4 .tile{padding:11px 8px 6px}.grid.cols3 .tile{padding:12px}
 .addc .ar2{flex-direction:column;gap:10px}.addc .ar2 .fl{flex:none;width:100%}.addc .ar2 input,.addc .ar2 select{width:100%}.mr2 input[type=date]{width:100%;flex:1}
+.addc:focus-within{margin-bottom:45vh}
 </style>
 </head>
 <body>
@@ -502,7 +503,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.30.0";
+var VER="1.30.1";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="offerts",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
@@ -717,10 +718,10 @@ function membersHTML(){var h="";
   return h;
 }
 function catsHTML(){
-  var h='<h2>Affichage de l’accueil</h2><div class="tabs" style="margin:0 0 4px;padding:0">'+[2,3,4].map(function(k){return'<button class="tb'+((S.cols===3||S.cols===4?S.cols:2)===k?" on":"")+'" data-a="colsset" data-v="'+k+'">'+k+' colonnes</button>'}).join("")+'</div><h2>Ordre et choix des tuiles</h2><p class="sub">Touchez un nom pour le renommer, ou un logo pour le remplacer par une photo. Changez l’ordre avec ▲ ▼. Retirez une catégorie de l’accueil (ses données sont conservées) ou supprimez celles que vous avez créées.</p>';
-  CATS.forEach(function(c){var n=cnt(c);h+='<div class="mrow cr"><span class="ci" data-a="catlogo" data-v="'+c.id+'" title="Changer le logo" style="cursor:pointer">'+ic(c)+'</span><b data-a="rncat" data-v="'+c.id+'" style="cursor:pointer">'+esc(c.n)+' <span style="color:var(--mu);font-size:13px">✎</span><small class="sub" style="display:block;margin:0;font-weight:400">'+n+(n>1?" éléments":" élément")+'</small></b><span class="mvi"><button data-a="mv" data-v="'+c.id+'|-1" aria-label="Monter">▲</button><button data-a="mv" data-v="'+c.id+'|1" aria-label="Descendre">▼</button></span><button class="btn d sm" data-a="delc" data-v="'+c.id+'">'+(c.custom?"Supprimer":"Retirer")+'</button></div>'});
-  if(S.hidden.length){h+='<h2>Catégories retirées</h2>';S.hidden.forEach(function(id){var b=BASE.filter(function(c){return c.id===id})[0];if(b)h+='<div class="mrow cr"><span class="ci">'+ic(b)+'</span><b>'+esc(b.n)+'</b><button class="btn g sm" data-a="restcat" data-v="'+id+'">↺ Restaurer</button></div>'})}
-  return h+'<div class="row" style="margin-top:14px"><button class="btn" data-a="newcat">+ Nouvelle catégorie</button></div>'}
+  var h='<h2>Affichage de l’accueil</h2><div class="tabs" style="margin:0 0 4px;padding:0">'+[2,3,4].map(function(k){return'<button class="tb'+((S.cols===3||S.cols===4?S.cols:2)===k?" on":"")+'" data-a="colsset" data-v="'+k+'">'+k+' colonnes</button>'}).join("")+'</div>';var B='<p class="sub">Touchez un nom pour le renommer, ou un logo pour le remplacer par une photo. Changez l’ordre avec ▲ ▼. Retirez une catégorie de l’accueil (ses données sont conservées) ou supprimez celles que vous avez créées.</p>';
+  CATS.forEach(function(c){var n=cnt(c);B+='<div class="mrow cr"><span class="ci" data-a="catlogo" data-v="'+c.id+'" title="Changer le logo" style="cursor:pointer">'+ic(c)+'</span><b data-a="rncat" data-v="'+c.id+'" style="cursor:pointer">'+esc(c.n)+' <span style="color:var(--mu);font-size:13px">✎</span><small class="sub" style="display:block;margin:0;font-weight:400">'+n+(n>1?" éléments":" élément")+'</small></b><span class="mvi"><button data-a="mv" data-v="'+c.id+'|-1" aria-label="Monter">▲</button><button data-a="mv" data-v="'+c.id+'|1" aria-label="Descendre">▼</button></span><button class="btn d sm" data-a="delc" data-v="'+c.id+'">'+(c.custom?"Supprimer":"Retirer")+'</button></div>'});
+  if(S.hidden.length){B+='<h2>Catégories retirées</h2>';S.hidden.forEach(function(id){var b=BASE.filter(function(c){return c.id===id})[0];if(b)B+='<div class="mrow cr"><span class="ci">'+ic(b)+'</span><b>'+esc(b.n)+'</b><button class="btn g sm" data-a="restcat" data-v="'+id+'">↺ Restaurer</button></div>'})}
+  return h+accHTML("c","Catégories de l’accueil",CATS.length,B+'<div class="row" style="margin-top:14px"><button class="btn" data-a="newcat">+ Nouvelle catégorie</button></div>')}
 function donneesHTML(){var h="";h+=verCard();
   h+='<h2>Phrase d’accueil</h2><input id="tgl" maxlength="80" placeholder="La Lammerais, à portée de main" value="'+esc(S.tagline||"")+'"><p class="sub">Affichée sous « Mon foyer » sur l’accueil. Laissez vide pour la phrase par défaut.</p>';
   h+='<h2>Apparence</h2><select id="th">'+[["auto","Automatique"],["light","Clair"],["dark","Sombre"]].map(function(o){return'<option value="'+o[0]+'"'+((S.theme||"auto")===o[0]?" selected":"")+'>'+o[1]+'</option>'}).join("")+'</select>';
@@ -1149,7 +1150,7 @@ document.addEventListener("click",function(e){
   else if(a==="addgrp"){var gn=$("#gn").value.trim();if(!gn)return;S.groups=S.groups||[];S.groups.push({id:"g"+Date.now(),n:gn,tiles:gnew.slice()});gnew=GT.slice();save();sacc.g=true;rr()}
   else if(a==="gtog"){var gq=v.split("|"),gg=(S.groups||[]).filter(function(x){return x.id===gq[0]})[0];if(!gg)return;var gk=gg.tiles.indexOf(gq[1]);if(gk>=0)gg.tiles.splice(gk,1);else gg.tiles.push(gq[1]);save();rr()}
   else if(a==="delg"){var gd=(S.groups||[]).filter(function(x){return x.id===v})[0];if(!gd||!confirm("Supprimer le groupe « "+gd.n+" » ? Les personnes restent dans « Autres personnes », visibles partout, et ses parties de jeux passent dans Foyer."))return;S.groups=S.groups.filter(function(x){return x.id!==v});list("parties").forEach(function(p){if(p.u===v)delete p.u});Object.keys(S.minfo).forEach(function(k){if(S.minfo[k]&&S.minfo[k].grp===v)delete S.minfo[k].grp});save();rr()}
-  else if(a==="addo"){var on=$("#on").value.trim();if(!on)return;if(people().indexOf(on)<0)S.others.push(on);var mo=S.minfo[on]=S.minfo[on]||{};mo.b=$("#ob").value;if($("#og")&&$("#og").value)mo.grp=$("#og").value;save();render()}
+  else if(a==="addo"){var on=$("#on").value.trim();if(!on)return;if(people().indexOf(on)<0)S.others.push(on);var mo=S.minfo[on]=S.minfo[on]||{};mo.b=$("#ob").value;if($("#og")&&$("#og").value)mo.grp=$("#og").value;save();sacc.o=true;rr()}
   else if(a==="mph3"){$("#mpf").dataset.t=v;$("#mpf").click()}
   else if(a==="delo"){var dn2=S.others.splice(+v,1)[0];if(S.members.indexOf(dn2)<0)delete S.minfo[dn2];save();render()}
   else if(a==="gp"){gp=v;gtab="offerts";render()}
@@ -1222,7 +1223,7 @@ document.addEventListener("click",function(e){
   }
   else if(a==="del"){if(confirm("Supprimer cet élément ?")){S.data[cat]=list(cat).filter(function(x){return x.id!==v});save();closeForm();render()}}
   else if(a==="clear"){S.data[cat]=list(cat).filter(function(x){return !x.fait});save();render()}
-  else if(a==="addm"){var n=$("#nm").value.trim(),gg=$("#ng").value;if(!n)return;if(!gg){alert("Merci de choisir : fille / femme ou garçon / homme.");return}if(S.members.indexOf(n)<0)S.members.push(n);S.minfo[n]={g:gg,p:newPh,b:$("#nb").value};newPh="";save();render()}
+  else if(a==="addm"){var n=$("#nm").value.trim(),gg=$("#ng").value;if(!n)return;if(!gg){alert("Merci de choisir : fille / femme ou garçon / homme.");return}if(S.members.indexOf(n)<0)S.members.push(n);S.minfo[n]={g:gg,p:newPh,b:$("#nb").value};newPh="";save();sacc.m=true;rr()}
   else if(a==="mph"){$("#mpf").dataset.t="";$("#mpf").click()}
   else if(a==="mph2"){$("#mpf").dataset.t=S.members[+v];$("#mpf").click()}
   else if(a==="delm"){var dn=S.members.splice(+v,1)[0];delete S.minfo[dn];save();render()}
@@ -1304,6 +1305,7 @@ document.addEventListener("change",function(e){if(e.target.id!=="imr")return;var
 document.addEventListener("focusin",function(e){var tg=e.target;if(tg.closest&&tg.closest("#sheet")&&/^(INPUT|TEXTAREA|SELECT)$/.test(tg.tagName)){setTimeout(function(){try{tg.scrollIntoView({block:"center",behavior:"smooth"})}catch(x){}},380)}if(e.target.dataset&&e.target.dataset.ps){document.body.classList.add("kb");var el=e.target;setTimeout(function(){try{el.scrollIntoView({block:"center",behavior:"smooth"})}catch(x){}},350)}});
 document.addEventListener("focusin",function(e){var d=e.target.dataset;if(d&&d.ps){var c=+d.ps.split("|")[1];[].forEach.call(document.querySelectorAll(".phd .pl"),function(x,i){x.classList.toggle("act",i===c)})}});
 document.addEventListener("focusout",function(e){if(e.target.dataset&&e.target.dataset.ps)setTimeout(function(){var a=document.activeElement;if(!(a&&a.dataset&&a.dataset.ps))document.body.classList.remove("kb")},60);if(e.target.dataset&&e.target.dataset.ps)[].forEach.call(document.querySelectorAll(".phd .pl"),function(x){x.classList.remove("act")})});
+document.addEventListener("focusin",function(e){var t=e.target;if(t.closest&&t.closest(".addc")&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))setTimeout(function(){try{t.scrollIntoView({block:"center",behavior:"smooth"})}catch(x){}},380)});
 navLoad();
 var booted=false;function boot(){if(booted)return;booted=true;theme();render();lkBoot()}
 idbGet(function(r){try{if(r){var o=JSON.parse(r);if((o._t||0)>(S._t||0)){S=norm(o);if(booted){theme();render()}}}else{idbPut(JSON.stringify(S),function(){})}}catch(e){}boot()});

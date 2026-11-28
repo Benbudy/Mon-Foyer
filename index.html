@@ -451,6 +451,7 @@ body.kb .sc input{padding:7px 2px;font-size:16px}
 .addc .ar2{flex-direction:column;gap:10px}.addc .ar2 .fl{flex:none;width:100%}.addc .ar2 input,.addc .ar2 select{width:100%}.mr2 input[type=date]{width:100%;flex:1}
 .addc:focus-within{margin-bottom:45vh}
 .gsec{margin-top:14px;border-left:4px solid hsl(var(--h) var(--s) 52%);padding-left:10px}.gsh{display:flex;align-items:center;gap:8px;width:100%;background:none;border:0;padding:8px 0;font-family:inherit;text-align:left;cursor:pointer;color:var(--tx)}.gsh .cv{transition:transform .15s;font-style:normal;font-weight:700}.gsh.open .cv{transform:rotate(90deg)}.gsh b{flex:1;font-size:17px}.gsh .cnt{font-size:12px;color:var(--mu);font-weight:600}.gsb{padding-bottom:4px}.gsec .gch{margin:6px 0 4px}
+input[type=date]{box-sizing:border-box;display:block;width:100%;max-width:100%;min-width:0;height:46px;min-height:46px;line-height:normal;margin:0}input[type=date]::-webkit-date-and-time-value{text-align:left;min-height:1.2em;margin:0}.addc .fl{min-width:0}
 </style>
 </head>
 <body>
@@ -504,7 +505,7 @@ var SUB=[
 {id:"cou_mes",par:"couture",i:"📏",n:"Mesures",ex:"",t:"nom",s:[],f:[]},
 {id:"cou_ref",par:"couture",i:"📌",n:"Aide-mémoire",ex:"",t:"nom",s:[],f:[]}
 ];
-var VER="1.31.1";
+var VER="1.31.2";
 var S=load(),tab="home",cat=null,q="",ord=false,openG={},newPh="",tmem=null,mtab="tailles",ordc=false,gp=null,gtab="offerts",jg=null,jp=null,stab="donnees",sacc={};
 (S.data.cadeaux||[]).forEach(function(x){if(x.fait&&!x.statut)x.statut="Acheté"});
 if(!S.zdone){S.zdone=1;Object.keys(S.minfo).forEach(function(k){if(k.trim().toLowerCase()==="zita")S.minfo[k].nc=1});save()}
